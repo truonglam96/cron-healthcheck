@@ -76,7 +76,7 @@ export class CronService extends CronJob {
       this.telegramService.sendMessageToChannel("Backup mongoDB today completed 🎉🎉🎉 \n{\n\t\t\tfilename: " + file.path.replace('./src/temple_folder/backup_mongodb/', '') + ",\n\t\t\tdate: " + this.formatDate(new Date(await this.timeFormat(7))) + "\n}");
       flagUpdated = true
     } catch (error) {
-      this.telegramService.sendMessageToChannel("Exception in Backup mongoDB: \n{\n\t\t\tname: " + error.name + ", \n\t\t\terror: " + error.message + ", \n\t\t\tdate: " + this.formatDate(new Date(await this.timeFormat(7))) + "\n}");
+      this.telegramService.sendMessageToChannel("Exception in Backup mongoDB: \n{\n\t\t\tname: " + error.name + ", \n\t\t\terror: " + error.message + ", \n\t\t\tdate: " + await this.formatDate(new Date(await this.timeFormat(7))) + "\n}");
     }
   }
 
@@ -94,7 +94,8 @@ export class CronService extends CronJob {
       let productionCode = info.efuseConfig.productionCode.substr(0, 6)
       let time = await this.getWeekNumber(new Date(await this.timeFormat(7)))
       let code = productionCode + time[1]
-      let a = await this.qctoolfactoryconfigurationsRepository.updateById(info?._id, {
+      //Update
+      this.qctoolfactoryconfigurationsRepository.updateById(info?._id, {
         //@ts-ignore
         'efuseConfig.productionCode': code
       }).then(() => {
