@@ -3213,327 +3213,219 @@ export class BackupMongodbController {
 
     let input: any = [
       {
-        "Bottle cap ID": "amstel-ultra-2018-white",
-        "Bottle product": "Amstel Ultra"
-      },
-      {
-        "Bottle cap ID": "bohemia-2018-golden",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "bohemia-2018-silver-uncovered",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "boscoli-2018-black",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "bud-light-2018-blue",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "budweiser-2018-red-bud",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "canada-dry-2018-blue",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "carta-blanca-2018-white",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "ciel-2018-blue",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "coca-cola-2018-red-us",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "coca-cola-2018-yellow",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "coca-cola-light-2018-yellow",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "coca-cola-zero-2018-black",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "colimita-2018-multicolor",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "corona-ambar-2019-gold",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "corona-extra-2018-black-18",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "corona-extra-2020-black-ball",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "corona-extra-2020-black-c",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "corona-extra-2020-black-handshake",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "corona-extra-2020-black-orange-footballer",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "corona-extra-2020-black-white-a",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "corona-extra-2020-black-white-ca",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "corona-extra-2020-black-white-dt",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "corona-extra-2020-black-white-leon",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "corona-extra-2020-black-white-m",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "corona-extra-2020-black-white-pachuca",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "corona-extra-2020-black-white-queretaro",
-        "Bottle product": ""
-      },
-      {
-        "Bottle cap ID": "corona-extra-2020-black-white-santos",
+        "Received after-->": "7up-2018-green",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "corona-extra-2020-black-white-smallball",
+        "Received after-->": "amstel-bier-2018-white",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "corona-extra-2020-red-18",
+        "Received after-->": "beck's-bier-2018-silver",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "corona-extra-2020-red-yellow-18",
+        "Received after-->": "beck's-ice-2018-silver",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "corona-extra-2020-white-18",
+        "Received after-->": "beck's-ice-2019-silver",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "corona-extra-2020-yellow-18",
+        "Received after-->": "bira91-2018-multicolor",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "corona-light-2018-yellow",
+        "Received after-->": "budweiser-2018-red-crown",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "cucapa-2018-red",
+        "Received after-->": "budweiser-budvar-2018-golden",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "dos-equis-2018-golden",
+        "Received after-->": "carlsberg-smooth-draught-2019-white",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "erdinger-weibbrau-2018-golden",
+        "Received after-->": "chang-2018-green",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "estrella-2020-white",
+        "Received after-->": "chimay-2018-multicolor",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "fanta-2018-yellow",
+        "Received after-->": "coca-cola-2018-red",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "fresca-2018-yellow",
+        "Received after-->": "corona-extra-2018-black",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "heineken-0-2019-black",
+        "Received after-->": "east-west-2018-black",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "heineken-2018-white",
+        "Received after-->": "gau-den-2018-black",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "heineken-2019-green",
+        "Received after-->": "heart-of-darkness-2018-black",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "indio-2018-black",
+        "Received after-->": "heineken-0-2019-black",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "indio-2020-green",
+        "Received after-->": "heineken-2018-white",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "jabali-2018-black",
+        "Received after-->": "heineken-2019-green",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "jarritos-2018-silver",
+        "Received after-->": "heineken-silver-2019-white",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "ladron-de-manzanas-2018-black",
+        "Received after-->": "hoegaarden-simple-2018-white",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "lagunitas-2018-golden",
+        "Received after-->": "huda-2018-silver",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "leon-2018-red",
+        "Received after-->": "huda-ice-2018-silver",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "manzanita-sol-2018-silver",
+        "Received after-->": "kronenbourg-1664-2020-white",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "minerva-2018-white",
+        "Received after-->": "larue-2018-golden",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "modelo-gold-2018-golden",
+        "Received after-->": "leffe-blonde-2018-golden",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "modelo-gold-2018-golden-uncovered",
+        "Received after-->": "leffe-brown-2018-black",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "modelo-negra-2018-black",
+        "Received after-->": "not-a-cap-black",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "not-a-cap-black",
+        "Received after-->": "not-a-cap-crashed",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "not-a-cap-white",
+        "Received after-->": "not-a-cap-white",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "pacifico-clara-2018-yellow",
+        "Received after-->": "pepsi-2018-blue",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "pacifico-clara-2020-golden",
+        "Received after-->": "sagota-lager-2019-blue",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "pascual-boing-2018-multicolor",
+        "Received after-->": "sagota-pure-2019-silver",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "penafiel-2018-silver",
+        "Received after-->": "saigon-export-2019-red",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "penafiel-2019-blue",
+        "Received after-->": "saigon-lager-2019-white",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "red-cola-2020-red",
+        "Received after-->": "saigon-special-2019-green",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "samuel-adams-2018-white",
+        "Received after-->": "san-miguel-2018-golden",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "sangria-senorial-2018-purple",
+        "Received after-->": "san-miguel-light-2018-golden",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "sidral-aga-2020-red",
+        "Received after-->": "sapporo-2018-yellow",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "sidral-mundet-2018-yellow",
+        "Received after-->": "shingha-2018-red",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "skarch-2020-blue",
+        "Received after-->": "sol-2018-yellow",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "sol-2018-yellow",
+        "Received after-->": "solid-2020-black",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "sprite-2018-yellow",
+        "Received after-->": "solid-2020-yellow",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "squirt-2018-yellow",
+        "Received after-->": "sprite-2018-green",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "stella-artois-2019-golden",
+        "Received after-->": "staropramen-premium-2018-white",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "strongbow-2018-multicolor",
+        "Received after-->": "stella-artois-2019-golden",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "superior-2018-golden",
+        "Received after-->": "sting-2018-red",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "tecate-2018-black",
+        "Received after-->": "strongbow-2018-multicolor",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "tempus-2018-multicolor",
+        "Received after-->": "tete-2018-multicolor",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "ultra-michelob-2018-white",
+        "Received after-->": "tiger-2018-orange",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "valle-frut-2018-black",
+        "Received after-->": "truc-bach-2018-green",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "victoria-2018-white",
+        "Received after-->": "tsingtao-2018-silver",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "wecheer-io",
+        "Received after-->": "u-2018-black",
         "Bottle product": ""
       },
       {
-        "Bottle cap ID": "zubba-2020-purple",
+        "Received after-->": "vodka-cruiser-2020-golden",
         "Bottle product": ""
       }
     ]
@@ -5013,14 +4905,14 @@ export class BackupMongodbController {
     for (const iterator of input) {
       let brandName: any = dataSecond.filter((fil: any) => {
           for (const iterator1 of fil.bottleCapIds) {
-            if (iterator1 === iterator["Bottle cap ID"]) {
+            if (iterator1 === iterator["Received after-->"]) {
               return fil.name;
             };
           }
       })
       if (brandName.length > 0) {
         arr.push({
-          "Bottle cap ID": iterator["Bottle cap ID"],
+          "Received after-->": iterator["Received after-->"],
           "Bottle product": brandName[0].name
         })
       }

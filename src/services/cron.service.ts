@@ -68,9 +68,64 @@ export class CronService extends CronJob {
     }
   }
 
+async stringToDate (dateString: any) {
+    return new Date(dateString);
+}
+
   async backupStart() {
+    // var fs = require('fs');
+    // var _ = require('lodash');
+    // var exec = require('child_process').exec;
+    // var dbOptions = {
+    //   user: '',
+    //   pass: '',
+    //   host: 'localhost',
+    //   port: 27017,
+    //   database: 'QC-Tool_SBO25',
+    //   autoBackup: true,
+    //   removeOldBackup: true,
+    //   keepLastDaysBackup: 2,
+    //   autoBackupPath: '<serverPath>' // i.e. /var/database-backup/
+    // };
+
+    // // check for auto backup is enabled or disabled
+    // if (dbOptions.autoBackup == true) {
+    //   var date = new Date();
+    //   var beforeDate: any 
+    //   var oldBackupDir: any
+    //   var oldBackupPath: any
+    //   var currentDate = this.stringToDate(date); // Current date
+    //   var newBackupDir = (await currentDate).getFullYear() + '-' + ((await currentDate).getMonth() + 1) + '-' + (await currentDate).getDate();
+    //   var newBackupPath = dbOptions.autoBackupPath + 'mongodump-' + newBackupDir; // New backup path for current backup process
+    //   // check for remove old backup after keeping # of days given in configuration
+    //   if (dbOptions.removeOldBackup == true) {
+    //     beforeDate = new Date();
+    //     beforeDate.setDate(beforeDate.getDate() - dbOptions.keepLastDaysBackup); // Substract number of days to keep backup and remove old backup
+    //     oldBackupDir = beforeDate.getFullYear() + '-' + (beforeDate.getMonth() + 1) + '-' + beforeDate.getDate();
+    //     oldBackupPath = dbOptions.autoBackupPath + 'mongodump-' + oldBackupDir; // old backup(after keeping # of days)
+    //   }
+    //   var cmd = 'mongodump --host ' + dbOptions.host + ' --port ' + dbOptions.port + ' --db ' + dbOptions.database + ' --username ' + dbOptions.user + ' --password ' + dbOptions.pass + ' --out ' + newBackupPath; // Command for mongodb dump process
+    //   exec(cmd,  (error: any, stdout: any, stderr: any) => {
+    //     if (!error) {
+    //       // check for remove old backup after keeping # of days given in configuration
+    //       if (dbOptions.removeOldBackup == true) {
+    //         if (fs.existsSync(oldBackupPath)) {
+    //           exec("rm -rf " + oldBackupPath, function (err: any) { });
+    //         }
+    //       }
+    //     }
+    //   })
+    //   .then(() => {
+    //     console.log('Backup completed');
+    //   })
+    //   .catch((err: any) => {
+    //     console.log(err);
+    //   });
+    // }
+
+
     try {
-      let currentDate = (new Date().getFullYear()) + "-" + ((new Date().getMonth() + 1).toString().length == 1 ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth())) + "-" + (new Date().getDate()) + ('T00:00:00.000+00:00');
+      let currentDate = (new Date().getFullYear()) + "-" + ((new Date().getMonth() + 1).toString().length == 1 ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth())) + "-" + (new Date().getDate().toString().length == 1 ? '0' + new Date().getDate() : new Date().getDate()) + ('T00:00:00.000+00:00');
       let file = await this.convertData2JsonService.convertData2Json(currentDate, nameFile[0].fileName);
       this.googleapisService.uploadFile(file.path)
       this.telegramService.sendMessageToChannel("Backup mongoDB today completed 🎉🎉🎉 \n{\n\t\t\tfilename: " + file.path.replace('./src/temple_folder/backup_mongodb/', '') + ",\n\t\t\tdate: " + this.formatDate(new Date(await this.timeFormat(7))) + "\n}");
@@ -79,6 +134,7 @@ export class CronService extends CronJob {
       this.telegramService.sendMessageToChannel("Exception in Backup mongoDB: \n{\n\t\t\tname: " + error.name + ", \n\t\t\terror: " + error.message + ", \n\t\t\tdate: " + await this.formatDate(new Date(await this.timeFormat(7))) + "\n}");
     }
   }
+
 
   async countCertificateinfos(where?: Where<certificateinfos>): Promise<{}> {
     return await this.certificateinfosRepository.count(where);
