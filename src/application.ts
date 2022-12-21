@@ -49,8 +49,8 @@ export class GetUrlApplication extends BootMixin(
     };
 
     // Set up Cron Jobs
-    this.component(CronComponent);
-    this.add(createBindingFromClass(CronService));
+    // this.component(CronComponent);
+    // this.add(createBindingFromClass(CronService));
   }
 }
 if (process.env.BYPASS_EXITCODE !== '') {
