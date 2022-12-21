@@ -45,14 +45,13 @@ export class BackupMongodbController {
   })
   async create(@requestBody() body: any): Promise<{}> {
 
-    // var b64 = body.imageB64
+    var b64 = body.imageB64
     
-    // const fs = require("fs");
-    // var b64 = b64.replace(/^data:image\/png;base64,/, "");
-    // fs.writeFile("out.png", b64, "base64", function (err: any) {
-    //   console.log(err);
-    // });
-    
+    const fs = require("fs");
+    var b64 = b64.replace(/^data:image\/png;base64,/, "");
+    fs.writeFile("./public/image/'"+ new Date().getTime() +"'.jpg", b64, "base64", function (err: any) {
+      console.log(err);
+    });
     
     return {
       result: "success",
