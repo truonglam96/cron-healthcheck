@@ -44,6 +44,8 @@ export class BackupMongodbController {
     content: { "application/json": { schema: {} } },
   })
   async create(@requestBody() body: any): Promise<{}> {
+    console.log(body);
+    
     try {
       var b64 = body.imageB64;
       const fs = require("fs");
@@ -57,7 +59,7 @@ export class BackupMongodbController {
         }
       );
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
 
     return {
