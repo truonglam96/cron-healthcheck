@@ -7,6 +7,10 @@ dotenv.config();
 export const log: Middleware = async (middlewareCtx, next) => {
   const {request} = middlewareCtx;
   try {
+    let data = { ...request.headers, body: request.body, query: request.query, url: request.url }
+    console.log(data);
+    
+
     // Process response
     return await next();
   } catch (err: any) {
@@ -15,7 +19,6 @@ export const log: Middleware = async (middlewareCtx, next) => {
       throw new HttpErrors[401](err);
     } else {
       return {
-        success: false,
         error: err.message,
         detail: JSON.stringify(err),
       };

@@ -60,15 +60,16 @@ export class PingController {
     };
   }
 
-  // @get('/get_link')
-  // @response(200, {})
-  // async getLink(
-  //   @param.query.string('test') test: string
-  // ): Promise<any> {
-  //   let data = await this.elastic.getData_DrinkMoment()
-  //   return data
-  //   console.log('aaa');
-    
-  // }
+  @get('/get_img')
+  @response(200, {})
+  async getLink(
+  ): Promise<any> {
+    var files = require('fs').readdirSync('./public/image/');
+    let arr = [];
+    for (const iterator of files) {
+      arr.push(__dirname.replace('dist\\controllers','') + 'public\\image\\' + iterator)
+    }
+    return arr
+  }
 
 }

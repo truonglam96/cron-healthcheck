@@ -11,6 +11,7 @@ import path from 'path';
 import {MySequence} from './sequence';
 import {CronService} from './services';
 import {CronComponent} from "@loopback/cron";
+import {log} from './middleware';
 import * as dotenv from 'dotenv';
 
 
@@ -27,6 +28,7 @@ export class GetUrlApplication extends BootMixin(
 
     // Set up the custom sequence
     this.sequence(MySequence);
+    this.middleware(log);
 
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));

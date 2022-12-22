@@ -66,8 +66,8 @@ export class BackupMongodbController {
       "brand": "test",
       "doReset": false,
       "doUpdate": false,
-      "fwUrl": "https://staging-dm-firmware.s3-ap-southeast-1.amazonaws.com/firmwares/BOx3.0.5_IMUOct+31+2019+STG.bin",
-      "image": "https://stg-live.cheeer.io/images/sample.png",
+      "fwUrl": "",
+      "image": "",
       "result": "success",
       "timeUTC": new Date().getTime()
     }
