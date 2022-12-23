@@ -9,7 +9,7 @@ import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
-import {CronService} from './services';
+// import {CronService} from './services';
 import {CronComponent} from "@loopback/cron";
 import {log} from './middleware';
 import * as dotenv from 'dotenv';

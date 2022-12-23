@@ -21,20 +21,20 @@ import {
   RestBindings,
 } from "@loopback/rest";
 // import { testingresults as Testingresults } from "../models";
-import {
-  AutomatictestingresultsRepository,
-  BootsRepository,
-  CertificateinfosRepository,
-  ManualtestingresultsRepository,
-  QctoolfactoryconfigurationsRepository,
-  TestingresultsRepository,
-} from "../repositories";
-import { Convertdata2JsonService } from "../services";
+// import {
+//   AutomatictestingresultsRepository,
+//   BootsRepository,
+//   CertificateinfosRepository,
+//   ManualtestingresultsRepository,
+//   QctoolfactoryconfigurationsRepository,
+//   TestingresultsRepository,
+// } from "../repositories";
+// import { Convertdata2JsonService } from "../services";
 
 export class BackupMongodbController {
   constructor(
-    @inject("services.Convertdata2JsonService")
-    private convertData2JsonService: Convertdata2JsonService,
+    // @inject("services.Convertdata2JsonService")
+    // private convertData2JsonService: Convertdata2JsonService,
     @inject(RestBindings.Http.REQUEST) private request: Request
   ) {}
 
