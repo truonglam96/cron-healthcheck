@@ -68,7 +68,8 @@ export class PingController {
     let arr = [];
     for (const iterator of files) {
       // arr.push(__dirname.replace('dist\\controllers','') + 'public\\image\\' + iterator)
-      arr.push( 'image\\' + iterator)
+      // arr.push( 'image\\' + iterator)
+      arr.unshift('image\\' + iterator)
     }
     return arr
   }
