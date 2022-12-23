@@ -67,7 +67,8 @@ export class PingController {
     var files = require('fs').readdirSync('./public/image/');
     let arr = [];
     for (const iterator of files) {
-      arr.push(__dirname.replace('dist\\controllers','') + 'public\\image\\' + iterator)
+      // arr.push(__dirname.replace('dist\\controllers','') + 'public\\image\\' + iterator)
+      arr.push( 'image\\' + iterator)
     }
     return arr
   }

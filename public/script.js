@@ -1,19 +1,6 @@
 window.onload = function () {
-  const table = document.getElementById("table");
-  const newRow = document.createElement("tr");
-  let newCell = document.createElement("td");
-  newCell.innerHTML = "first cell";
-  let newCell2 = document.createElement("td");
-  newCell2.innerHTML = "second cell";
-  newRow.appendChild(newCell);
-  newRow.appendChild(newCell2);
-  table.appendChild(newRow);
-
-  // var files = require('fs').readdirSync('/image/');
-  // for (const iterator of files) {
-
-  // }
-
+  //   const table = document.getElementById("table");
+  const panel = document.getElementById("panel");
   var requestOptions = {
     method: "GET",
     redirect: "follow",
@@ -22,8 +9,19 @@ window.onload = function () {
   fetch("http://[::1]:3000/get_img", requestOptions)
     .then((response) => response.text())
     .then((result) => {
-        newCell2.innerHTML = result;
-        console.log(result);
+      const newRow = document.createElement("tr");
+      let array = JSON.parse(result);
+      for (let index = 0; index < array.length; index++) {
+        const element = array[index];
+
+        // let newCell = document.createElement("td");
+        var img = document.createElement("img");
+        img.src = element.toString();
+        panel.appendChild(img);
+        // newRow.appendChild(newCell);
+        // table.appendChild(newRow);
+      }
     })
     .catch((error) => console.log("error", error));
+
 };

@@ -32,6 +32,7 @@ export class GetUrlApplication extends BootMixin(
 
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
+    // this.static('/', path.join(__dirname, './public/image'));
 
     // Customize @loopback/rest-explorer configuration here
     this.configure(RestExplorerBindings.COMPONENT).to({
