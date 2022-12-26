@@ -67,7 +67,7 @@ export class BackupMongodbController {
       obj.imageB64 = body.imageB64? body.imageB64:'';
       obj.imu = body.imu? body.imu:'';
       obj.force = body.force? body.force:'';
-      await this.drinkMomentsRepository.create(obj);
+      let aa = await this.drinkMomentsRepository.create(obj);
 
 
       if(obj.imageB64 != ""){
@@ -212,20 +212,21 @@ function convertIMU(b64: any) {
     8: "acc_y",
     10: "acc_z",
   };
-  console.log("[");
-  for (var i = 0; i < data.length; i += 10) {
-    var point: any = {};
-    for (var j = 0; j < 10; j += 2) {
+  for (var i = 0; i < data.length; i += 12) {
+    var pointArr: any = [];
+    for (var j = 0; j < 12; j += 2) {
       var idx_start = i + j;
       var v = data.readInt16LE(idx_start);
-      point[idx_name_dict[j]] = v;
+      // let rangeName = {
+      //   idx_name_dict[j] : v
+      // }
+      pointArr.push(v);
     }
-    data_points.push(point);
-    var val = JSON.stringify(point);
-    val = val.replace("'", '"');
-    console.log(val + ",");
+    data_points.push(pointArr);
+    // var val = JSON.stringify(pointArr);
+    // val = val.replace("'", '"');
+    // console.log(val + ",");
   }
-  console.log("]");
   return data_points;
 }
 
@@ -242,7 +243,6 @@ function convertForce(b64: any) {
     for (var j = 0; j < 2; j += 2) {
       var idx = i + j;
       var v = data.readInt16LE(idx);
-      // point[idx_name_dict[j]] = v;
       pointArr.push(i, v);
     }
     data_points.push(pointArr);

@@ -18,7 +18,7 @@ function convertIMU() {
       for (var j = 0; j < 10; j += 2) {
         var idx_start = i + j;
         var idx_end = idx_start + 2;
-        var v = data.readInt16LE(idx_start);
+        var v = data.readInt16LE(idx_start, idx_end);
         point[idx_name_dict[j]] = v;
       }
       data_points.push(point);
