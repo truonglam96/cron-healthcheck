@@ -4,3 +4,4 @@
 // export * from './manualtestingresults.repository';
 // export * from './qctoolfactoryconfigurations.repository';
 // export * from './testingresults.repository';
+export * from './drinkmoments.repository';
