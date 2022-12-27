@@ -1,11 +1,16 @@
+window.onload = async function () {
+  generateImg();
+  drawCharts();
+  loadJson();
+};
 
+async function loadJson() {
+  let data = await getDeviceInfo("7C:DF:A1:E7:BB:A9");
+  const json = document.getElementById("json");
+  json.innerHTML = data;
+}
 
-
-
-
-
-
-window.onload = function () {
+function generateImg() {
   const panel = document.getElementById("panel");
   var requestOptions = {
     method: "GET",
@@ -13,14 +18,14 @@ window.onload = function () {
   };
 
   // fetch("http://[::1]:3000/get_img", requestOptions)
-  fetch("http://35.240.171.212:3000/get_img", requestOptions)
+    fetch("http://35.240.171.212:3000/get_img", requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const newRow = document.createElement("tr");
       let array = JSON.parse(result);
       for (let index = 0; index < array.length; index++) {
         const element = array[index];
-        
+
         var img = document.createElement("img");
         img.src = element.toString();
         var h6 = document.createElement("h6");
@@ -32,82 +37,161 @@ window.onload = function () {
       }
     })
     .catch((error) => console.log("error", error));
-
-};
-
-function getDetailImg() {
-    
-
-
-
-
-
 }
 
+function drawCharts() {
+  google.charts.load("current", { packages: ["line"] });
+  google.charts.setOnLoadCallback(drawChart);
+  let width = 600;
+  let height = 300;
 
+  async function drawChart() {
+    let dataConverted = await convertData("7C:DF:A1:E7:BB:A9");
+    let imuData = JSON.parse(dataConverted)[0].imu;
+    let forceData = JSON.parse(dataConverted)[1].force;
 
+    // 0: "gyro_x",
+    // 1: "gyro_y",
+    // 2: "gyro_z",
+    // 3: "acc_x",
+    // 4: "acc_y",
+    // 5: "acc_z",
 
+    let arrGyro = [],
+      arrAcc = [];
+    let indexIMU = 1 / 461;
+    for (let index = 0; index < imuData.length; index++) {
+      const element = imuData[index];
+      arrGyro.push([
+        parseFloat(indexIMU.toFixed(3)),
+        element[0],
+        element[1],
+        element[2],
+      ]);
+      arrAcc.push([
+        parseFloat(indexIMU.toFixed(3)),
+        element[3],
+        element[4],
+        element[5],
+      ]);
+      indexIMU += 1 / 461;
+    }
 
+    var dataIMUGyroscope = new google.visualization.DataTable();
+    dataIMUGyroscope.addColumn("number", "Times");
+    dataIMUGyroscope.addColumn("number", "x gyro");
+    dataIMUGyroscope.addColumn("number", "y gyro");
+    dataIMUGyroscope.addColumn("number", "z gyro");
+    dataIMUGyroscope.addRows(arrGyro);
+    var optionsIMUGyroscope = {
+      chart: {
+        title: "Gyroscope",
+        subtitle: "1/461s",
+      },
+      width: width,
+      height: height,
+    };
+    var chartIMUGyroscope = new google.charts.Line(
+      document.getElementById("linechartIMUGyroscope")
+    );
+    chartIMUGyroscope.draw(
+      dataIMUGyroscope,
+      google.charts.Line.convertOptions(optionsIMUGyroscope)
+    );
 
+    ////
+    var dataIMUAccelerometer = new google.visualization.DataTable();
+    dataIMUAccelerometer.addColumn("number", "Times");
+    dataIMUAccelerometer.addColumn("number", "x accel");
+    dataIMUAccelerometer.addColumn("number", "y accel");
+    dataIMUAccelerometer.addColumn("number", "z accel");
+    dataIMUAccelerometer.addRows(arrAcc);
+    var optionsForce = {
+      chart: {
+        title: "Accelerometer",
+        subtitle: "1/461s",
+      },
+      width: width,
+      height: height,
+    };
+    var chartForce = new google.charts.Line(
+      document.getElementById("linechartIMUAccelerometer")
+    );
+    chartForce.draw(
+      dataIMUAccelerometer,
+      google.charts.Line.convertOptions(optionsForce)
+    );
 
+    ////
+    let arrForce = [];
+    let indexForce = 1 / 500;
+    for (let index = 0; index < forceData.length; index++) {
+      const element = forceData[index];
+      arrForce.push([parseFloat(indexForce.toFixed(3)), element[1]]);
+      indexForce += 1 / 500;
+    }
 
+    var dataForce = new google.visualization.DataTable();
+    dataForce.addColumn("number", "Times");
+    dataForce.addColumn("number", "Force values");
+    dataForce.addRows(arrForce);
+    var optionsForce = {
+      chart: {
+        title: "Force sensor",
+        subtitle: "1/500s",
+      },
+      width: width,
+      height: height,
+    };
+    var chartForce = new google.charts.Line(
+      document.getElementById("linechartForce")
+    );
+    chartForce.draw(dataForce, google.charts.Line.convertOptions(optionsForce));
+  }
+}
 
+async function convertData(macAddress) {
+  return await new Promise(function (resolve, reject) {
+    var myHeaders = new Headers();
+    myHeaders.append("accept", "application/json");
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify({
+      macAddress: macAddress,
+    });
 
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
 
+    fetch("http://35.240.171.212:3000/convert-force-imu", requestOptions)
+      .then((response) => response.text())
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((error) => console.log("error", error));
+  });
+}
 
+async function getDeviceInfo(macAddress) {
+  return await new Promise(function (resolve, reject) {
+  var myHeaders = new Headers();
+  myHeaders.append("accept", "application/json");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-google.charts.load("current", { packages: ["line"] });
-google.charts.setOnLoadCallback(drawChart);
-
-function drawChart() {
-  var data = new google.visualization.DataTable();
-  data.addColumn("number", "Day");
-  data.addColumn("number", "Guardians of the Galaxy");
-  data.addColumn("number", "The Avengers");
-  data.addColumn("number", "Transformers: Age of Extinction");
-
-  data.addRows([
-    [1, 37.8, 80.8, 41.8],
-    [2, 30.9, 69.5, 32.4],
-    [3, 25.4, 57, 25.7],
-    [4, 11.7, 18.8, 10.5],
-    [5, 11.9, 17.6, 10.4],
-    [6, 8.8, 13.6, 7.7],
-    [7, 7.6, 12.3, 9.6],
-    [8, 12.3, 29.2, 10.6],
-    [9, 16.9, 42.9, 14.8],
-    [10, 12.8, 30.9, 11.6],
-    [11, 5.3, 7.9, 4.7],
-    [12, 6.6, 8.4, 5.2],
-    [13, 4.8, 6.3, 3.6],
-    [14, 4.2, 6.2, 3.4],
-  ]);
-
-  var options = {
-    chart: {
-      title: "Box Office Earnings in First Two Weeks of Opening",
-      subtitle: "in millions of dollars (USD)",
-    },
-    width: 1200,
-    height: 400,
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
   };
 
-  var chart = new google.charts.Line(
-    document.getElementById("linechart_material")
-  );
-
-  chart.draw(data, google.charts.Line.convertOptions(options));
+  fetch(
+    "http://35.240.171.212:3000/get-info-device?macAddress=" + macAddress,
+    requestOptions
+  )
+    .then((response) => response.text())
+    .then((result) => resolve(result))
+    .catch((error) => console.log("error", error));
+  });
 }

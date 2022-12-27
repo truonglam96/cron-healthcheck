@@ -199,6 +199,25 @@ export class BackupMongodbController {
     }    
     return response;
   }
+
+  //Get data of macAddress
+  @get("/get-info-device")
+  @response(200, {
+    description: "Testing upload to server",
+    content: { "application/json": { schema: {} } },
+  })
+  async getDeviceInfo(
+    @param.query.string('macAddress') macAddress: string 
+  ): Promise<any> {
+    if(!macAddress || macAddress === "") return {error: 'macAddress not null'}
+    let res = await this.drinkMomentsRepository.findOne({where: {boxId: macAddress}});
+    let data: any;
+    data = res;
+    data.imageB64 = '';
+    data.imu = '';
+    data.force = '';
+    return data;
+  }
 }
 
 function convertIMU(b64: any) {
