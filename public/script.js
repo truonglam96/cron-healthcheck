@@ -25,8 +25,8 @@ function generateImg() {
     redirect: "follow",
   };
 
-  fetch("http://[::1]:3000/get_img", requestOptions)
-    // fetch("http://35.240.171.212:3000/get_img", requestOptions)
+  // fetch("http://[::1]:3000/get_img", requestOptions)
+    fetch("http://35.240.171.212:3000/get_img", requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const newRow = document.createElement("tr");
