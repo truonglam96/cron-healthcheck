@@ -4,6 +4,14 @@ window.onload = async function () {
   loadJson();
 };
 
+window.addEventListener("mouseup", function (e) {
+  if (e.target.tagName === 'IMG') {
+    let mac = e.target.alt;
+
+    drawCharts(mac);
+  }
+});
+
 async function loadJson() {
   let data = await getDeviceInfo("7C:DF:A1:E7:BB:A9");
   const json = document.getElementById("json");
@@ -17,17 +25,22 @@ function generateImg() {
     redirect: "follow",
   };
 
-  // fetch("http://[::1]:3000/get_img", requestOptions)
-    fetch("http://35.240.171.212:3000/get_img", requestOptions)
+  fetch("http://[::1]:3000/get_img", requestOptions)
+    // fetch("http://35.240.171.212:3000/get_img", requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const newRow = document.createElement("tr");
       let array = JSON.parse(result);
       for (let index = 0; index < array.length; index++) {
         const element = array[index];
+        let mac = element.split('\\').pop().replace('.jpg','');
+        let remove = '_'+mac.split('_').pop();
+        mac = mac.replace(remove, '');
+        mac = mac.replace(/_/gi, ':');
 
         var img = document.createElement("img");
         img.src = element.toString();
+        img.alt = mac;
         var h6 = document.createElement("h6");
         h6.innerText = element.toString();
         var span = document.createElement("span");
@@ -39,14 +52,15 @@ function generateImg() {
     .catch((error) => console.log("error", error));
 }
 
-function drawCharts() {
+function drawCharts(macAddress) {
   google.charts.load("current", { packages: ["line"] });
   google.charts.setOnLoadCallback(drawChart);
   let width = 600;
   let height = 300;
 
   async function drawChart() {
-    let dataConverted = await convertData("7C:DF:A1:E7:BB:A9");
+    //"7C:DF:A1:E7:BB:A9"
+    let dataConverted = await convertData(macAddress);
     let imuData = JSON.parse(dataConverted)[0].imu;
     let forceData = JSON.parse(dataConverted)[1].force;
 

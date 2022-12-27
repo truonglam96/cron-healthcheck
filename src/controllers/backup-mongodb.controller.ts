@@ -75,7 +75,7 @@ export class BackupMongodbController {
           var b64 = body.imageB64;
           const fs = require("fs");
           // var b64 = b64.replace(/^data:image\/png;base64,/, "");
-          let pathFile = "./public/image/'" + new Date().getTime() + "'.jpg";
+          let pathFile = './public/image/' + obj.boxId?.toString().replace(/:/gi, '_') + '_' + new Date().getTime() + '.jpg';
           fs.writeFile(
             pathFile,
             b64,
