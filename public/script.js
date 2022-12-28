@@ -1,19 +1,17 @@
 window.onload = async function () {
   generateImg();
-  drawCharts();
-  loadJson();
 };
 
 window.addEventListener("mouseup", function (e) {
   if (e.target.tagName === 'IMG') {
     let mac = e.target.alt;
-
     drawCharts(mac);
+    loadJson(mac);
   }
 });
 
-async function loadJson() {
-  let data = await getDeviceInfo("7C:DF:A1:E7:BB:A9");
+async function loadJson(macAddress) {
+  let data = await getDeviceInfo(macAddress);
   const json = document.getElementById("json");
   json.innerHTML = data;
 }
@@ -42,10 +40,10 @@ function generateImg() {
         img.src = element.toString();
         img.alt = mac;
         var h6 = document.createElement("h6");
-        h6.innerText = element.toString();
+        h6.innerText = mac;
         var span = document.createElement("span");
         span.appendChild(img);
-        span.appendChild(h6);
+        // span.appendChild(h6);
         panel.appendChild(span);
       }
     })
@@ -73,7 +71,7 @@ function drawCharts(macAddress) {
 
     let arrGyro = [],
       arrAcc = [];
-    let indexIMU = 1 / 461;
+    let indexIMU = 1 / 416;
     for (let index = 0; index < imuData.length; index++) {
       const element = imuData[index];
       arrGyro.push([
@@ -88,7 +86,7 @@ function drawCharts(macAddress) {
         element[4],
         element[5],
       ]);
-      indexIMU += 1 / 461;
+      indexIMU += 1 / 416;
     }
 
     var dataIMUGyroscope = new google.visualization.DataTable();
@@ -100,7 +98,7 @@ function drawCharts(macAddress) {
     var optionsIMUGyroscope = {
       chart: {
         title: "Gyroscope",
-        subtitle: "1/461s",
+        subtitle: "1/416s",
       },
       width: width,
       height: height,
@@ -123,7 +121,7 @@ function drawCharts(macAddress) {
     var optionsForce = {
       chart: {
         title: "Accelerometer",
-        subtitle: "1/461s",
+        subtitle: "1/416s",
       },
       width: width,
       height: height,
