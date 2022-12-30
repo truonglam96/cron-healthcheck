@@ -4,17 +4,17 @@ window.onload = async function () {
 
 window.addEventListener("mouseup", function (e) {
   if (e.target.tagName === 'IMG') {
-    let mac = e.target.alt;
+    let id = e.target.alt;
     let src = e.target.src;
     loadImgCanvas(src)
-    drawCharts(mac);
-    loadJson(mac);
+    drawCharts(id);
+    loadJson(id);
   }
 });
 
-async function loadJson(macAddress) {
-  let data = await getDeviceInfo(macAddress);
-  const json = document.getElementById("pree");
+async function loadJson(id) {
+  let data = await getDeviceInfo(id);
+  const json = document.getElementById("json");
   json.innerHTML = data;
   // const pre = document.createElement('pre');
   // pre.style = "width: 500px; overflow-x: scroll; font-size: 12px;"
@@ -42,14 +42,19 @@ function generateImg() {
       let array = JSON.parse(result);
       for (let index = 0; index < array.length; index++) {
         const element = array[index];
-        let mac = element.split('\\').pop().replace('.jpg','');
+        let splF = element.split('\\').pop().replace('.jpg','');
+        //34:34:34:34:34:34_16907374_63aeb89ef11d100618df8317
+
+        let id = splF.split('_').pop();
+        let mac = splF.replace('_' + id, '');
+         
         let remove = '_'+mac.split('_').pop();
         mac = mac.replace(remove, '');
         mac = mac.replace(/_/gi, ':');
 
         var img = document.createElement("img");
         img.src = element.toString();
-        img.alt = mac;
+        img.alt = id;
         var h6 = document.createElement("h6");
         h6.innerText = mac;
         var span = document.createElement("span");
@@ -61,15 +66,14 @@ function generateImg() {
     .catch((error) => console.log("error", error));
 }
 
-function drawCharts(macAddress) {
+function drawCharts(id) {
   google.charts.load("current", { packages: ["line"] });
   google.charts.setOnLoadCallback(drawChart);
   let width = 600;
   let height = 300;
 
   async function drawChart() {
-    //"7C:DF:A1:E7:BB:A9"
-    let dataConverted = await convertData(macAddress);
+    let dataConverted = await convertData(id);
     let imuData = JSON.parse(dataConverted)[0].imu;
     let forceData = JSON.parse(dataConverted)[1].force;
 
@@ -173,13 +177,13 @@ function drawCharts(macAddress) {
   }
 }
 
-async function convertData(macAddress) {
+async function convertData(id) {
   return await new Promise(function (resolve, reject) {
     var myHeaders = new Headers();
     myHeaders.append("accept", "application/json");
     myHeaders.append("Content-Type", "application/json");
     var raw = JSON.stringify({
-      macAddress: macAddress,
+      id: id,
     });
 
     var requestOptions = {
@@ -189,7 +193,9 @@ async function convertData(macAddress) {
       redirect: "follow",
     };
 
+    // fetch("http://[::1]:3000/convert-force-imu", requestOptions)
     fetch("http://35.240.171.212:3000/convert-force-imu", requestOptions)
+
       .then((response) => response.text())
       .then((result) => {
         resolve(result);
@@ -198,7 +204,7 @@ async function convertData(macAddress) {
   });
 }
 
-async function getDeviceInfo(macAddress) {
+async function getDeviceInfo(id) {
   return await new Promise(function (resolve, reject) {
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
@@ -209,11 +215,9 @@ async function getDeviceInfo(macAddress) {
     redirect: "follow",
   };
 
-  fetch(
-    "http://35.240.171.212:3000/get-info-device?macAddress=" + macAddress,
-    requestOptions
-  )
-    .then((response) => response.text())
+  // fetch( "http://[::1]:3000/DrinkMoments/" + id, requestOptions )
+  fetch( "http://35.240.171.212:3000/DrinkMoments/" + id, requestOptions )
+  .then((response) => response.text())
     .then((result) => resolve(result))
     .catch((error) => console.log("error", error));
   });

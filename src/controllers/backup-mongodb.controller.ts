@@ -30,6 +30,21 @@ export class BackupMongodbController {
     @repository(DrinkMomentsRepository) private drinkMomentsRepository : DrinkMomentsRepository,
   ) {}
 
+  @get('/DrinkMoments/{id}')
+  @response(200, {
+    description: 'DrinkMoments model instance',
+    content: {
+      'application/json': {
+        schema: getModelSchemaRef(DrinkMoments, {includeRelations: true}),
+      },
+    },
+  })
+  async findById(
+    @param.path.string('id') id: string
+  ): Promise<DrinkMoments> {
+    return this.drinkMomentsRepository.findById(id);
+  }
+
   @get("/get_img")
   @response(200, {})
   async getLink(): Promise<any> {
@@ -78,7 +93,7 @@ export class BackupMongodbController {
       obj.imageB64 = body.imageB64? body.imageB64:'';
       obj.imu = body.imu? body.imu:'';
       obj.force = body.force? body.force:'';
-      let aa = await this.drinkMomentsRepository.create(obj);
+      let drinkMomentNew = await this.drinkMomentsRepository.create(obj);
 
 
       if(obj.imageB64 != ""){
@@ -86,7 +101,7 @@ export class BackupMongodbController {
           var b64 = body.imageB64;
           const fs = require("fs");
           // var b64 = b64.replace(/^data:image\/png;base64,/, "");
-          let pathFile = './public/image/' + obj.boxId?.toString().replace(/:/gi, '_') + '_' + new Date().getTime() + '.jpg';
+          let pathFile = './public/image/' + obj.boxId?.toString().replace(/:/gi, '_') + '_' + new Date().getTime() + '_' + drinkMomentNew._id.toString() + '.jpg';
           fs.writeFile(
             pathFile,
             b64,
@@ -190,9 +205,10 @@ export class BackupMongodbController {
     @requestBody() body: any 
   ): Promise<{}> {
     let response: any = [];
-    if(!body.macAddress) return {error: 'macAddress not null'}
+    // if(!body.macAddress) return {error: 'macAddress not null'}
 
-    let res = await this.drinkMomentsRepository.findOne({where: {boxId: body.macAddress}});
+    // let res = await this.drinkMomentsRepository.findOne({where: {boxId: body.macAddress}, order: ['createdDate DESC']});
+    let res = await this.drinkMomentsRepository.findById(body.id);
     if(res){
       let dataIMU: any, dataForce: any
       
