@@ -29,6 +29,17 @@ export class BackupMongodbController {
     @inject(RestBindings.Http.REQUEST) private request: Request,
     @repository(DrinkMomentsRepository) private drinkMomentsRepository : DrinkMomentsRepository,
   ) {}
+
+  @get("/get_img")
+  @response(200, {})
+  async getLink(): Promise<any> {
+    var files = require("fs").readdirSync("./public/image/");
+    let arr = [];
+    for (const iterator of files) {
+      arr.unshift("image\\" + iterator);
+    }
+    return arr;
+  }
   
   //Receive payload from opener
   @post("/box_comming")
