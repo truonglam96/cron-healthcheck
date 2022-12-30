@@ -5,6 +5,8 @@ window.onload = async function () {
 window.addEventListener("mouseup", function (e) {
   if (e.target.tagName === 'IMG') {
     let mac = e.target.alt;
+    let src = e.target.src;
+    loadImgCanvas(src)
     drawCharts(mac);
     loadJson(mac);
   }
@@ -12,8 +14,17 @@ window.addEventListener("mouseup", function (e) {
 
 async function loadJson(macAddress) {
   let data = await getDeviceInfo(macAddress);
-  const json = document.getElementById("json");
+  const json = document.getElementById("pree");
   json.innerHTML = data;
+  // const pre = document.createElement('pre');
+  // pre.style = "width: 500px; overflow-x: scroll; font-size: 12px;"
+  // pre.innerText = data;
+  // json.appendChild(pre);
+}
+
+function loadImgCanvas(src){
+  var img = document.getElementById('imgElement');
+  img.src = src;
 }
 
 function generateImg() {

@@ -52,23 +52,33 @@
         ></button>
       </div>
       <div class="offcanvas-body">
+        <div>
+          <img id="imgElement" />
+        </div>
         <div class="panel_chart">
           <div class="chart" id="linechartIMUAccelerometer"></div>
           <div class="chart" id="linechartIMUGyroscope"></div>
           <div class="chart" id="linechartForce"></div>
-          <div style="display: block">
-            <p id="json"></p>
+
+          <div id="json" style="display: block">
+            <pre
+              id="pree"
+              _ngcontent-bxv-c16=""
+              style="width: 500px; overflow-x: scroll; font-size: 12px"
+              class="ng-star-inserted"
+            ></pre
+            >
           </div>
         </div>
       </div>
     </div>
 
-    <br>
+    <br />
     <h1>Drink moments</h1>
-    <hr>
-    <br>
-    <br>
-    <br>
+    <hr />
+    <br />
+    <br />
+    <br />
     <div id="panel" data-bs-toggle="offcanvas" data-bs-target="#demo"></div>
 
     <script
