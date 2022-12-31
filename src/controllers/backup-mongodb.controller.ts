@@ -51,7 +51,8 @@ export class BackupMongodbController {
     var files = require("fs").readdirSync("./public/image/");
     let arr = [];
     for (const iterator of files) {
-      arr.unshift("image\\" + iterator);
+      arr.push("image\\" + iterator);
+      // arr.unshift("image\\" + iterator);
     }
     return arr;
   }
