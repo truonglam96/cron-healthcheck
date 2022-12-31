@@ -66,6 +66,7 @@
     "googleapis": "^105.0.0",
     "http-status-codes": "^2.2.0",
     "loopback-connector-mongodb": "^6.2.0",
+    "node-cmd": "^5.0.0",
     "request": "^2.88.2",
     "tslib": "^2.0.0"
   },
