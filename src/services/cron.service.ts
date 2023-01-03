@@ -1,138 +1,124 @@
-// import { injectable, /* inject, */ BindingScope, inject } from '@loopback/core';
-// import { CronJob, cronJob } from '@loopback/cron';
+import { injectable, /* inject, */ BindingScope, inject } from '@loopback/core';
+import { CronJob, cronJob } from '@loopback/cron';
 // import { repository, Where } from '@loopback/repository';
 // import { stringify } from 'querystring';
 // import { certificateinfos } from '../models';
 // import { CertificateinfosRepository, QctoolfactoryconfigurationsRepository } from '../repositories';
 // import { Convertdata2JsonService } from './convertdata-2-json.service';
-// import { GoogleapisService } from './googleapis.service';
-// import { TelegramService } from './telegram.service';
+import { GoogleapisService } from './googleapis.service';
+import { TelegramService } from './telegram.service';
 
 // let flagUpdated = false
 // let nameFile: any
-// @cronJob()
-// export class CronService extends CronJob {
-//   constructor(
-//     @inject('services.TelegramService') private telegramService: TelegramService,
-//     @inject('services.GoogleapisService') private googleapisService: GoogleapisService,
-//     @inject('services.Convertdata2JsonService') private convertData2JsonService: Convertdata2JsonService,
-//     @repository(CertificateinfosRepository) public certificateinfosRepository: CertificateinfosRepository,
-//     @repository(QctoolfactoryconfigurationsRepository) public qctoolfactoryconfigurationsRepository: QctoolfactoryconfigurationsRepository,
-//   ) {
-//     super({
-//       name: 'Process check health !!!',
-//       onTick: async () => {
-//         console.log('Cron is running...' + await this.formatDate(new Date(await this.timeFormat(7))));
-//         await this.runningProcess();
-//       },
-//       // cronTime: '*/1 * * * * *',  //every 1s 
-//       cronTime: '*/2 * * * * ', // every 2 minutes
-//       start: true, // Chạy ngay lập tức
-//       onComplete: async () => {
-//         this.telegramService.sendMessageToChannel("Service cronjob is STOPED !!!" + this.formatDate(new Date(await this.timeFormat(7))));
-//         console.log(this.name + " Stop")
-//       }
-//     });
-//   }
+@cronJob()
+export class CronService extends CronJob {
+  constructor(
+    @inject('services.TelegramService') private telegramService: TelegramService,
+    @inject('services.GoogleapisService') private googleapisService: GoogleapisService,
+  ) {
+    super({
+      name: 'Process check health !!!',
+      onTick: async () => {
+        console.log('Cron is running...' + await this.formatDate(new Date(await this.timeFormat(7))));
+        await this.runningProcess();
+      },
+    //   cronTime: '*/1 * * * * *',  //every 1s 
+      cronTime: '*/2 * * * * ', // every 2 minutes
+      start: true, // Chạy ngay lập tức
+      onComplete: async () => {
+        this.telegramService.sendMessageToChannel("Service cronjob is STOPED !!!" + this.formatDate(new Date(await this.timeFormat(7))));
+        console.log(this.name + " Stop")
+      }
+    });
+  }
 
-//   async runningProcess() {
-//     try {
-//       let dataConfig: any = await this.getCertificateName_Using();
-//       nameFile = dataConfig[0].certificateFiles.filter((item: any) => item.inUsing == true);
-//       let count: any = await this.countCertificateinfos({
-//         certificateFileName: nameFile[0].fileName,
-//         isAllocated: false
-//       });
+  async runningProcess() {
+    try {
+        var axios = require('axios');
 
-//       //Check certificate file exists
-//       console.log('Available Certificate: ' + count.count);
-//       if (count.count <= 50) {
-//         this.telegramService.sendMessageToChannel("{\n\t\t\tAvailable Certificate: " + count.count + ", \n\t\t\tfile name: [" + nameFile[0].fileName + "]\n}");
-//       }
+        var config = {
+          method: 'get',
+          url: 'http://35.240.171.212:3000/ping',
+          headers: { }
+        };
+        
+        axios(config)
+        .then(function (response: any) {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(function (error: any) {
+          console.log(error);
+        });
+    } catch (error) {
+      this.telegramService.sendMessageToChannel("Exception in Cron-Check-Process: \n{\n\t\t\tname: " + error.name + ", \n\t\t\terror: " + error.message + ", \n\t\t\tdate: " + this.formatDate(new Date(await this.timeFormat(7))) + "\n}");
+    }
+  }
 
-//       //Set week number for production code
-//       if (await this.timeStartUpdateWeek()) {
-//         this.setWeekProd();
-//       }
-
-//       //Backup mongoDb to google drive (Convert to JSON file)
-//       if (await this.timeStartBackupDB() && !flagUpdated) {
-//         this.backupStart();
-//       }
-
-//       //
-//       //
-//       //
-//     } catch (error) {
-//       this.telegramService.sendMessageToChannel("Exception in Cron-Check-Process: \n{\n\t\t\tname: " + error.name + ", \n\t\t\terror: " + error.message + ", \n\t\t\tdate: " + this.formatDate(new Date(await this.timeFormat(7))) + "\n}");
-//     }
-//   }
-
-// async stringToDate (dateString: any) {
-//     return new Date(dateString);
-// }
+async stringToDate (dateString: any) {
+    return new Date(dateString);
+}
 
 //   async backupStart() {
-//     // var fs = require('fs');
-//     // var _ = require('lodash');
-//     // var exec = require('child_process').exec;
-//     // var dbOptions = {
-//     //   user: '',
-//     //   pass: '',
-//     //   host: 'localhost',
-//     //   port: 27017,
-//     //   database: 'QC-Tool_SBO25',
-//     //   autoBackup: true,
-//     //   removeOldBackup: true,
-//     //   keepLastDaysBackup: 2,
-//     //   autoBackupPath: '<serverPath>' // i.e. /var/database-backup/
-//     // };
+    // var fs = require('fs');
+    // var _ = require('lodash');
+    // var exec = require('child_process').exec;
+    // var dbOptions = {
+    //   user: '',
+    //   pass: '',
+    //   host: 'localhost',
+    //   port: 27017,
+    //   database: 'QC-Tool_SBO25',
+    //   autoBackup: true,
+    //   removeOldBackup: true,
+    //   keepLastDaysBackup: 2,
+    //   autoBackupPath: '<serverPath>' // i.e. /var/database-backup/
+    // };
 
-//     // // check for auto backup is enabled or disabled
-//     // if (dbOptions.autoBackup == true) {
-//     //   var date = new Date();
-//     //   var beforeDate: any 
-//     //   var oldBackupDir: any
-//     //   var oldBackupPath: any
-//     //   var currentDate = this.stringToDate(date); // Current date
-//     //   var newBackupDir = (await currentDate).getFullYear() + '-' + ((await currentDate).getMonth() + 1) + '-' + (await currentDate).getDate();
-//     //   var newBackupPath = dbOptions.autoBackupPath + 'mongodump-' + newBackupDir; // New backup path for current backup process
-//     //   // check for remove old backup after keeping # of days given in configuration
-//     //   if (dbOptions.removeOldBackup == true) {
-//     //     beforeDate = new Date();
-//     //     beforeDate.setDate(beforeDate.getDate() - dbOptions.keepLastDaysBackup); // Substract number of days to keep backup and remove old backup
-//     //     oldBackupDir = beforeDate.getFullYear() + '-' + (beforeDate.getMonth() + 1) + '-' + beforeDate.getDate();
-//     //     oldBackupPath = dbOptions.autoBackupPath + 'mongodump-' + oldBackupDir; // old backup(after keeping # of days)
-//     //   }
-//     //   var cmd = 'mongodump --host ' + dbOptions.host + ' --port ' + dbOptions.port + ' --db ' + dbOptions.database + ' --username ' + dbOptions.user + ' --password ' + dbOptions.pass + ' --out ' + newBackupPath; // Command for mongodb dump process
-//     //   exec(cmd,  (error: any, stdout: any, stderr: any) => {
-//     //     if (!error) {
-//     //       // check for remove old backup after keeping # of days given in configuration
-//     //       if (dbOptions.removeOldBackup == true) {
-//     //         if (fs.existsSync(oldBackupPath)) {
-//     //           exec("rm -rf " + oldBackupPath, function (err: any) { });
-//     //         }
-//     //       }
-//     //     }
-//     //   })
-//     //   .then(() => {
-//     //     console.log('Backup completed');
-//     //   })
-//     //   .catch((err: any) => {
-//     //     console.log(err);
-//     //   });
-//     // }
+    // // check for auto backup is enabled or disabled
+    // if (dbOptions.autoBackup == true) {
+    //   var date = new Date();
+    //   var beforeDate: any 
+    //   var oldBackupDir: any
+    //   var oldBackupPath: any
+    //   var currentDate = this.stringToDate(date); // Current date
+    //   var newBackupDir = (await currentDate).getFullYear() + '-' + ((await currentDate).getMonth() + 1) + '-' + (await currentDate).getDate();
+    //   var newBackupPath = dbOptions.autoBackupPath + 'mongodump-' + newBackupDir; // New backup path for current backup process
+    //   // check for remove old backup after keeping # of days given in configuration
+    //   if (dbOptions.removeOldBackup == true) {
+    //     beforeDate = new Date();
+    //     beforeDate.setDate(beforeDate.getDate() - dbOptions.keepLastDaysBackup); // Substract number of days to keep backup and remove old backup
+    //     oldBackupDir = beforeDate.getFullYear() + '-' + (beforeDate.getMonth() + 1) + '-' + beforeDate.getDate();
+    //     oldBackupPath = dbOptions.autoBackupPath + 'mongodump-' + oldBackupDir; // old backup(after keeping # of days)
+    //   }
+    //   var cmd = 'mongodump --host ' + dbOptions.host + ' --port ' + dbOptions.port + ' --db ' + dbOptions.database + ' --username ' + dbOptions.user + ' --password ' + dbOptions.pass + ' --out ' + newBackupPath; // Command for mongodb dump process
+    //   exec(cmd,  (error: any, stdout: any, stderr: any) => {
+    //     if (!error) {
+    //       // check for remove old backup after keeping # of days given in configuration
+    //       if (dbOptions.removeOldBackup == true) {
+    //         if (fs.existsSync(oldBackupPath)) {
+    //           exec("rm -rf " + oldBackupPath, function (err: any) { });
+    //         }
+    //       }
+    //     }
+    //   })
+    //   .then(() => {
+    //     console.log('Backup completed');
+    //   })
+    //   .catch((err: any) => {
+    //     console.log(err);
+    //   });
+    // }
 
 
-//     try {
-//       let currentDate = (new Date().getFullYear()) + "-" + ((new Date().getMonth() + 1).toString().length == 1 ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth())) + "-" + (new Date().getDate().toString().length == 1 ? '0' + new Date().getDate() : new Date().getDate()) + ('T00:00:00.000+00:00');
-//       let file = await this.convertData2JsonService.convertData2Json(currentDate, nameFile[0].fileName);
-//       this.googleapisService.uploadFile(file.path)
-//       this.telegramService.sendMessageToChannel("Backup mongoDB today completed 🎉🎉🎉 \n{\n\t\t\tfilename: " + file.path.replace('./src/temple_folder/backup_mongodb/', '') + ",\n\t\t\tdate: " + this.formatDate(new Date(await this.timeFormat(7))) + "\n}");
-//       flagUpdated = true
-//     } catch (error) {
-//       this.telegramService.sendMessageToChannel("Exception in Backup mongoDB: \n{\n\t\t\tname: " + error.name + ", \n\t\t\terror: " + error.message + ", \n\t\t\tdate: " + await this.formatDate(new Date(await this.timeFormat(7))) + "\n}");
-//     }
+    // try {
+    //   let currentDate = (new Date().getFullYear()) + "-" + ((new Date().getMonth() + 1).toString().length == 1 ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth())) + "-" + (new Date().getDate().toString().length == 1 ? '0' + new Date().getDate() : new Date().getDate()) + ('T00:00:00.000+00:00');
+    //   let file = await this.convertData2JsonService.convertData2Json(currentDate, nameFile[0].fileName);
+    //   this.googleapisService.uploadFile(file.path)
+    //   this.telegramService.sendMessageToChannel("Backup mongoDB today completed 🎉🎉🎉 \n{\n\t\t\tfilename: " + file.path.replace('./src/temple_folder/backup_mongodb/', '') + ",\n\t\t\tdate: " + this.formatDate(new Date(await this.timeFormat(7))) + "\n}");
+    //   flagUpdated = true
+    // } catch (error) {
+    //   this.telegramService.sendMessageToChannel("Exception in Backup mongoDB: \n{\n\t\t\tname: " + error.name + ", \n\t\t\terror: " + error.message + ", \n\t\t\tdate: " + await this.formatDate(new Date(await this.timeFormat(7))) + "\n}");
+    // }
 //   }
 
 
@@ -171,9 +157,9 @@
 //     return [d.getUTCFullYear(), weekNo];
 //   }
 
-//   async timeFormat(num: any) {
-//     return new Date().setHours(new Date().getHours() + num)
-//   }
+  async timeFormat(num: any) {
+    return new Date().setHours(new Date().getHours() + num)
+  }
 
 //   async timeStartUpdateWeek() {
 //     const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -207,7 +193,7 @@
 //     }
 //   }
 
-//   async formatDate(date: any) {
-//     return new Date(date).toLocaleDateString('en-GB', { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" })
-//   }
-// }
+  async formatDate(date: any) {
+    return new Date(date).toLocaleDateString('en-GB', { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" })
+  }
+}

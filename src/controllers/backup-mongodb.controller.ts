@@ -248,9 +248,11 @@ export class BackupMongodbController {
   }
 }
 
+//This is a JavaScript function that appears to be converting some data stored in a base64 encoded string, b64, into an array of data points.
 function convertIMU(b64: any) {
   var data = b64;
   var data_points = [];
+  //The idx_name_dict object is a dictionary that maps indices to names for the data in b64.
   var idx_name_dict: any = {
     0: "gyro_x",
     2: "gyro_y",
@@ -259,21 +261,18 @@ function convertIMU(b64: any) {
     8: "acc_y",
     10: "acc_z",
   };
+  
+  //The outer for loop iterates over b64 in increments of 12, and the inner for loop iterates over each increment in increments of 2. At each iteration, the value of b64 at the current index is read as a little-endian 16-bit integer using the readInt16LE() method, and this value is added to an array called pointArr.
   for (var i = 0; i < data.length; i += 12) {
     var pointArr: any = [];
     for (var j = 0; j < 12; j += 2) {
       var idx_start = i + j;
       var v = data.readInt16LE(idx_start);
-      // let rangeName = {
-      //   idx_name_dict[j] : v
-      // }
       pointArr.push(v);
     }
     data_points.push(pointArr);
-    // var val = JSON.stringify(pointArr);
-    // val = val.replace("'", '"');
-    // console.log(val + ",");
   }
+  //After both loops have completed, pointArr is added to an array called data_points and the function returns this array.
   return data_points;
 }
 

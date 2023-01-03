@@ -1,8 +1,10 @@
-import { Middleware, HttpErrors } from "@loopback/rest";
+import { Middleware, HttpErrors, MiddlewareSequence, RequestContext, requestBody } from "@loopback/rest";
 import * as dotenv from "dotenv";
+import { appendFile } from "fs";
 dotenv.config();
 
 export const log: Middleware = async (middlewareCtx, next) => {
+  
   const { request } = middlewareCtx;
   try {
     let data = {
@@ -12,7 +14,7 @@ export const log: Middleware = async (middlewareCtx, next) => {
       url: request.url,
     };
     console.log(data);
-
+    
     // Process response
     return await next();
   } catch (err: any) {

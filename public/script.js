@@ -1,12 +1,15 @@
+// const URL_PATH = "http://[::1]:3000";
+const URL_PATH = 'http://35.240.171.212:3000';
+
 window.onload = async function () {
-  generateImg();
+  generateImgB64(0, 40);
 };
 
 window.addEventListener("mouseup", function (e) {
-  if (e.target.tagName === 'IMG') {
+  if (e.target.tagName === "IMG") {
     let id = e.target.alt;
     let src = e.target.src;
-    loadImgCanvas(src)
+    loadImgCanvas(src);
     drawCharts(id);
     loadJson(id);
   }
@@ -22,9 +25,56 @@ async function loadJson(id) {
   // json.appendChild(pre);
 }
 
-function loadImgCanvas(src){
-  var img = document.getElementById('imgElement');
+function loadImgCanvas(src) {
+  var img = document.getElementById("imgElement");
   img.src = src;
+}
+
+function generateImgB64(skip, limit) {
+  let filter = {
+    limit: limit,
+    skip: skip,
+    where: {
+      serialNr: { neq: "TEST" },
+    },
+    order: 'createdDate DESC',
+    fields: {
+      _id: true,
+      boxId: true,
+      createdDate: true,
+      imageB64: true,
+    },
+  };
+
+  var myHeaders = new Headers();
+  myHeaders.append("accept", "application/json");
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  fetch(URL_PATH + "/DrinkMoments?filter=" + JSON.stringify(filter), requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      const panel = document.getElementById("panel");
+      const newRow = document.createElement("tr");
+      let array = JSON.parse(result);
+      for (let index = 0; index < array.length; index++) {
+        const element = array[index];
+        var img = document.createElement("img");
+        img.src = "data:image/png;base64," + element.imageB64.toString();
+        img.alt = element._id.toString();
+        var h6 = document.createElement("h6");
+        h6.innerText = element.boxId.toString();
+        var span = document.createElement("span");
+        span.appendChild(img);
+        // span.appendChild(h6);
+        panel.appendChild(span);
+      }
+    })
+    .catch((error) => console.log("error", error));
 }
 
 function generateImg() {
@@ -34,23 +84,22 @@ function generateImg() {
     redirect: "follow",
   };
 
-  // fetch("http://[::1]:3000/get_img", requestOptions)
-    fetch("http://35.240.171.212:3000/get_img", requestOptions)
+  fetch(URL_PATH + "/get_img", requestOptions)
     .then((response) => response.text())
     .then((result) => {
       const newRow = document.createElement("tr");
       let array = JSON.parse(result);
       for (let index = 0; index < array.length; index++) {
         const element = array[index];
-        let splF = element.split('\\').pop().replace('.jpg','');
+        let splF = element.split("\\").pop().replace(".jpg", "");
         //34:34:34:34:34:34_16907374_63aeb89ef11d100618df8317
 
-        let id = splF.split('_').pop();
-        let mac = splF.replace('_' + id, '');
-         
-        let remove = '_'+mac.split('_').pop();
-        mac = mac.replace(remove, '');
-        mac = mac.replace(/_/gi, ':');
+        let id = splF.split("_").pop();
+        let mac = splF.replace("_" + id, "");
+
+        let remove = "_" + mac.split("_").pop();
+        mac = mac.replace(remove, "");
+        mac = mac.replace(/_/gi, ":");
 
         var img = document.createElement("img");
         img.src = element.toString();
@@ -193,9 +242,7 @@ async function convertData(id) {
       redirect: "follow",
     };
 
-    // fetch("http://[::1]:3000/convert-force-imu", requestOptions)
-    fetch("http://35.240.171.212:3000/convert-force-imu", requestOptions)
-
+    fetch(URL_PATH + "/convert-force-imu", requestOptions)
       .then((response) => response.text())
       .then((result) => {
         resolve(result);
@@ -206,19 +253,18 @@ async function convertData(id) {
 
 async function getDeviceInfo(id) {
   return await new Promise(function (resolve, reject) {
-  var myHeaders = new Headers();
-  myHeaders.append("accept", "application/json");
+    var myHeaders = new Headers();
+    myHeaders.append("accept", "application/json");
 
-  var requestOptions = {
-    method: "GET",
-    headers: myHeaders,
-    redirect: "follow",
-  };
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
 
-  // fetch( "http://[::1]:3000/DrinkMoments/" + id, requestOptions )
-  fetch( "http://35.240.171.212:3000/DrinkMoments/" + id, requestOptions )
-  .then((response) => response.text())
-    .then((result) => resolve(result))
-    .catch((error) => console.log("error", error));
+    fetch(URL_PATH + "/DrinkMoments/" + id, requestOptions)
+      .then((response) => response.text())
+      .then((result) => resolve(result))
+      .catch((error) => console.log("error", error));
   });
 }
