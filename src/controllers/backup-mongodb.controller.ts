@@ -97,32 +97,43 @@ export class BackupMongodbController {
       let drinkMomentNew = await this.drinkMomentsRepository.create(obj);
 
 
-      if(obj.imageB64 != ""){
-        try {
-          var b64 = body.imageB64;
-          const fs = require("fs");
-          // var b64 = b64.replace(/^data:image\/png;base64,/, "");
-          let pathFile = './public/image/' + obj.boxId?.toString().replace(/:/gi, '_') + '_' + new Date().getTime() + '_' + drinkMomentNew._id.toString() + '.jpg';
-          fs.writeFile(
-            pathFile,
-            b64,
-            "base64",
-            function (err: any) {
-              console.log(err);
-            }
-          );
-        } catch (error) {
-          // console.log(error);
-        }
+      // if(obj.imageB64 != ""){
+      //   try {
+      //     var b64 = body.imageB64;
+      //     const fs = require("fs");
+      //     // var b64 = b64.replace(/^data:image\/png;base64,/, "");
+      //     let pathFile = './public/image/' + obj.boxId?.toString().replace(/:/gi, '_') + '_' + new Date().getTime() + '_' + drinkMomentNew._id.toString() + '.jpg';
+      //     fs.writeFile(
+      //       pathFile,
+      //       b64,
+      //       "base64",
+      //       function (err: any) {
+      //         console.log(err);
+      //       }
+      //     );
+      //   } catch (error) {
+      //     // console.log(error);
+      //   }
+      // }
+      if(obj.imageB64 === ""){
+        return {
+          result: "failed",
+          brand: "test",
+          doReset: false,
+          doUpdate: false,
+          fwUrl: "",
+          image: "",
+          timeUTC: new Date().getTime(),
+        };
       }
     
     return {
+      result: "success",
       brand: "test",
       doReset: false,
       doUpdate: false,
       fwUrl: "",
       image: "",
-      result: "success",
       timeUTC: new Date().getTime(),
     };
   }
