@@ -39,46 +39,48 @@ function search() {
   }
 }
 
-async function countAll() {
-  return await new Promise(function (resolve, reject) {
-    var myHeaders = new Headers();
-    myHeaders.append("accept", "application/json");
+function countAll() {
+  var myHeaders = new Headers();
+  myHeaders.append("accept", "application/json");
 
-    var requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-      redirect: "follow",
-    };
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
 
-    fetch(
-      URL_PATH + '/DrinkMoments/count?where={"serialNr": { "neq": "TEST" }}',
-      requestOptions
-    )
-      .then((response) => response.text())
-      .then((result) => resolve(result))
-      .catch((error) => console.log("error", error));
-  });
+  fetch(
+    URL_PATH + '/DrinkMoments/count?where={"serialNr": { "neq": "TEST" }}',
+    requestOptions
+  )
+    .then((response) => response.text())
+    .then((result) => {
+      document.getElementById("totalDrinkMoments").innerHTML =
+        "Total all: " + JSON.parse(result).count;
+    })
+    .catch((error) => console.log("error", error));
 }
 
-async function countFilter(filter) {
-  return await new Promise(function (resolve, reject) {
-    var myHeaders = new Headers();
-    myHeaders.append("accept", "application/json");
+function countFilter(filter) {
+  var myHeaders = new Headers();
+  myHeaders.append("accept", "application/json");
 
-    var requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-      redirect: "follow",
-    };
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
 
-    fetch(URL_PATH + "/DrinkMoments/count?where=" + filter, requestOptions)
-      .then((response) => response.text())
-      .then((result) => resolve(result))
-      .catch((error) => console.log("error", error));
-  });
+  fetch(URL_PATH + "/DrinkMoments/count?where=" + filter, requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      document.getElementById("label_CountFilter").innerHTML =
+        "Result filter: " + JSON.parse(result).count;
+    })
+    .catch((error) => console.log("error", error));
 }
 
-async function generateImgB64() {
+function generateImgB64() {
   let tagIndex = document.getElementById("indexNextPage");
   let indexNextPage = tagIndex.innerHTML;
   let indexParser = parseInt(indexNextPage);
@@ -115,13 +117,8 @@ async function generateImgB64() {
   indexParser += 60;
   tagIndex.innerHTML = indexParser;
 
-  let _countAll = await countAll();
-  document.getElementById("totalDrinkMoments").innerHTML =
-    "Total all: " + JSON.parse(_countAll).count;
-
-  let _countFilter = await countFilter(JSON.stringify(_where));
-  document.getElementById("label_CountFilter").innerHTML =
-    "Result filter: " + JSON.parse(_countFilter).count;
+  countAll();
+  countFilter(JSON.stringify(_where));
 
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
