@@ -31,6 +31,12 @@ function search() {
   let tagIndex = document.getElementById("indexNextPage");
   tagIndex.innerHTML = "0";
   generateImgB64();
+  let tagMacId = document.getElementById("input_MacId");
+  if (tagMacId.value !== "") {
+    document.getElementById("label_CountFilter").style.display = "block";
+  } else {
+    document.getElementById("label_CountFilter").style.display = "none";
+  }
 }
 
 async function countAll() {
@@ -45,7 +51,7 @@ async function countAll() {
     };
 
     fetch(
-      URL_PATH + "/DrinkMoments/count?where={\"serialNr\": { \"neq\": \"TEST\" }}",
+      URL_PATH + '/DrinkMoments/count?where={"serialNr": { "neq": "TEST" }}',
       requestOptions
     )
       .then((response) => response.text())
@@ -65,10 +71,7 @@ async function countFilter(filter) {
       redirect: "follow",
     };
 
-    fetch(
-      URL_PATH + "/DrinkMoments/count?where=" + filter,
-      requestOptions
-    )
+    fetch(URL_PATH + "/DrinkMoments/count?where=" + filter, requestOptions)
       .then((response) => response.text())
       .then((result) => resolve(result))
       .catch((error) => console.log("error", error));
@@ -113,10 +116,12 @@ async function generateImgB64() {
   tagIndex.innerHTML = indexParser;
 
   let _countAll = await countAll();
-  document.getElementById('totalDrinkMoments').innerHTML = "Total all: " + JSON.parse(_countAll).count;
+  document.getElementById("totalDrinkMoments").innerHTML =
+    "Total all: " + JSON.parse(_countAll).count;
 
   let _countFilter = await countFilter(JSON.stringify(_where));
-  document.getElementById('label_CountFilter').innerHTML = "Result filter: " + JSON.parse(_countFilter).count;
+  document.getElementById("label_CountFilter").innerHTML =
+    "Result filter: " + JSON.parse(_countFilter).count;
 
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");

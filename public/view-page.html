@@ -80,6 +80,7 @@
       <h1>Drink moments</h1>
       <hr />
       <!-- Search area -->
+      
       <nav style="float: right;">
         <label for=""> MacID: </label> 
         <input type="text" id="input_MacId" value="" style="width: 15vw;"> 
@@ -88,14 +89,13 @@
         <label for=""> To: </label> 
         <input type="datetime-local" id="input_DateTo" value="" style="width: 10vw;">
         <input type="button" id="btn_Search" value="Search" onclick="search()" style="width: 100px;">
-        <br>
-        <label style="float: right;" id="label_CountFilter"></label>
       </nav>
       <br />
       <!--  -->
 
       <!-- Show image -->
       <h6 id="totalDrinkMoments"></h6>
+      <label id="label_CountFilter" style="display: none;"></label>
       <div id="panel" data-bs-toggle="offcanvas" data-bs-target="#demo"></div>
       <br>
       <!--  -->
