@@ -1,8 +1,8 @@
 // const URL_PATH = "http://[::1]:3000";
-const URL_PATH = 'http://35.240.171.212:3000';
+const URL_PATH = "http://35.240.171.212:3000";
 
 window.onload = async function () {
-  generateImgB64(0, 40);
+  generateImgB64();
 };
 
 window.addEventListener("mouseup", function (e) {
@@ -19,10 +19,6 @@ async function loadJson(id) {
   let data = await getDeviceInfo(id);
   const json = document.getElementById("json");
   json.innerHTML = data;
-  // const pre = document.createElement('pre');
-  // pre.style = "width: 500px; overflow-x: scroll; font-size: 12px;"
-  // pre.innerText = data;
-  // json.appendChild(pre);
 }
 
 function loadImgCanvas(src) {
@@ -30,14 +26,82 @@ function loadImgCanvas(src) {
   img.src = src;
 }
 
-function generateImgB64(skip, limit) {
+function search() {
+  document.getElementById("panel").innerHTML = "";
+  let tagIndex = document.getElementById("indexNextPage");
+  tagIndex.innerHTML = "0";
+  generateImgB64();
+}
+
+async function countAll() {
+  return await new Promise(function (resolve, reject) {
+    var myHeaders = new Headers();
+    myHeaders.append("accept", "application/json");
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(
+      URL_PATH + "/DrinkMoments/count?where={\"serialNr\": { \"neq\": \"TEST\" }}",
+      requestOptions
+    )
+      .then((response) => response.text())
+      .then((result) => resolve(result))
+      .catch((error) => console.log("error", error));
+  });
+}
+
+async function countFilter(filter) {
+  return await new Promise(function (resolve, reject) {
+    var myHeaders = new Headers();
+    myHeaders.append("accept", "application/json");
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(
+      URL_PATH + "/DrinkMoments/count?where=" + filter,
+      requestOptions
+    )
+      .then((response) => response.text())
+      .then((result) => resolve(result))
+      .catch((error) => console.log("error", error));
+  });
+}
+
+async function generateImgB64() {
+  let tagIndex = document.getElementById("indexNextPage");
+  let indexNextPage = tagIndex.innerHTML;
+  let indexParser = parseInt(indexNextPage);
+
+  let tagMacId = document.getElementById("input_MacId");
+  let tagDateFrom = document.getElementById("input_DateFrom");
+  let tagDateTo = document.getElementById("input_DateTo");
+
+  let _where = { serialNr: { neq: "TEST" } };
+
+  if (tagMacId.value !== "") {
+    _where["boxId"] = tagMacId.value.toString();
+  }
+
+  if (tagDateFrom.value !== "" && tagDateTo.value !== "") {
+    _where["and"] = [
+      { createdDate: { gte: new Date(tagDateFrom.value) } },
+      { createdDate: { lte: new Date(tagDateTo.value) } },
+    ];
+  }
+
   let filter = {
-    limit: limit,
-    skip: skip,
-    where: {
-      serialNr: { neq: "TEST" },
-    },
-    order: 'createdDate DESC',
+    limit: 60,
+    skip: indexParser,
+    where: _where,
+    order: "createdDate DESC",
     fields: {
       _id: true,
       boxId: true,
@@ -45,6 +109,14 @@ function generateImgB64(skip, limit) {
       imageB64: true,
     },
   };
+  indexParser += 60;
+  tagIndex.innerHTML = indexParser;
+
+  let _countAll = await countAll();
+  document.getElementById('totalDrinkMoments').innerHTML = "Total all: " + JSON.parse(_countAll).count;
+
+  let _countFilter = await countFilter(JSON.stringify(_where));
+  document.getElementById('label_CountFilter').innerHTML = "Result filter: " + JSON.parse(_countFilter).count;
 
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
@@ -55,7 +127,10 @@ function generateImgB64(skip, limit) {
     redirect: "follow",
   };
 
-  fetch(URL_PATH + "/DrinkMoments?filter=" + JSON.stringify(filter), requestOptions)
+  fetch(
+    URL_PATH + "/DrinkMoments?filter=" + JSON.stringify(filter),
+    requestOptions
+  )
     .then((response) => response.text())
     .then((result) => {
       const panel = document.getElementById("panel");

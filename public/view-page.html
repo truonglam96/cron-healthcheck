@@ -8,10 +8,18 @@
     <style>
       body {
         box-sizing: border-box;
+
       }
+
+      .center{
+        width: 95vw;
+        margin: auto;
+      }
+
       img {
-        width: 300px;
+        width: 180px;
         margin: 2px;
+        display: inline;
       }
 
       img:hover {
@@ -42,43 +50,73 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   </head>
   <body>
-    <div class="offcanvas offcanvas-end" style="width: 650px" id="demo">
-      <div class="offcanvas-header">
-        <h1 class="offcanvas-title">Drink moment details</h1>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="offcanvas"
-        ></button>
-      </div>
-      <div class="offcanvas-body">
-        <div>
-          <img id="imgElement" />
+    <div class="center">
+      <!-- Off canvas -->
+      <div class="offcanvas offcanvas-end" style="width: 650px" id="demo">
+        <div class="offcanvas-header">
+          <h1 class="offcanvas-title">Drink moment details</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+          ></button>
         </div>
-        <div class="panel_chart">
-          <div class="chart" id="linechartIMUAccelerometer"></div>
-          <div class="chart" id="linechartIMUGyroscope"></div>
-          <div class="chart" id="linechartForce"></div>
+        <div class="offcanvas-body">
+          <div>
+            <img id="imgElement" />
+          </div>
+          <div class="panel_chart">
+            <div class="chart" id="linechartIMUAccelerometer"></div>
+            <div class="chart" id="linechartIMUGyroscope"></div>
+            <div class="chart" id="linechartForce"></div>
 
-          <div id="json" style="width: 600px"></div>
-
+            <div id="json" style="width: 600px"></div>
+          </div>
         </div>
       </div>
+      <!--  -->
+
+      <br />
+      <h1>Drink moments</h1>
+      <hr />
+      <!-- Search area -->
+      <nav style="float: right;">
+        <label for=""> MacID: </label> 
+        <input type="text" id="input_MacId" value="" style="width: 15vw;"> 
+        <label for=""> From : </label> 
+        <input type="datetime-local" id="input_DateFrom" value="" style="width: 10vw;">
+        <label for=""> To: </label> 
+        <input type="datetime-local" id="input_DateTo" value="" style="width: 10vw;">
+        <input type="button" id="btn_Search" value="Search" onclick="search()" style="width: 100px;">
+        <br>
+        <label style="float: right;" id="label_CountFilter"></label>
+      </nav>
+      <br />
+      <!--  -->
+
+      <!-- Show image -->
+      <h6 id="totalDrinkMoments"></h6>
+      <div id="panel" data-bs-toggle="offcanvas" data-bs-target="#demo"></div>
+      <br>
+      <!--  -->
+
+      <!-- Pagination -->
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+          <li class="page-item">
+            <a>Showed: </a>
+            <a id="indexNextPage">0</a> 
+            <a class="page-link" onclick="generateImgB64()"> ...Continues</a>
+          </li>
+        </ul>
+      </nav>
+      <!--  -->
+
     </div>
-
-    <br />
-    <h1>Drink moments</h1>
-    <hr />
-    <br />
-    <br />
-    <br />
-    <div id="panel" data-bs-toggle="offcanvas" data-bs-target="#demo"></div>
-
     <script
       type="text/javascript"
       src="https://www.gstatic.com/charts/loader.js"
     ></script>
-
     <script src="./script.js"></script>
   </body>
 </html>
