@@ -9,11 +9,19 @@ window.addEventListener("mouseup", function (e) {
   if (e.target.tagName === "IMG") {
     let id = e.target.alt;
     let src = e.target.src;
+    refreshTag();
     loadImgCanvas(src);
     drawCharts(id);
     loadJson(id);
   }
 });
+
+function refreshTag(){
+  document.getElementById('imgElement').src = "";
+  document.getElementById('linechartIMUAccelerometer').innerHTML = "";
+  document.getElementById('linechartIMUGyroscope').innerHTML = "";
+  document.getElementById('linechartForce').innerHTML = "";
+}
 
 async function loadJson(id) {
   let data = await getDeviceInfo(id);
@@ -344,4 +352,22 @@ async function getDeviceInfo(id) {
       .then((result) => resolve(result))
       .catch((error) => console.log("error", error));
   });
+}
+
+function uploadFW(){
+
+}
+
+function setupUploadForm() {
+  const formElem = document.getElementById('uploadForm');
+  formElem.onsubmit = async e => {
+    e.preventDefault();
+    const res = await fetch('/files', {
+      method: 'POST',
+      body: new FormData(formElem),
+    });
+    const body = await res.json();
+    console.log('Response from upload', body);
+    await fetchFiles();
+  };
 }

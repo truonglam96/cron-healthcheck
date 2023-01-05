@@ -19,6 +19,7 @@ import {
   response,
   Request,
   RestBindings,
+  Response,
 } from "@loopback/rest";
 
 import { DrinkMoments } from "../models";
@@ -115,7 +116,8 @@ export class BackupMongodbController {
       //     // console.log(error);
       //   }
       // }
-      if(obj.imageB64 === ""){
+
+      if(obj.imageB64 === "" && obj.serialNr !== "TEST"){
         return {
           result: "failed",
           brand: "test",
@@ -257,6 +259,7 @@ export class BackupMongodbController {
     data.force = '';
     return data;
   }
+
 }
 
 //This is a JavaScript function that appears to be converting some data stored in a base64 encoded string, b64, into an array of data points.

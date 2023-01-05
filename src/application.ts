@@ -14,6 +14,9 @@ import {CronComponent} from "@loopback/cron";
 import {log} from './middleware';
 import * as dotenv from 'dotenv';
 
+import multer from 'multer';
+import {FILE_UPLOAD_SERVICE, STORAGE_DIRECTORY} from './keys';
+
 
 export {ApplicationConfig};
 
@@ -54,7 +57,29 @@ export class GetUrlApplication extends BootMixin(
     // Set up Cron Jobs
     this.component(CronComponent);
     this.add(createBindingFromClass(CronService));
+
+    // Configure file upload with multer options
+    this.configureFileUpload(options.fileStorageDirectory);
   }
+
+  protected configureFileUpload(destination?: string) {
+    // Upload files to `dist/.sandbox` by default
+    // destination = destination ?? path.join(__dirname, '../.sandbox');
+    destination = destination ?? path.join(__dirname, '../.storage');
+    this.bind(STORAGE_DIRECTORY).to(destination);
+    const multerOptions: multer.Options = {
+      storage: multer.diskStorage({
+        destination,
+        // Use the original file name as is
+        filename: (req: any, file: any, cb: any) => {
+          cb(null, file.originalname);
+        },
+      }),
+    };
+    // Configure the file upload service with multer options
+    this.configure(FILE_UPLOAD_SERVICE).to(multerOptions);
+  }
+
 }
 if (process.env.BYPASS_EXITCODE !== '') {
   process.on('uncaughtException', function (err) {
