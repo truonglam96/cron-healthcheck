@@ -23,26 +23,27 @@ import {
 } from "@loopback/rest";
 
 import { DrinkMoments } from "../models";
-import { DrinkMomentsRepository } from "../repositories";
+import { DrinkMomentsRepository, OtaInfoRepository } from "../repositories";
 
 export class BackupMongodbController {
   constructor(
     @inject(RestBindings.Http.REQUEST) private request: Request,
-    @repository(DrinkMomentsRepository) private drinkMomentsRepository : DrinkMomentsRepository,
+    @repository(DrinkMomentsRepository)
+    private drinkMomentsRepository: DrinkMomentsRepository,
+    @repository(OtaInfoRepository)
+    public otaInfoRepository: OtaInfoRepository
   ) {}
 
-  @get('/DrinkMoments/{id}')
+  @get("/DrinkMoments/{id}")
   @response(200, {
-    description: 'DrinkMoments model instance',
+    description: "DrinkMoments model instance",
     content: {
-      'application/json': {
-        schema: getModelSchemaRef(DrinkMoments, {includeRelations: true}),
+      "application/json": {
+        schema: getModelSchemaRef(DrinkMoments, { includeRelations: true }),
       },
     },
   })
-  async findById(
-    @param.path.string('id') id: string
-  ): Promise<DrinkMoments> {
+  async findById(@param.path.string("id") id: string): Promise<DrinkMoments> {
     return this.drinkMomentsRepository.findById(id);
   }
 
@@ -57,7 +58,7 @@ export class BackupMongodbController {
     }
     return arr;
   }
-  
+
   //Receive payload from opener
   @post("/box_comming")
   @response(200, {
@@ -66,78 +67,99 @@ export class BackupMongodbController {
   })
   async create(@requestBody() body: any): Promise<{}> {
     console.log(body);
-      let obj = new DrinkMoments();
-      obj.firmware = body.firmware? body.firmware:'';
-      obj.boxId = body.boxId? body.boxId:'';
-      obj.deviceSerial = body.deviceSerial? body.deviceSerial:'';
-      obj.battery = body.battery? body.battery:'';
-      obj.count = body.count? body.count:'';
-      obj.deviceTime = body.deviceTime? body.deviceTime:'';
-      obj.totalAwakeTime = body.totalAwakeTime? body.totalAwakeTime:'';
-      obj.restartCount = body.restartCount? body.restartCount:'';
-      obj.connection = body.connection? body.connection:'';
-      obj.wifiConnectStart = body.wifiConnectStart? body.wifiConnectStart:'';
-      obj.wifiConnectDone = body.wifiConnectDone? body.wifiConnectDone:'';
-      obj.rssi = body.rssi? body.rssi:'';
-      obj.cameraWakeupCount = body.cameraWakeupCount? body.cameraWakeupCount:'';
-      obj.imgType = body.imgType? body.imgType:'';
-      obj.imageCaptureTime = body.imageCaptureTime? body.imageCaptureTime:'';
-      obj.captureTimeRel = body.captureTimeRel? body.captureTimeRel:'';
-      obj.successfulImageUploadCount = body.successfulImageUploadCount? body.successfulImageUploadCount:'';
-      obj.serialNr = body.serialNr? body.serialNr:'';
-      obj.uniqueID = body.uniqueID? body.uniqueID:'';
-      obj.imagesRemaining = body.imagesRemaining? body.imagesRemaining:'';
-      obj.imagesUploadedInCycle = body.imagesUploadedInCycle? body.imagesUploadedInCycle:'';
-      obj.HPI = body.HPI? body.HPI:'';
-      obj.temperature = body.temperature? body.temperature:'';
-      obj.humidity = body.humidity? body.humidity:'';
-      obj.remainingImgInfo = body.remainingImgInfo? body.remainingImgInfo:'';
-      obj.imageB64 = body.imageB64? body.imageB64:'';
-      obj.imu = body.imu? body.imu:'';
-      obj.force = body.force? body.force:'';
-      let drinkMomentNew = await this.drinkMomentsRepository.create(obj);
+    let obj = new DrinkMoments();
+    obj.firmware = body.firmware ? body.firmware : "";
+    obj.boxId = body.boxId ? body.boxId : "";
+    obj.deviceSerial = body.deviceSerial ? body.deviceSerial : "";
+    obj.battery = body.battery ? body.battery : "";
+    obj.count = body.count ? body.count : "";
+    obj.deviceTime = body.deviceTime ? body.deviceTime : "";
+    obj.totalAwakeTime = body.totalAwakeTime ? body.totalAwakeTime : "";
+    obj.restartCount = body.restartCount ? body.restartCount : "";
+    obj.connection = body.connection ? body.connection : "";
+    obj.wifiConnectStart = body.wifiConnectStart ? body.wifiConnectStart : "";
+    obj.wifiConnectDone = body.wifiConnectDone ? body.wifiConnectDone : "";
+    obj.rssi = body.rssi ? body.rssi : "";
+    obj.cameraWakeupCount = body.cameraWakeupCount
+      ? body.cameraWakeupCount
+      : "";
+    obj.imgType = body.imgType ? body.imgType : "";
+    obj.imageCaptureTime = body.imageCaptureTime ? body.imageCaptureTime : "";
+    obj.captureTimeRel = body.captureTimeRel ? body.captureTimeRel : "";
+    obj.successfulImageUploadCount = body.successfulImageUploadCount
+      ? body.successfulImageUploadCount
+      : "";
+    obj.serialNr = body.serialNr ? body.serialNr : "";
+    obj.uniqueID = body.uniqueID ? body.uniqueID : "";
+    obj.imagesRemaining = body.imagesRemaining ? body.imagesRemaining : "";
+    obj.imagesUploadedInCycle = body.imagesUploadedInCycle
+      ? body.imagesUploadedInCycle
+      : "";
+    obj.HPI = body.HPI ? body.HPI : "";
+    obj.temperature = body.temperature ? body.temperature : "";
+    obj.humidity = body.humidity ? body.humidity : "";
+    obj.remainingImgInfo = body.remainingImgInfo ? body.remainingImgInfo : "";
+    obj.imageB64 = body.imageB64 ? body.imageB64 : "";
+    obj.imu = body.imu ? body.imu : "";
+    obj.force = body.force ? body.force : "";
+    this.drinkMomentsRepository.create(obj);
 
+    // //Find info OTA
+    // let getInfo = await this.otaInfoRepository.findOne({
+    //   where: {
+    //     boxId: obj.boxId,
+    //   },
+    // });
 
-      // if(obj.imageB64 != ""){
-      //   try {
-      //     var b64 = body.imageB64;
-      //     const fs = require("fs");
-      //     // var b64 = b64.replace(/^data:image\/png;base64,/, "");
-      //     let pathFile = './public/image/' + obj.boxId?.toString().replace(/:/gi, '_') + '_' + new Date().getTime() + '_' + drinkMomentNew._id.toString() + '.jpg';
-      //     fs.writeFile(
-      //       pathFile,
-      //       b64,
-      //       "base64",
-      //       function (err: any) {
-      //         console.log(err);
-      //       }
-      //     );
-      //   } catch (error) {
-      //     // console.log(error);
-      //   }
-      // }
+    let doUpdate: any = false,
+      doReset: any = false,
+      fwUrl: any = "";
 
-      if(obj.imageB64 === "" && obj.serialNr !== "TEST"){
-        return {
-          result: "failed",
-          brand: "test",
-          doReset: false,
-          doUpdate: false,
-          fwUrl: "",
-          image: "",
-          timeUTC: new Date().getTime(),
-        };
-      }
-    
-    return {
-      result: "success",
-      brand: "test",
-      doReset: false,
-      doUpdate: false,
-      fwUrl: "",
-      image: "",
-      timeUTC: new Date().getTime(),
-    };
+    // if (getInfo && obj.boxId !== "") {
+    //   doUpdate = getInfo.doUpdate;
+    //   // doReset = getInfo.doReset;
+    //   fwUrl = getInfo.fwUrl;
+    // }
+
+    if (obj.imageB64 === "" && obj.serialNr !== "TEST") {
+      return {
+        result: "failed",
+        brand: "test",
+        doReset: doReset,
+        doUpdate: doUpdate,
+        fwUrl: fwUrl,
+        image: "",
+        timeUTC: parseInt((new Date().getTime() / 1000).toFixed()),
+      };
+    } else {
+      return {
+        result: "success",
+        brand: "test",
+        doReset: doReset,
+        doUpdate: doUpdate,
+        fwUrl: fwUrl,
+        image: "",
+        timeUTC: parseInt((new Date().getTime() / 1000).toFixed()),
+      };
+    }
+    // if(obj.imageB64 != ""){
+    //   try {
+    //     var b64 = body.imageB64;
+    //     const fs = require("fs");
+    //     // var b64 = b64.replace(/^data:image\/png;base64,/, "");
+    //     let pathFile = './public/image/' + obj.boxId?.toString().replace(/:/gi, '_') + '_' + new Date().getTime() + '_' + drinkMomentNew._id.toString() + '.jpg';
+    //     fs.writeFile(
+    //       pathFile,
+    //       b64,
+    //       "base64",
+    //       function (err: any) {
+    //         console.log(err);
+    //       }
+    //     );
+    //   } catch (error) {
+    //     // console.log(error);
+    //   }
+    // }
   }
 
   //Create 1 data opener
@@ -146,38 +168,42 @@ export class BackupMongodbController {
     description: "Testing upload to server",
     content: { "application/json": { schema: {} } },
   })
-  async createDrinkMoments(
-    @requestBody() body: any 
-  ): Promise<{}> {
+  async createDrinkMoments(@requestBody() body: any): Promise<{}> {
     let obj = new DrinkMoments();
-    obj.firmware = body.firmware? body.firmware:'';
-    obj.boxId = body.boxId? body.boxId:'';
-    obj.deviceSerial = body.deviceSerial? body.deviceSerial:'';
-    obj.battery = body.battery? body.battery:'';
-    obj.count = body.count? body.count:'';
-    obj.deviceTime = body.deviceTime? body.deviceTime:'';
-    obj.totalAwakeTime = body.totalAwakeTime? body.totalAwakeTime:'';
-    obj.restartCount = body.restartCount? body.restartCount:'';
-    obj.connection = body.connection? body.connection:'';
-    obj.wifiConnectStart = body.wifiConnectStart? body.wifiConnectStart:'';
-    obj.wifiConnectDone = body.wifiConnectDone? body.wifiConnectDone:'';
-    obj.rssi = body.rssi? body.rssi:'';
-    obj.cameraWakeupCount = body.cameraWakeupCount? body.cameraWakeupCount:'';
-    obj.imgType = body.imgType? body.imgType:'';
-    obj.imageCaptureTime = body.imageCaptureTime? body.imageCaptureTime:'';
-    obj.captureTimeRel = body.captureTimeRel? body.captureTimeRel:'';
-    obj.successfulImageUploadCount = body.successfulImageUploadCount? body.successfulImageUploadCount:'';
-    obj.serialNr = body.serialNr? body.serialNr:'';
-    obj.uniqueID = body.uniqueID? body.uniqueID:'';
-    obj.imagesRemaining = body.imagesRemaining? body.imagesRemaining:'';
-    obj.imagesUploadedInCycle = body.imagesUploadedInCycle? body.imagesUploadedInCycle:'';
-    obj.HPI = body.HPI? body.HPI:'';
-    obj.temperature = body.temperature? body.temperature:'';
-    obj.humidity = body.humidity? body.humidity:'';
-    obj.remainingImgInfo = body.remainingImgInfo? body.remainingImgInfo:'';
-    obj.imageB64 = body.imageB64? body.imageB64:'';
-    obj.imu = body.imu? body.imu:'';
-    obj.force = body.force? body.force:'';
+    obj.firmware = body.firmware ? body.firmware : "";
+    obj.boxId = body.boxId ? body.boxId : "";
+    obj.deviceSerial = body.deviceSerial ? body.deviceSerial : "";
+    obj.battery = body.battery ? body.battery : "";
+    obj.count = body.count ? body.count : "";
+    obj.deviceTime = body.deviceTime ? body.deviceTime : "";
+    obj.totalAwakeTime = body.totalAwakeTime ? body.totalAwakeTime : "";
+    obj.restartCount = body.restartCount ? body.restartCount : "";
+    obj.connection = body.connection ? body.connection : "";
+    obj.wifiConnectStart = body.wifiConnectStart ? body.wifiConnectStart : "";
+    obj.wifiConnectDone = body.wifiConnectDone ? body.wifiConnectDone : "";
+    obj.rssi = body.rssi ? body.rssi : "";
+    obj.cameraWakeupCount = body.cameraWakeupCount
+      ? body.cameraWakeupCount
+      : "";
+    obj.imgType = body.imgType ? body.imgType : "";
+    obj.imageCaptureTime = body.imageCaptureTime ? body.imageCaptureTime : "";
+    obj.captureTimeRel = body.captureTimeRel ? body.captureTimeRel : "";
+    obj.successfulImageUploadCount = body.successfulImageUploadCount
+      ? body.successfulImageUploadCount
+      : "";
+    obj.serialNr = body.serialNr ? body.serialNr : "";
+    obj.uniqueID = body.uniqueID ? body.uniqueID : "";
+    obj.imagesRemaining = body.imagesRemaining ? body.imagesRemaining : "";
+    obj.imagesUploadedInCycle = body.imagesUploadedInCycle
+      ? body.imagesUploadedInCycle
+      : "";
+    obj.HPI = body.HPI ? body.HPI : "";
+    obj.temperature = body.temperature ? body.temperature : "";
+    obj.humidity = body.humidity ? body.humidity : "";
+    obj.remainingImgInfo = body.remainingImgInfo ? body.remainingImgInfo : "";
+    obj.imageB64 = body.imageB64 ? body.imageB64 : "";
+    obj.imu = body.imu ? body.imu : "";
+    obj.force = body.force ? body.force : "";
     return this.drinkMomentsRepository.create(obj);
   }
 
@@ -215,29 +241,27 @@ export class BackupMongodbController {
     description: "Testing upload to server",
     content: { "application/json": { schema: {} } },
   })
-  async getForceIMUData(
-    @requestBody() body: any 
-  ): Promise<{}> {
+  async getForceIMUData(@requestBody() body: any): Promise<{}> {
     let response: any = [];
     // if(!body.macAddress) return {error: 'macAddress not null'}
 
     // let res = await this.drinkMomentsRepository.findOne({where: {boxId: body.macAddress}, order: ['createdDate DESC']});
     let res = await this.drinkMomentsRepository.findById(body.id);
-    if(res){
-      let dataIMU: any, dataForce: any
-      
-      if(res.imu){
-      dataIMU = Buffer.from(res.imu, "base64");
-      dataIMU = convertIMU(dataIMU);
+    if (res) {
+      let dataIMU: any, dataForce: any;
+
+      if (res.imu) {
+        dataIMU = Buffer.from(res.imu, "base64");
+        dataIMU = convertIMU(dataIMU);
       }
 
-      if(res.force){
+      if (res.force) {
         dataForce = Buffer.from(res.force, "base64");
         dataForce = convertForce(dataForce);
       }
 
-      response.push({'imu' : dataIMU}, {'force': dataForce});
-    }    
+      response.push({ imu: dataIMU }, { force: dataForce });
+    }
     return response;
   }
 
@@ -248,18 +272,20 @@ export class BackupMongodbController {
     content: { "application/json": { schema: {} } },
   })
   async getDeviceInfo(
-    @param.query.string('macAddress') macAddress: string 
+    @param.query.string("macAddress") macAddress: string
   ): Promise<any> {
-    if(!macAddress || macAddress === "") return {error: 'macAddress not null'}
-    let res = await this.drinkMomentsRepository.findOne({where: {boxId: macAddress}});
+    if (!macAddress || macAddress === "")
+      return { error: "macAddress not null" };
+    let res = await this.drinkMomentsRepository.findOne({
+      where: { boxId: macAddress },
+    });
     let data: any;
     data = res;
-    data.imageB64 = '';
-    data.imu = '';
-    data.force = '';
+    data.imageB64 = "";
+    data.imu = "";
+    data.force = "";
     return data;
   }
-
 }
 
 //This is a JavaScript function that appears to be converting some data stored in a base64 encoded string, b64, into an array of data points.
@@ -275,7 +301,7 @@ function convertIMU(b64: any) {
     8: "acc_y",
     10: "acc_z",
   };
-  
+
   //The outer for loop iterates over b64 in increments of 12, and the inner for loop iterates over each increment in increments of 2. At each iteration, the value of b64 at the current index is read as a little-endian 16-bit integer using the readInt16LE() method, and this value is added to an array called pointArr.
   for (var i = 0; i < data.length; i += 12) {
     var pointArr: any = [];

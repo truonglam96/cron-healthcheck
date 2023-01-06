@@ -5,3 +5,4 @@
 // export * from './qctoolfactoryconfigurations.repository';
 // export * from './testingresults.repository';
 export * from './drinkmoments.repository';
+export * from './ota-info.repository';

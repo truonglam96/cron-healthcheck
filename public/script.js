@@ -97,7 +97,10 @@ function generateImgB64() {
   let tagDateFrom = document.getElementById("input_DateFrom");
   let tagDateTo = document.getElementById("input_DateTo");
 
-  let _where = { serialNr: { neq: "TEST" } };
+  let _where = { 
+    serialNr: { neq: "TEST" }
+    // ,imageB64: { neq: ""}
+  };
 
   if (tagMacId.value !== "") {
     _where["boxId"] = tagMacId.value.toString();

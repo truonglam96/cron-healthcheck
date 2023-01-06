@@ -21,13 +21,13 @@ export const log: Middleware = async (middlewareCtx, next) => {
 
     if(request.url === "/box_comming"){
       return {
+        result: "failed",
         brand: "test",
         doReset: false,
         doUpdate: false,
         fwUrl: "",
         image: "",
-        result: "failed",
-        timeUTC: new Date().getTime(),
+        timeUTC: parseInt((new Date().getTime()/1000).toFixed()),
       }
     }
 
