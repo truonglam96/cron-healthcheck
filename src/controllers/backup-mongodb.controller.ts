@@ -66,7 +66,9 @@ export class BackupMongodbController {
     content: { "application/json": { schema: {} } },
   })
   async create(@requestBody() body: any): Promise<{}> {
+    let doUpdate: any = false, doReset: any = false, fwUrl: any = "";
     console.log(body);
+
     let obj = new DrinkMoments();
     obj.firmware = body.firmware ? body.firmware : "";
     obj.boxId = body.boxId ? body.boxId : "";
@@ -104,23 +106,21 @@ export class BackupMongodbController {
     obj.force = body.force ? body.force : "";
     this.drinkMomentsRepository.create(obj);
 
-    // //Find info OTA
-    // let getInfo = await this.otaInfoRepository.findOne({
-    //   where: {
-    //     boxId: obj.boxId,
-    //   },
-    // });
+    if(obj.boxId !== "" && obj.serialNr === "TEST"){
+      //Find info OTA
+      let getInfo: any = await this.otaInfoRepository.findOne({
+        where: {
+          boxId: obj.boxId,
+        },
+      });
 
-    let doUpdate: any = false,
-      doReset: any = false,
-      fwUrl: any = "";
-
-    // if (getInfo && obj.boxId !== "") {
-    //   doUpdate = getInfo.doUpdate;
-    //   // doReset = getInfo.doReset;
-    //   fwUrl = getInfo.fwUrl;
-    // }
-
+      if (getInfo) {
+        doUpdate = getInfo.doUpdate;
+        // doReset = getInfo.doReset;
+        fwUrl = getInfo.fwUrl;
+      }
+    }
+    
     if (obj.imageB64 === "" && obj.serialNr !== "TEST") {
       return {
         result: "failed",
