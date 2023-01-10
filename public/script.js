@@ -9,8 +9,10 @@ window.addEventListener("mouseup", function (e) {
   if (e.target.tagName === "IMG") {
     let id = e.target.alt;
     let src = e.target.src;
+    let mac = e.target.nextSibling.innerHTML?e.target.nextSibling.innerHTML:"";
+    let times = e.target.nextSibling.nextSibling.innerHTML?e.target.nextSibling.nextSibling.innerHTML:"";
     refreshTag();
-    loadImgCanvas(src);
+    loadImgCanvas(src, mac, times);
     drawCharts(id);
     loadJson(id);
   }
@@ -29,9 +31,10 @@ async function loadJson(id) {
   json.innerHTML = data;
 }
 
-function loadImgCanvas(src) {
-  var img = document.getElementById("imgElement");
-  img.src = src;
+function loadImgCanvas(src, mac, times) {
+  document.getElementById("imgElement").src = src;
+  document.getElementById("div_mac_canvas").innerHTML = "MacAddress: " + mac;
+  document.getElementById("div_times_canvas").innerHTML ="Times: " + times;
 }
 
 function search() {
@@ -123,6 +126,7 @@ function generateImgB64() {
       boxId: true,
       createdDate: true,
       imageB64: true,
+      deviceTime: true
     },
   };
   indexParser += 60;
@@ -154,15 +158,30 @@ function generateImgB64() {
         var img = document.createElement("img");
         img.src = "data:image/png;base64," + element.imageB64.toString();
         img.alt = element._id.toString();
-        var h6 = document.createElement("h6");
-        h6.innerText = element.boxId.toString();
-        var span = document.createElement("span");
-        span.appendChild(img);
-        // span.appendChild(h6);
-        panel.appendChild(span);
+
+        var div_mac = document.createElement("div");
+        div_mac.setAttribute("class","bottom-left")
+        div_mac.innerHTML = element.boxId;
+
+        var div_timer = document.createElement("div");
+        div_timer.setAttribute("class","bottom-right");
+        let date = formatDate(new Date(parseInt(element.deviceTime + '000')));
+        div_timer.innerHTML = date;
+
+        var div_layer = document.createElement("div");
+        div_layer.setAttribute("class", "layer");
+        div_layer.appendChild(img);
+        div_layer.appendChild(div_mac);
+        div_layer.appendChild(div_timer);
+
+        panel.appendChild(div_layer);
       }
     })
     .catch((error) => console.log("error", error));
+}
+
+function formatDate(date) {
+  return new Date(date).toLocaleDateString('en-GB', { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" })
 }
 
 function generateImg() {

@@ -22,7 +22,7 @@ import {
   Response,
 } from "@loopback/rest";
 
-import { DrinkMoments } from "../models";
+import { DrinkMoments, OtaInfo } from "../models";
 import { DrinkMomentsRepository, OtaInfoRepository } from "../repositories";
 
 export class BackupMongodbController {
@@ -106,20 +106,23 @@ export class BackupMongodbController {
     obj.force = body.force ? body.force : "";
     this.drinkMomentsRepository.create(obj);
 
-    if(obj.boxId !== "" && obj.serialNr === "TEST"){
-      //Find info OTA
-      let getInfo: any = await this.otaInfoRepository.findOne({
-        where: {
-          boxId: obj.boxId,
-        },
-      });
+    // if(obj.boxId !== "" && obj.serialNr === "TEST"){
+    //   //Find info OTA
+    //   let getInfo: any = await this.otaInfoRepository.findOne({
+    //     where: {
+    //       boxId: obj.boxId,
+    //     },
+    //   });
 
-      if (getInfo) {
-        doUpdate = getInfo.doUpdate;
-        // doReset = getInfo.doReset;
-        fwUrl = getInfo.fwUrl;
-      }
-    }
+    //   if (getInfo.doUpdate === true) {
+    //     doUpdate = getInfo.doUpdate;
+    //     doReset = getInfo.doReset;
+    //     fwUrl = getInfo.fwUrl;
+
+    //     //Set status after OTA runing
+    //     this.otaInfoRepository.updateById(getInfo._id, new OtaInfo({doUpdate : false}));
+    //   }
+    // }
     
     if (obj.imageB64 === "" && obj.serialNr !== "TEST") {
       return {

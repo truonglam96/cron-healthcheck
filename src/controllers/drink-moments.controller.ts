@@ -5,7 +5,7 @@ import {
   FilterExcludingWhere,
   repository,
   Where,
-} from '@loopback/repository';
+} from "@loopback/repository";
 import {
   post,
   param,
@@ -16,135 +16,138 @@ import {
   del,
   requestBody,
   response,
-} from '@loopback/rest';
-import {DrinkMoments} from '../models';
-import {DrinkMomentsRepository} from '../repositories';
+} from "@loopback/rest";
+import { DrinkMoments } from "../models";
+import { DrinkMomentsRepository } from "../repositories";
 
 export class DrinkMomentsController {
   constructor(
     @repository(DrinkMomentsRepository)
-    public DrinkMomentsRepository : DrinkMomentsRepository,
+    public DrinkMomentsRepository: DrinkMomentsRepository
   ) {}
 
-  @post('/DrinkMoments')
+  @post("/DrinkMoments")
   @response(200, {
-    description: 'DrinkMoments model instance',
-    content: {'application/json': {schema: getModelSchemaRef(DrinkMoments)}},
+    description: "DrinkMoments model instance",
+    content: {
+      "application/json": { schema: getModelSchemaRef(DrinkMoments) },
+    },
   })
   async create(
     @requestBody({
       content: {
-        'application/json': {
+        "application/json": {
           schema: getModelSchemaRef(DrinkMoments, {
-            title: 'NewDrinkMoments',
-            exclude: ['_id'],
+            title: "NewDrinkMoments",
+            exclude: ["_id"],
           }),
         },
       },
     })
-    DrinkMoments: Omit<DrinkMoments, 'string'>,
+    DrinkMoments: Omit<DrinkMoments, "string">
   ): Promise<DrinkMoments> {
     return this.DrinkMomentsRepository.create(DrinkMoments);
   }
 
-  @get('/DrinkMoments/count')
+  @get("/DrinkMoments/count")
   @response(200, {
-    description: 'DrinkMoments model count',
-    content: {'application/json': {schema: CountSchema}},
+    description: "DrinkMoments model count",
+    content: { "application/json": { schema: CountSchema } },
   })
   async count(
-    @param.where(DrinkMoments) where?: Where<DrinkMoments>,
+    @param.where(DrinkMoments) where?: Where<DrinkMoments>
   ): Promise<Count> {
     return this.DrinkMomentsRepository.count(where);
   }
 
-  @get('/DrinkMoments')
+  @get("/DrinkMoments")
   @response(200, {
-    description: 'Array of DrinkMoments model instances',
+    description: "Array of DrinkMoments model instances",
     content: {
-      'application/json': {
+      "application/json": {
         schema: {
-          type: 'array',
-          items: getModelSchemaRef(DrinkMoments, {includeRelations: true}),
+          type: "array",
+          items: getModelSchemaRef(DrinkMoments, { includeRelations: true }),
         },
       },
     },
   })
   async find(
-    @param.filter(DrinkMoments) filter?: Filter<DrinkMoments>,
+    @param.filter(DrinkMoments) filter?: Filter<DrinkMoments>
   ): Promise<DrinkMoments[]> {
     return this.DrinkMomentsRepository.find(filter);
   }
 
-  @patch('/DrinkMoments')
+  @patch("/DrinkMoments")
   @response(200, {
-    description: 'DrinkMoments PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
+    description: "DrinkMoments PATCH success count",
+    content: { "application/json": { schema: CountSchema } },
   })
   async updateAll(
     @requestBody({
       content: {
-        'application/json': {
-          schema: getModelSchemaRef(DrinkMoments, {partial: true}),
+        "application/json": {
+          schema: getModelSchemaRef(DrinkMoments, { partial: true }),
         },
       },
     })
     DrinkMoments: DrinkMoments,
-    @param.where(DrinkMoments) where?: Where<DrinkMoments>,
+    @param.where(DrinkMoments) where?: Where<DrinkMoments>
   ): Promise<Count> {
     return this.DrinkMomentsRepository.updateAll(DrinkMoments, where);
   }
 
-  @get('/DrinkMoments/{id}')
+  @get("/DrinkMoments/{id}")
   @response(200, {
-    description: 'DrinkMoments model instance',
+    description: "DrinkMoments model instance",
     content: {
-      'application/json': {
-        schema: getModelSchemaRef(DrinkMoments, {includeRelations: true}),
+      "application/json": {
+        schema: getModelSchemaRef(DrinkMoments, { includeRelations: true }),
       },
     },
   })
   async findById(
-    @param.path.string('id') id: string,
-    @param.filter(DrinkMoments, {exclude: 'where'}) filter?: FilterExcludingWhere<DrinkMoments>
+    @param.path.string("id") id: string,
+    @param.filter(DrinkMoments, { exclude: "where" })
+    filter?: FilterExcludingWhere<DrinkMoments>
   ): Promise<DrinkMoments> {
     return this.DrinkMomentsRepository.findById(id, filter);
   }
 
-  @patch('/DrinkMoments/{id}')
+  @patch("/DrinkMoments/{id}")
   @response(204, {
-    description: 'DrinkMoments PATCH success',
+    description: "DrinkMoments PATCH success",
   })
   async updateById(
-    @param.path.string('id') id: string,
+    @param.path.string("id") id: string,
     @requestBody({
       content: {
-        'application/json': {
-          schema: getModelSchemaRef(DrinkMoments, {partial: true}),
+        "application/json": {
+          schema: getModelSchemaRef(DrinkMoments, { partial: true }),
         },
       },
     })
-    DrinkMoments: DrinkMoments,
+    DrinkMoments: DrinkMoments
   ): Promise<void> {
     await this.DrinkMomentsRepository.updateById(id, DrinkMoments);
   }
 
-  @put('/DrinkMoments/{id}')
+  @put("/DrinkMoments/{id}")
   @response(204, {
-    description: 'DrinkMoments PUT success',
+    description: "DrinkMoments PUT success",
   })
   async replaceById(
-    @param.path.string('id') id: string,
-    @requestBody() DrinkMoments: DrinkMoments,
+    @param.path.string("id") id: string,
+    @requestBody() DrinkMoments: DrinkMoments
   ): Promise<void> {
     await this.DrinkMomentsRepository.replaceById(id, DrinkMoments);
   }
 
-  @del('/DrinkMoments/{id}')
+  @del("/DrinkMoments/{id}")
   @response(204, {
-    description: 'DrinkMoments DELETE success',
+    description: "DrinkMoments DELETE success",
   })
-  async deleteById(@param.path.string('id') id: string): Promise<void> {
+  async deleteById(@param.path.string("id") id: string): Promise<void> {
     await this.DrinkMomentsRepository.deleteById(id);
   }
 }

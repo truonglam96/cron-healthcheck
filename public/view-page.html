@@ -11,13 +11,14 @@
       }
 
       img {
-        width: 180px;
-        margin: 2px;
+        width: 193px;
+        /* margin: 2px; */
         display: inline;
+        /* border-radius: 2px; */
       }
 
       img:hover {
-        opacity: 70%;
+        opacity: 60%;
       }
 
       span > h6 {
@@ -25,11 +26,11 @@
         text-align: center;
       }
 
-      .center{
+      .center {
         width: 95vw;
         margin: auto;
       }
-      
+
       .panel_chart {
         float: right;
         width: 600px;
@@ -41,6 +42,34 @@
       .chart {
         border: 1px solid rgb(21, 125, 244);
         padding: 10px;
+      }
+
+      .layer {
+        position: relative;
+        display: inline-block;
+        text-align: center;
+        color: white;
+        width: 192.5px;
+        height: 145px;
+        margin: 1px;
+      }
+
+      .bottom-left {
+        position: absolute;
+        bottom: 19px;
+        left: 5px;
+        /* background-color: #2b2b2b4b; */
+        color:rgb(9, 135, 13);
+        font-size: 18px;
+        /* height: 18px; */
+      }
+
+      .bottom-right {
+        position: absolute;
+        bottom: 1px;
+        left: 5px;
+        color: rgb(217, 246, 25);
+        font-size: 15px;
       }
     </style>
 
@@ -64,7 +93,9 @@
         </div>
         <div class="offcanvas-body">
           <div>
-            <img id="imgElement" style="width: 600px;"/>
+            <div id="div_mac_canvas"></div>
+            <div id="div_times_canvas"></div>
+            <img id="imgElement" style="width: 600px" />
           </div>
           <div class="panel_chart">
             <div class="chart" id="linechartIMUAccelerometer"></div>
@@ -80,23 +111,40 @@
       <h1>Drink moments</h1>
       <hr />
       <!-- Search area -->
-      <nav style="float: right;">
-        <label for=""> MacID: </label> 
-        <input type="text" id="input_MacId" value="" style="width: 15vw;"> 
-        <label for=""> From : </label> 
-        <input type="datetime-local" id="input_DateFrom" value="" style="width: 10vw;">
-        <label for=""> To: </label> 
-        <input type="datetime-local" id="input_DateTo" value="" style="width: 10vw;">
-        <input type="button" id="btn_Search" value="Search" onclick="search()" style="width: 100px;">
+      <nav style="float: right">
+        <label for=""> MacID: </label>
+        <input type="text" id="input_MacId" value="" style="width: 15vw" />
+        <label for=""> From : </label>
+        <input
+          type="datetime-local"
+          id="input_DateFrom"
+          value=""
+          style="width: 10vw"
+        />
+        <label for=""> To: </label>
+        <input
+          type="datetime-local"
+          id="input_DateTo"
+          value=""
+          style="width: 10vw"
+        />
+        <input
+          type="button"
+          id="btn_Search"
+          value="Search"
+          onclick="search()"
+          style="width: 100px"
+        />
       </nav>
       <br />
       <!--  -->
 
       <!-- Show image -->
       <h6 id="totalDrinkMoments"></h6>
-      <label id="label_CountFilter" style="display: none;"></label>
-      <div id="panel" data-bs-toggle="offcanvas" data-bs-target="#demo"></div>
-      <br>
+      <label id="label_CountFilter" style="display: none"></label>
+      <div id="panel" data-bs-toggle="offcanvas" data-bs-target="#demo">
+      </div>
+      <br />
       <!--  -->
 
       <!-- Pagination -->
@@ -104,13 +152,12 @@
         <ul class="pagination justify-content-end">
           <li class="page-item">
             <a>Showed: </a>
-            <a id="indexNextPage">0</a> 
+            <a id="indexNextPage">0</a>
             <a class="page-link" onclick="generateImgB64()"> ...Continues</a>
           </li>
         </ul>
       </nav>
       <!--  -->
-
     </div>
     <script
       type="text/javascript"
