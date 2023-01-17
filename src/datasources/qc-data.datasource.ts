@@ -24,11 +24,11 @@ const config = {
 @lifeCycleObserver('datasource')
 export class QcDataDataSource extends juggler.DataSource
   implements LifeCycleObserver {
-  static dataSourceName = 'qcData';
+  static dataSourceName = 'QcSbo25';
   static readonly defaultConfig = config;
 
   constructor(
-    @inject('datasources.config.qcData', {optional: true})
+    @inject('datasources.config.QcSbo25', {optional: true})
     dsConfig: object = config,
   ) {
     super(dsConfig);

@@ -13,7 +13,7 @@ import {CronService} from './services';
 import {CronComponent} from "@loopback/cron";
 import {log} from './middleware';
 import * as dotenv from 'dotenv';
-
+import {MetricsBindings, MetricsComponent} from '@loopback/metrics';
 import multer from 'multer';
 import {FILE_UPLOAD_SERVICE, STORAGE_DIRECTORY} from './keys';
 
@@ -60,6 +60,27 @@ export class GetUrlApplication extends BootMixin(
 
     // Configure file upload with multer options
     this.configureFileUpload(options.fileStorageDirectory);
+
+    // Configure metrics prometheus
+    this.component(MetricsComponent);
+    this.configure(MetricsBindings.COMPONENT).to({
+      endpoint: {
+        basePath: '/metrics',
+      },
+      defaultMetrics: {
+        timeout: 5000,
+      },
+      defaultLabels: {
+        service: 'api',
+        version: '1.0.0',
+      },
+    });
+    this.configure(MetricsBindings.COMPONENT).to({
+      openApiSpec: true,
+    });
+
+    //
+    
   }
 
   protected configureFileUpload(destination?: string) {
