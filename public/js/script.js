@@ -9,8 +9,12 @@ window.addEventListener("mouseup", function (e) {
   if (e.target.tagName === "IMG") {
     let id = e.target.alt;
     let src = e.target.src;
-    let mac = e.target.nextSibling.innerHTML?e.target.nextSibling.innerHTML:"";
-    let times = e.target.nextSibling.nextSibling.innerHTML?e.target.nextSibling.nextSibling.innerHTML:"";
+    let mac = e.target.nextSibling.innerHTML
+      ? e.target.nextSibling.innerHTML
+      : "";
+    let times = e.target.nextSibling.nextSibling.innerHTML
+      ? e.target.nextSibling.nextSibling.innerHTML
+      : "";
     refreshTag();
     loadImgCanvas(src, mac, times);
     drawCharts(id);
@@ -18,11 +22,11 @@ window.addEventListener("mouseup", function (e) {
   }
 });
 
-function refreshTag(){
-  document.getElementById('imgElement').src = "";
-  document.getElementById('linechartIMUAccelerometer').innerHTML = "";
-  document.getElementById('linechartIMUGyroscope').innerHTML = "";
-  document.getElementById('linechartForce').innerHTML = "";
+function refreshTag() {
+  document.getElementById("imgElement").src = "";
+  document.getElementById("linechartIMUAccelerometer").innerHTML = "";
+  document.getElementById("linechartIMUGyroscope").innerHTML = "";
+  document.getElementById("linechartForce").innerHTML = "";
 }
 
 async function loadJson(id) {
@@ -34,7 +38,7 @@ async function loadJson(id) {
 function loadImgCanvas(src, mac, times) {
   document.getElementById("imgElement").src = src;
   document.getElementById("div_mac_canvas").innerHTML = "MacAddress: " + mac;
-  document.getElementById("div_times_canvas").innerHTML ="Times: " + times;
+  document.getElementById("div_times_canvas").innerHTML = "Times: " + times;
 }
 
 function search() {
@@ -100,8 +104,8 @@ function generateImgB64() {
   let tagDateFrom = document.getElementById("input_DateFrom");
   let tagDateTo = document.getElementById("input_DateTo");
 
-  let _where = { 
-    serialNr: { neq: "TEST" }
+  let _where = {
+    serialNr: { neq: "TEST" },
     // ,imageB64: { neq: ""}
   };
 
@@ -126,7 +130,7 @@ function generateImgB64() {
       boxId: true,
       createdDate: true,
       imageB64: true,
-      deviceTime: true
+      deviceTime: true,
     },
   };
   indexParser += 60;
@@ -160,12 +164,12 @@ function generateImgB64() {
         img.alt = element._id.toString();
 
         var div_mac = document.createElement("div");
-        div_mac.setAttribute("class","bottom-left")
+        div_mac.setAttribute("class", "bottom-left");
         div_mac.innerHTML = element.boxId;
 
         var div_timer = document.createElement("div");
-        div_timer.setAttribute("class","bottom-right");
-        let date = formatDate(new Date(parseInt(element.deviceTime + '000')));
+        div_timer.setAttribute("class", "bottom-right");
+        let date = formatDate(new Date(parseInt(element.deviceTime + "000")));
         div_timer.innerHTML = date;
 
         var div_layer = document.createElement("div");
@@ -181,7 +185,14 @@ function generateImgB64() {
 }
 
 function formatDate(date) {
-  return new Date(date).toLocaleDateString('en-GB', { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" })
+  return new Date(date).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
 }
 
 function generateImg() {
@@ -314,10 +325,37 @@ function drawCharts(id) {
       indexForce += 1 / 500;
     }
 
+    var arrMean = [];
+    for (const iterator of arrForce) {
+      arrMean.push(iterator[1]);
+    }
+
+    var meanFilter = mean_filter(arrMean);
+
+    var medianFilter = median_filter(meanFilter);
+
+    var data_smooth_deri = ([] = medianFilter
+      .slice(1)
+      .map((x, i) => x - medianFilter[i]));
+
+    var valueMinDeri = Math.min(...data_smooth_deri);
+    var isFraud = valueMinDeri < -900 ? 'Normal' : 'Fraud';
+
+    document.getElementById('div_fraud_canvas').innerHTML = "Status: " + isFraud + ", value: " + valueMinDeri.toFixed() + "/-900";
+
+    var arrForceNormal = [];
+    for (let index = 0; index < arrForce.length; index++) {
+      const element = arrForce[index];
+      arrForceNormal.push([element[0], element[1], medianFilter[index], data_smooth_deri[index], -900]);
+    }
+
     var dataForce = new google.visualization.DataTable();
     dataForce.addColumn("number", "Times");
     dataForce.addColumn("number", "Force values");
-    dataForce.addRows(arrForce);
+    dataForce.addColumn("number", "Smoothed data");
+    dataForce.addColumn("number", "Derivative");
+    dataForce.addColumn("number", "Non fraud limit (Threshold)");
+    dataForce.addRows(arrForceNormal);
     var optionsForce = {
       chart: {
         title: "Force sensor",
@@ -325,12 +363,53 @@ function drawCharts(id) {
       },
       width: width,
       height: height,
+      // axes: {
+      //   x: {
+      //     0: {side: 'top'}
+      //   }
+      // }
     };
     var chartForce = new google.charts.Line(
       document.getElementById("linechartForce")
     );
     chartForce.draw(dataForce, google.charts.Line.convertOptions(optionsForce));
   }
+}
+
+function mean(arr) {
+  let total = 0;
+  for (let i = 0; i < arr.length; i++) {
+    total += arr[i];
+  }
+  return total / arr.length;
+}
+
+function median(arr) {
+  const { length } = arr;
+
+  arr.sort((a, b) => a - b);
+
+  if (length % 2 === 0) {
+    return (arr[length / 2 - 1] + arr[length / 2]) / 2;
+  }
+
+  return arr[(length - 1) / 2];
+}
+
+function mean_filter(data, n = 3) {
+  let result = [];
+  for (let i = 0; i < data.length; i++) {
+    result.push(mean(data.slice(i, i + n)));
+  }
+  return result;
+}
+
+function median_filter(data, n = 11) {
+  let result = [];
+  for (let i = 0; i < data.length; i++) {
+    result.push(median(data.slice(i, i + n)));
+  }
+  return result;
 }
 
 async function convertData(id) {
@@ -376,20 +455,18 @@ async function getDeviceInfo(id) {
   });
 }
 
-function uploadFW(){
-
-}
+function uploadFW() {}
 
 function setupUploadForm() {
-  const formElem = document.getElementById('uploadForm');
-  formElem.onsubmit = async e => {
+  const formElem = document.getElementById("uploadForm");
+  formElem.onsubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch('/files', {
-      method: 'POST',
+    const res = await fetch("/files", {
+      method: "POST",
       body: new FormData(formElem),
     });
     const body = await res.json();
-    console.log('Response from upload', body);
+    console.log("Response from upload", body);
     await fetchFiles();
   };
 }

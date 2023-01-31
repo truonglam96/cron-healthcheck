@@ -66,7 +66,9 @@ export class BackupMongodbController {
     content: { "application/json": { schema: {} } },
   })
   async create(@requestBody() body: any): Promise<{}> {
-    let doUpdate: any = false, doReset: any = false, fwUrl: any = "";
+    let doUpdate: any = false,
+      doReset: any = false,
+      fwUrl: any = "";
     console.log(body);
 
     let obj = new DrinkMoments();
@@ -123,7 +125,7 @@ export class BackupMongodbController {
     //     this.otaInfoRepository.updateById(getInfo._id, new OtaInfo({doUpdate : false}));
     //   }
     // }
-    
+
     if (obj.imageB64 === "" && obj.serialNr !== "TEST") {
       return {
         result: "failed",
@@ -339,6 +341,65 @@ function convertForce(b64: any) {
     // val = val.replace("'", '"');
     // console.log(val + ",");
   }
-  // console.log("]");
+  
+  // var arrMean: any = [];
+  // for (const iterator of data_points) {
+  //   arrMean.push(iterator[1]);
+  // }
+
+  // var meanFilter = mean_filter(arrMean);
+
+  // var medianFilter = median_filter(meanFilter);
+
+  // let data_smooth_deri: number[] = medianFilter
+  //   .slice(1)
+  //   .map((x, i) => x - medianFilter[i]);
+
   return data_points;
 }
+
+// function mean(arr: number[]) {
+//   let total = 0;
+//   for (let i = 0; i < arr.length; i++) {
+//     total += arr[i];
+//   }
+//   return total / arr.length;
+// }
+
+// function median(arr: number[]) {
+//   const { length } = arr;
+
+//   arr.sort((a, b) => a - b);
+
+//   if (length % 2 === 0) {
+//     return (arr[length / 2 - 1] + arr[length / 2]) / 2;
+//   }
+
+//   return arr[(length - 1) / 2];
+// }
+
+// function mean_filter(data: number[], n: number = 3): number[] {
+//   let result: number[] = [];
+//   for (let i = 0; i < data.length; i++) {
+//     result.push(mean(data.slice(i, i + n)));
+//   }
+//   return result;
+// }
+
+// function median_filter(data: number[], n: number = 11): number[] {
+//   let result: number[] = [];
+//   for (let i = 0; i < data.length; i++) {
+//     result.push(median(data.slice(i, i + n)));
+//   }
+//   return result;
+// }
+
+// function predict(path: string): string {
+//   let data_median: number[] = median_filter(data_points, 11);
+//   let data_median_mean: number[] = mean_filter(data_median, 3);
+//   let data_smooth_deri: number[] = data_median_mean
+//     .slice(1)
+//     .map((x, i) => x - data_median_mean[i]);
+
+//   return Math.min(data_smooth_deri) < -900 ? "normal" : "fraud";
+// }
