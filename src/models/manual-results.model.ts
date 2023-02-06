@@ -5,6 +5,21 @@ export class ManualResults extends Entity {
   @property({ type: "string", id: true })
   _id: string;
 
+  @property({ type: "string"})
+  macAddress: string;
+
+  @property({ type: "string"})
+  HPI: string;
+
+  @property({ type: "date"})
+  lastDate: Date;
+
+  @property({ type: "boolean"})
+  isPass: boolean;
+
+  @property({ type: "string"})
+  lastTestId: string;
+
   constructor(data?: Partial<ManualResults>) {
     super(data);
   }

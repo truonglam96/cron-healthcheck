@@ -32,7 +32,23 @@ function refreshTag() {
 async function loadJson(id) {
   let data = await getDeviceInfo(id);
   const json = document.getElementById("json");
-  json.innerHTML = data;
+  const table = document.createElement("table");
+
+  var objData = JSON.parse(data);
+  for (var key in objData) {
+    const element = objData[key];
+
+    let tdh3 = document.createElement("th");
+    tdh3.innerHTML = key + ": ";
+    let tdh4 = document.createElement("td");
+    tdh4.innerHTML = element;
+    let trh1 = document.createElement("tr");
+    trh1.appendChild(tdh3);
+    trh1.appendChild(tdh4);
+    
+    table.appendChild(trh1);
+  }
+  json.appendChild(table);
 }
 
 function loadImgCanvas(src, mac, times) {
@@ -339,14 +355,21 @@ function drawCharts(id) {
       .map((x, i) => x - medianFilter[i]));
 
     var valueMinDeri = Math.min(...data_smooth_deri);
-    var isFraud = valueMinDeri < -900 ? 'Normal' : 'Fraud';
+    var isFraud = valueMinDeri < -900 ? "Normal" : "Fraud";
 
-    document.getElementById('div_fraud_canvas').innerHTML = "Status: " + isFraud + ", value: " + valueMinDeri.toFixed() + "/-900";
+    document.getElementById("div_fraud_canvas").innerHTML =
+      "Status: " + isFraud + ", value: " + valueMinDeri.toFixed() + "/-900";
 
     var arrForceNormal = [];
     for (let index = 0; index < arrForce.length; index++) {
       const element = arrForce[index];
-      arrForceNormal.push([element[0], element[1], medianFilter[index], data_smooth_deri[index], -900]);
+      arrForceNormal.push([
+        element[0],
+        element[1],
+        medianFilter[index],
+        data_smooth_deri[index],
+        -900,
+      ]);
     }
 
     var dataForce = new google.visualization.DataTable();
@@ -354,7 +377,7 @@ function drawCharts(id) {
     dataForce.addColumn("number", "Force values");
     dataForce.addColumn("number", "Smoothed data");
     dataForce.addColumn("number", "Derivative");
-    dataForce.addColumn("number", "Non fraud limit (Threshold)");
+    dataForce.addColumn("number", "Non fraud limit");
     dataForce.addRows(arrForceNormal);
     var optionsForce = {
       chart: {
@@ -363,6 +386,8 @@ function drawCharts(id) {
       },
       width: width,
       height: height,
+
+      // colors:['#4285f4','#004411']
       // axes: {
       //   x: {
       //     0: {side: 'top'}
