@@ -75,9 +75,23 @@ export class AutomaticResultsController {
     },
   })
   async find(
-    @param.filter(AutomaticResults) filter?: Filter<AutomaticResults>
-  ): Promise<AutomaticResults[]> {
-    return this.automaticResultsRepository.find(filter);
+    @param.query.string("fromDate") fromDate: string,
+    @param.query.string("toDate") toDate: string,
+  ): Promise<any> {
+    fromDate = fromDate + " 00:00:00";
+    toDate = toDate + " 23:59:59";
+    let filter = {
+      where: {
+        macAddress: { neq: "" },
+        and: [
+          { lastDate: { gte: new Date(fromDate) } },
+          { lastDate: { lte: new Date(toDate) } },
+        ],
+      },
+      order: ["lastDate ASC"],
+    };
+
+    return await this.automaticResultsRepository.find(filter);
   }
 
   @patch("/automatic-results")

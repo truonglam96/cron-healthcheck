@@ -71,9 +71,39 @@ export class AutomaticDetailsController {
     },
   })
   async find(
-    @param.filter(AutomaticDetails) filter?: Filter<AutomaticDetails>,
-  ): Promise<AutomaticDetails[]> {
-    return this.automaticDetailsRepository.find(filter);
+    @param.query.string("fromDate") fromDate: string,
+    @param.query.string("toDate") toDate: string,
+    @param.query.string("macAddress") macAddress: string
+  ): Promise<any> {
+    fromDate = fromDate + " 00:00:00";
+    toDate = toDate + " 23:59:59";
+    let filter: any;
+
+    if (macAddress === "") {
+      filter = {
+        where: {
+          macAddress: { neq: "" },
+          and: [
+            { createdDate: { gte: new Date(fromDate) } },
+            { createdDate: { lte: new Date(toDate) } },
+          ],
+        },
+        order: ["createdDate ASC"],
+      };
+    } else {
+      filter = {
+        where: {
+          macAddress: macAddress,
+          and: [
+            { createdDate: { gte: new Date(fromDate) } },
+            { createdDate: { lte: new Date(toDate) } },
+          ],
+        },
+        order: ["createdDate ASC"],
+      };
+    }
+
+    return await this.automaticDetailsRepository.find(filter);
   }
 
   @patch('/automatic-details')

@@ -27,6 +27,7 @@ function refreshTag() {
   document.getElementById("linechartIMUAccelerometer").innerHTML = "";
   document.getElementById("linechartIMUGyroscope").innerHTML = "";
   document.getElementById("linechartForce").innerHTML = "";
+  document.getElementById("json").innerHTML = "";
 }
 
 async function loadJson(id) {
@@ -45,7 +46,7 @@ async function loadJson(id) {
     let trh1 = document.createElement("tr");
     trh1.appendChild(tdh3);
     trh1.appendChild(tdh4);
-    
+
     table.appendChild(trh1);
   }
   json.appendChild(table);
@@ -269,17 +270,18 @@ function drawCharts(id) {
 
     let arrGyro = [],
       arrAcc = [];
-    let indexIMU = 1 / 416;
-    for (let index = 0; index < imuData.length; index++) {
-      const element = imuData[index];
+    let indexIMU = 0;
+    // for (let index = 0; index < imuData.length; index++) {
+      for (let index = 0; index < 1248; index++) {
+      const element = imuData[index]?imuData[index]:[0,0,0,0,0,0];
       arrGyro.push([
-        parseFloat(indexIMU.toFixed(3)),
+        parseFloat((indexIMU).toFixed(3)),
         element[0],
         element[1],
         element[2],
       ]);
       arrAcc.push([
-        parseFloat(indexIMU.toFixed(3)),
+        parseFloat((indexIMU).toFixed(3)),
         element[3],
         element[4],
         element[5],
@@ -287,6 +289,7 @@ function drawCharts(id) {
       indexIMU += 1 / 416;
     }
 
+    ////Gyroscope
     var dataIMUGyroscope = new google.visualization.DataTable();
     dataIMUGyroscope.addColumn("number", "Times");
     dataIMUGyroscope.addColumn("number", "x gyro");
@@ -309,7 +312,7 @@ function drawCharts(id) {
       google.charts.Line.convertOptions(optionsIMUGyroscope)
     );
 
-    ////
+    ////Accelerometer
     var dataIMUAccelerometer = new google.visualization.DataTable();
     dataIMUAccelerometer.addColumn("number", "Times");
     dataIMUAccelerometer.addColumn("number", "x accel");
@@ -341,34 +344,49 @@ function drawCharts(id) {
       indexForce += 1 / 500;
     }
 
-    var arrMean = [];
+    var arrDataForce = [];
     for (const iterator of arrForce) {
-      arrMean.push(iterator[1]);
+      arrDataForce.push(iterator[1]);
     }
 
-    var meanFilter = mean_filter(arrMean);
-
-    var medianFilter = median_filter(meanFilter);
-
-    var data_smooth_deri = ([] = medianFilter
+    var medianFilter = median_filter(arrDataForce);
+    var meanFilter = mean_filter(medianFilter);
+    var data_smooth_deri = ([] = meanFilter
       .slice(1)
-      .map((x, i) => x - medianFilter[i]));
+      .map((x, i) => x - meanFilter[i]));
+
+    // var meanFilter = mean_filter(arrDataForce);
+    // var medianFilter = median_filter(meanFilter);
+    // var data_smooth_deri = ([] = medianFilter
+    //   .slice(1)
+    //   .map((x, i) => x - medianFilter[i]));
 
     var valueMinDeri = Math.min(...data_smooth_deri);
-    var isFraud = valueMinDeri < -900 ? "Normal" : "Fraud";
+    var isFraud = valueMinDeri < -1500 ? "Normal" : "Fraud";
 
     document.getElementById("div_fraud_canvas").innerHTML =
-      "Status: " + isFraud + ", value: " + valueMinDeri.toFixed() + "/-900";
+      "Status: " + isFraud + ", value: " + valueMinDeri.toFixed() + "/-1500";
+
+    //define range 1/500 on 4 second
+    let arrRange = [];
+    for (let index = 0; index < 1500; index++) {
+      arrRange.push(index / 500);
+    }
 
     var arrForceNormal = [];
-    for (let index = 0; index < arrForce.length; index++) {
-      const element = arrForce[index];
+    for (let index = 0; index < arrRange.length; index++) {
+      let itemForce;
+      try {
+        itemForce = arrForce[index][1];
+      } catch {
+        itemForce = 0;
+      }
       arrForceNormal.push([
-        element[0],
-        element[1],
-        medianFilter[index],
-        data_smooth_deri[index],
-        -900,
+        arrRange[index],
+        itemForce,
+        medianFilter[index] ? medianFilter[index] : 0,
+        data_smooth_deri[index] ? data_smooth_deri[index] : 0,
+        -1500,
       ]);
     }
 

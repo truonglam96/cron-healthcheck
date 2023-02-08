@@ -71,9 +71,23 @@ export class ManualResultsController {
     },
   })
   async find(
-    @param.filter(ManualResults) filter?: Filter<ManualResults>,
-  ): Promise<ManualResults[]> {
-    return this.manualResultsRepository.find(filter);
+    @param.query.string("fromDate") fromDate: string,
+    @param.query.string("toDate") toDate: string
+  ): Promise<any> {
+    fromDate = fromDate + " 00:00:00";
+    toDate = toDate + " 23:59:59";
+    let filter = {
+      where: {
+        macAddress: { neq: "" },
+        and: [
+          { lastDate: { gte: new Date(fromDate) } },
+          { lastDate: { lte: new Date(toDate) } },
+        ],
+      },
+      order: ["lastDate ASC"],
+    };
+
+    return await this.manualResultsRepository.find(filter);
   }
 
   @patch('/manual-results')

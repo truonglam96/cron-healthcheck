@@ -272,7 +272,7 @@ export class StatisticController {
     let arrDateTime: any = [];
     for (const iterator of data) {
       let date = await this.formatDateDay(
-        await this.timeFormat(iterator.lastDate, 0)
+        await this.timeFormat(iterator.lastDate, 7)
       );
       date = date.split(", ")[1];
 
@@ -380,10 +380,7 @@ export class StatisticController {
       arrResult.push(sort);
     }
 
-    // [{"get_hpi":True},{"check_battery":True},{"get_mac":True},{"press_user_button":True},
-    // {"check_led":True},{"take_a_picture":True},{"check_image":True},{"check_hall_sensor":True},
-    // {"check_wifi":True},{"send_test_upload":True},{"send_key":True},{"check_hpi":True},{"burn_hpi":True},
-    // {"update_fw_prod":True},{"check_led_last":True}]
+   
 
     let get_hpi = 0,
       check_battery = 0,
@@ -647,7 +644,7 @@ export class StatisticController {
     return new Date(date).toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "2-digit",
-      // year: "numeric",
+      year: "numeric",
       // hour: "2-digit",
       // minute: "2-digit",
       // second: "2-digit",

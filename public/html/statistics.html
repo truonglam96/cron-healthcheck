@@ -148,12 +148,21 @@
         <div class="search_area">
           <div class="input-group mb-3" style="float: right">
             <label for="from" class="form-label"
-              >From: <input type="date" class="form-control"
+              >From: <input type="date" class="form-control" id="inputFrom"
             /></label>
             <label for="to" class="form-label"
-              >To: <input type="date" class="form-control"
+              >To: <input type="date" class="form-control" id="inputTo"
             /></label>
-            <button style="border-radius: 5px; height: 35px; margin-top: 25px; margin-left: 5px;">Search</button>
+            <button
+              style="
+                border-radius: 5px;
+                height: 35px;
+                margin-top: 25px;
+                margin-left: 5px;
+              "
+            >
+              Search
+            </button>
           </div>
         </div>
 
@@ -169,7 +178,6 @@
 
               <!-- Table automatic result -->
               <h6>Result by day</h6>
-              
               <div id="table_automatic_detail" class="table_automatic_detail">
                 <table class="table table-striped">
                   <thead>
@@ -181,8 +189,8 @@
                       <th>Substandard</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
+                  <tbody id="tbody_automatic">
+                    <!-- <tr>
                       <td>
                         <input type="radio" name="radio_result_byday" id="" />
                       </td>
@@ -190,34 +198,7 @@
                       <td>01</td>
                       <td>100</td>
                       <td>5</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <input type="radio" name="radio_result_byday" id="" />
-                      </td>
-                      <td>01/01/2023</td>
-                      <td>01</td>
-                      <td>100</td>
-                      <td>5</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <input type="radio" name="radio_result_byday" id="" />
-                      </td>
-                      <td>01/01/2023</td>
-                      <td>01</td>
-                      <td>100</td>
-                      <td>5</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <input type="radio" name="radio_result_byday" id="" />
-                      </td>
-                      <td>01/01/2023</td>
-                      <td>01</td>
-                      <td>100</td>
-                      <td>5</td>
-                    </tr>
+                    </tr> -->
                   </tbody>
                 </table>
               </div>
@@ -238,18 +219,104 @@
             </div>
           </div>
 
-          <br /><br /><br /><br /><br /><br /><br /><br />
+          <br /><br /><br /><br />
           <!-- table result -->
           <h6>Result detail</h6>
-          <label for="macaddress" class="form-label"
-                >MacAddress:
-                <input
-                  type="text"
-                  class="form-control"
-                  id="mac_automatic"
-                  name="macaddress"
-              /></label>
-              <button style="border-radius: 5px; height: 35px;">Search</button>
+          <label for="macaddress" class="form-label">
+            <input
+              type="text"
+              class="form-control"
+              id="mac_automatic"
+              name="macaddress"
+              placeholder="MacAddress"
+          /></label>
+          <button style="border-radius: 5px; height: 35px">Search</button>
+          <div class="table_result_automatic">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Mac Address</th>
+                  <th>Result</th>
+                  <th>Lasted test</th>
+                  <th>Time test</th>
+                </tr>
+              </thead>
+              <tbody id="tbody_detail_automatic">
+                <tr>
+                  <td>34:34:34:34:34:34</td>
+                  <td>Pass</td>
+                  <td>01/01/2023</td>
+                  <td>00:00:35</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- </div> -->
+        <!-- <hr /> -->
+        <br />
+        <br />
+        <br />
+
+        <!-- <div id="tab_manual" class="tabcontent"> -->
+        <div class="manual">
+          <!-- <br /> -->
+          <!-- <br /> -->
+          <h3>Manuals</h3>
+          <br />
+          <hr />
+          <div class="chart">
+            <!-- line chart -->
+            <div class="line_automatic">
+              <h6>Manual result</h6>
+              <div
+                id="linechart_result_manual"
+                class="line_automatic_result"
+              ></div>
+              <!-- Table automatic result -->
+              <h6>Result by day</h6>
+              <div id="table_manual_detail" class="table_automatic_detail">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Check</th>
+                      <th>Date</th>
+                      <th>Week number</th>
+                      <th>Standards</th>
+                      <th>Substandard</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody_manual"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="pie_automatic">
+              <!-- donut chart -->
+              <h6>Percentage chart</h6>
+              <div id="donutchart_manual" class="donut_error"></div>
+
+              <!-- pie chart -->
+              <h6>Error reason</h6>
+              <div id="piechart_manual" class="pie_error_reason"></div>
+
+              <!-- column chart -->
+              <h6>Opener test by time</h6>
+              <div id="chart_div_manual" class="column_chart_manual"></div>
+            </div>
+          </div>
+          <br /><br /><br /><br />
+          <!-- table result -->
+          <h6>Result detail</h6>
+          <label for="macaddress" class="form-label">
+            <input
+              type="text"
+              class="form-control"
+              id="mac_automatic"
+              name="macaddress"
+              placeholder="MacAddress"
+          /></label>
+          <button style="border-radius: 5px; height: 35px">Search</button>
           <div class="table_result_automatic">
             <table class="table table-striped">
               <thead>
@@ -267,220 +334,8 @@
                   <td>01/01/2023</td>
                   <td>00:00:35</td>
                 </tr>
-                <tr>
-                  <td>34:34:34:34:34:34</td>
-                  <td>Pass</td>
-                  <td>01/01/2023</td>
-                  <td>00:00:35</td>
-                </tr>
-                <tr>
-                  <td>34:34:34:34:34:34</td>
-                  <td>Pass</td>
-                  <td>01/01/2023</td>
-                  <td>00:00:35</td>
-                </tr>
-                <tr>
-                  <td>34:34:34:34:34:34</td>
-                  <td>Pass</td>
-                  <td>01/01/2023</td>
-                  <td>00:00:35</td>
-                </tr>
-                <tr>
-                  <td>34:34:34:34:34:34</td>
-                  <td>Pass</td>
-                  <td>01/01/2023</td>
-                  <td>00:00:35</td>
-                </tr>
-                <tr>
-                  <td>34:34:34:34:34:34</td>
-                  <td>Pass</td>
-                  <td>01/01/2023</td>
-                  <td>00:00:35</td>
-                </tr>
-                <tr>
-                  <td>34:34:34:34:34:34</td>
-                  <td>Pass</td>
-                  <td>01/01/2023</td>
-                  <td>00:00:35</td>
-                </tr>
-                <tr>
-                  <td>34:34:34:34:34:34</td>
-                  <td>Pass</td>
-                  <td>01/01/2023</td>
-                  <td>00:00:35</td>
-                </tr>
-                <tr>
-                  <td>34:34:34:34:34:34</td>
-                  <td>Pass</td>
-                  <td>01/01/2023</td>
-                  <td>00:00:35</td>
-                </tr>
-                <tr>
-                  <td>34:34:34:34:34:34</td>
-                  <td>Pass</td>
-                  <td>01/01/2023</td>
-                  <td>00:00:35</td>
-                </tr>
-                <tr>
-                  <td>34:34:34:34:34:34</td>
-                  <td>Pass</td>
-                  <td>01/01/2023</td>
-                  <td>00:00:35</td>
-                </tr>
               </tbody>
             </table>
-          </div>
-        </div>
-        <!-- </div> -->
-        <!-- <hr /> -->
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-
-        <!-- <div id="tab_manual" class="tabcontent"> -->
-        <div class="manual">
-          <br />
-          <br />
-          <h3>Manuals</h3>
-          <br />
-          <hr />
-          <div class="chart">
-            <!-- line chart -->
-            <div class="line_automatic">
-              <h6>Automatic result</h6>
-              <div
-                id="linechart_result_manual"
-                class="line_automatic_result"
-              ></div>
-              <!-- Table automatic result -->
-              <h6>Detail</h6>
-              <label for="macaddress" class="form-label"
-                >MacAddress:
-                <input
-                  type="text"
-                  class="form-control"
-                  id="mac_manual"
-                  name="macaddress"
-              /></label>
-              <div id="table_automatic_detail" class="table_automatic_detail">
-                <table class="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Mac Address</th>
-                      <th>Result</th>
-                      <th>HPI</th>
-                      <th>Lasted test</th>
-                      <th>Time test</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>34:34:34:34:34:34</td>
-                      <td>Pass</td>
-                      <td>2023-01-01_4b4c2305_A</td>
-                      <td>01/01/2023</td>
-                    </tr>
-                    <tr>
-                      <td>34:34:34:34:34:34</td>
-                      <td>Pass</td>
-                      <td>2023-01-01_4b4c2305_A</td>
-                      <td>01/01/2023</td>
-                    </tr>
-                    <tr>
-                      <td>34:34:34:34:34:34</td>
-                      <td>Pass</td>
-                      <td>2023-01-01_4b4c2305_A</td>
-                      <td>01/01/2023</td>
-                    </tr>
-                    <tr>
-                      <td>34:34:34:34:34:34</td>
-                      <td>Pass</td>
-                      <td>2023-01-01_4b4c2305_A</td>
-                      <td>01/01/2023</td>
-                    </tr>
-                    <tr>
-                      <td>34:34:34:34:34:34</td>
-                      <td>Pass</td>
-                      <td>2023-01-01_4b4c2305_A</td>
-                      <td>01/01/2023</td>
-                    </tr>
-                    <tr>
-                      <td>34:34:34:34:34:34</td>
-                      <td>Pass</td>
-                      <td>2023-01-01_4b4c2305_A</td>
-                      <td>01/01/2023</td>
-                    </tr>
-                    <tr>
-                      <td>34:34:34:34:34:34</td>
-                      <td>Pass</td>
-                      <td>2023-01-01_4b4c2305_A</td>
-                      <td>01/01/2023</td>
-                    </tr>
-                    <tr>
-                      <td>34:34:34:34:34:34</td>
-                      <td>Pass</td>
-                      <td>2023-01-01_4b4c2305_A</td>
-                      <td>01/01/2023</td>
-                    </tr>
-                    <tr>
-                      <td>34:34:34:34:34:34</td>
-                      <td>Pass</td>
-                      <td>2023-01-01_4b4c2305_A</td>
-                      <td>01/01/2023</td>
-                    </tr>
-                    <tr>
-                      <td>34:34:34:34:34:34</td>
-                      <td>Pass</td>
-                      <td>2023-01-01_4b4c2305_A</td>
-                      <td>01/01/2023</td>
-                    </tr>
-                    <tr>
-                      <td>34:34:34:34:34:34</td>
-                      <td>Pass</td>
-                      <td>2023-01-01_4b4c2305_A</td>
-                      <td>01/01/2023</td>
-                    </tr>
-                    <tr>
-                      <td>34:34:34:34:34:34</td>
-                      <td>Pass</td>
-                      <td>2023-01-01_4b4c2305_A</td>
-                      <td>01/01/2023</td>
-                    </tr>
-                    <tr>
-                      <td>34:34:34:34:34:34</td>
-                      <td>Pass</td>
-                      <td>2023-01-01_4b4c2305_A</td>
-                      <td>01/01/2023</td>
-                    </tr>
-                    <tr>
-                      <td>34:34:34:34:34:34</td>
-                      <td>Pass</td>
-                      <td>2023-01-01_4b4c2305_A</td>
-                      <td>01/01/2023</td>
-                    </tr>
-                    <tr>
-                      <td>34:34:34:34:34:34</td>
-                      <td>Pass</td>
-                      <td>2023-01-01_4b4c2305_A</td>
-                      <td>01/01/2023</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div class="pie_automatic">
-              <!-- donut chart -->
-              <h6>Percentage chart</h6>
-              <div id="donutchart_manual" class="donut_error"></div>
-
-              <!-- pie chart -->
-              <h6>Error reason</h6>
-              <div id="piechart_manual" class="pie_error_reason"></div>
-            </div>
           </div>
         </div>
         <!-- </div> -->
