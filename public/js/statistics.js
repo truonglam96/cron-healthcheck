@@ -1,5 +1,5 @@
-const URL_PATH = "http://[::1]:3000";
-// const URL_PATH = "http://35.240.171.212:3000";
+// const URL_PATH = "http://[::1]:3000";
+const URL_PATH = "http://35.240.171.212:3000";
 
 //
 google.charts.load("current", { packages: ["corechart", "line"] });
