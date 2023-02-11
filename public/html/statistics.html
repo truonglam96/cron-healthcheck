@@ -67,6 +67,10 @@
         background-color: rgb(224, 237, 245);
       }
 
+      table{
+        text-align: center;
+      }
+
       .pie_automatic {
         float: right;
         margin-left: 50px;
@@ -79,7 +83,7 @@
         height: 40vh;
       }
       .pie_error_reason {
-        width: 40vw;
+        width: 20vw;
         height: 40vh;
       }
 
@@ -94,32 +98,6 @@
         width: auto;
         height: 40vh;
         overflow: auto;
-      }
-
-      /* Style tab links */
-      .tablink {
-        background-color: rgb(199, 195, 195);
-        color: white;
-        /* float: left; */
-        border: none;
-        outline: none;
-        cursor: pointer;
-        padding: 14px 16px;
-        margin: 2px;
-        font-size: 17px;
-        width: 25%;
-        border-radius: 5px;
-      }
-
-      .tablink:hover {
-        background-color: #777;
-      }
-
-      /* Style the tab content (and add height:100% for full page content) */
-      .tabcontent {
-        display: none;
-        /* padding: 100px 20px; */
-        /* height: 100%; */
       }
     </style>
   </head>
@@ -190,7 +168,7 @@
                       <th>Mac Address</th>
                       <th>Result</th>
                       <th>Lasted test</th>
-                      <th>Time test</th>
+                      <th>Type</th>
                     </tr>
                   </thead>
                   <tbody
@@ -284,7 +262,7 @@
                       <th>Mac Address</th>
                       <th>Result</th>
                       <th>Lasted test</th>
-                      <th>Time test</th>
+                      <th>HPI</th>
                     </tr>
                   </thead>
                   <tbody
@@ -347,18 +325,21 @@
           <div>
             <h6 id="total_detail_automatic"></h6>
             <table class="table table-striped">
-                <thead>
+                <thead style="text-align: center;">
                   <tr>
                     <th>Mac Address</th>
                     <th>Result</th>
+                    <th>Type</th>
                     <th>Created date</th>
-                    <th>Time test</th>
+                    <th>Times</th>
                     <th>Firmware name</th>
                     <th>Error reason</th>
+                    <th>Value</th>
                   </tr>
                 </thead>
                 <tbody
                   id="tbody_automatic_detail_canvas"
+                  style="text-align: center;"
                 ></tbody>
               </table>
           </div>
@@ -395,7 +376,6 @@
                     ></tbody>
                   </table>
               </div>
-                
             </div>
         </div>
       </div>

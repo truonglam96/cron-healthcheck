@@ -1,5 +1,5 @@
-// const URL_PATH = "http://[::1]:3000";
-const URL_PATH = "http://35.240.171.212:3000";
+const URL_PATH = "http://[::1]:3000";
+// const URL_PATH = "http://35.240.171.212:3000";
 
 //
 google.charts.load("current", { packages: ["corechart", "line"] });
@@ -94,10 +94,17 @@ async function generateTableAutomaticDetail_offcanvas(mac) {
     let td4 = document.createElement("td");
     let td5 = document.createElement("td");
     let td6 = document.createElement("td");
+    let td7 = document.createElement("td");
+    let td8 = document.createElement("td");
 
     let errorReason = JSON.parse(
       iterator.logResult.replace(/\T/gi, "t").replace(/\F/gi, "f")
     );
+
+    let type = iterator.type
+    if(type != 'A' && type != 'B'){
+        type = '-'
+    }
 
     td1.innerHTML = iterator.macAddress;
     td2.innerHTML = iterator.isPass == true ? "Pass" : "Fail";
@@ -109,13 +116,17 @@ async function generateTableAutomaticDetail_offcanvas(mac) {
       iterator.isPass == true
         ? "-"
         : JSON.stringify(errorReason[errorReason.length - 1]);
+    td7.innerHTML = type;
+    td8.innerHTML = iterator.resultData!=undefined?iterator.resultData: '-';
 
     tr.appendChild(td1);
     tr.appendChild(td2);
+    tr.appendChild(td7);
     tr.appendChild(td3);
     tr.appendChild(td4);
     tr.appendChild(td5);
     tr.appendChild(td6);
+    tr.appendChild(td8);
 
     tbody.appendChild(tr);
   }
@@ -585,10 +596,15 @@ async function generateTableDetailAutomatic(from, to, macAddress) {
     let td3 = document.createElement("td");
     let td4 = document.createElement("td");
 
+    let type = iterator.type
+    if(type != 'A' && type != 'B'){
+        type = '-'
+    }
+
     td1.innerHTML = iterator.macAddress;
     td2.innerHTML = iterator.isPass == true ? "Pass" : "Fail";
     td3.innerHTML = await formatDate(iterator.lastDate);
-    td4.innerHTML = 1;
+    td4.innerHTML = type;
 
     tr.appendChild(td1);
     tr.appendChild(td2);
@@ -892,7 +908,7 @@ async function generateTableDetailManual(from, to, macAddress) {
     td1.innerHTML = iterator.macAddress;
     td2.innerHTML = iterator.isPass == true ? "Pass" : "Fail";
     td3.innerHTML = await formatDate(iterator.lastDate);
-    td4.innerHTML = 1;
+    td4.innerHTML = iterator.HPI;
 
     tr.appendChild(td1);
     tr.appendChild(td2);

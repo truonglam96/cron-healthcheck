@@ -20,6 +20,12 @@ export class ManualResults extends Entity {
   @property({ type: "string"})
   lastTestId: string;
 
+  @property({ type: "string"})
+  type: string;
+
+  @property({ type: "string"})
+  resultData: string;
+
   constructor(data?: Partial<ManualResults>) {
     super(data);
   }

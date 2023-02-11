@@ -18,6 +18,12 @@ export class ManualDetails extends Entity {
   logResult: string;
 
   @property({ type: "string"})
+  type: string;
+
+  @property({ type: "string"})
+  resultData: string;
+
+  @property({ type: "string"})
   imageB64: string;
 
   @property({ type: "string"})

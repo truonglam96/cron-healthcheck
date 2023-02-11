@@ -21,6 +21,12 @@ export class AutomaticDetails extends Entity {
   testingTime: string;
 
   @property({ type: "string"})
+  type: string;
+
+  @property({ type: "string"})
+  resultData: string;
+
+  @property({ type: "string"})
   firmwareTestName: string;
 
   @property({ type: "date"})
