@@ -6,3 +6,4 @@ export * from './certificates.repository';
 export * from './configurations.repository';
 export * from './manual-details.repository';
 export * from './manual-results.repository';
+export * from './setting-values.repository';

@@ -43,7 +43,7 @@
         float: left;
         position: relative;
         width: 52vw;
-        height: 120vh;
+        height: 124vh;
       }
       .line_automatic_result {
         width: 50vw;
@@ -52,10 +52,16 @@
         /* border: 3px solid rgb(228, 238, 255); */
       }
       .table_automatic_detail {
-        position: absolute;
+        /* position: absolute;
         width: 50vw;
-        height: 80vh;
-        overflow: scroll;
+        height: 40vh;
+        overflow: scroll; */
+
+        position: relative;
+        display: block;
+        width: auto;
+        height: 40vh;
+        overflow: auto;
       }
       tbody > tr:hover {
         background-color: rgb(224, 237, 245);
@@ -120,29 +126,13 @@
   <body>
     <header></header>
     <body>
+      
+
       <div style="margin: 20px">
         <div>
           <h2>QC-Tool dashboard</h2>
           <hr />
         </div>
-
-        <!-- Tab -->
-        <!-- <button
-          class="tablink"
-          onclick="openPage('tab_automatic', this, '#777')"
-        >
-          Automatic
-        </button>
-        <button
-          class="tablink"
-          onclick="openPage('tab_manual', this, '#777')"
-          id="defaultOpen"
-        >
-          Manual
-        </button> -->
-
-        <!-- <div id="tab_automatic" class="tabcontent"> -->
-        <!--  -->
 
         <!-- Search area -->
         <div class="search_area">
@@ -160,6 +150,7 @@
                 margin-top: 25px;
                 margin-left: 5px;
               "
+              onclick="serachAll();"
             >
               Search
             </button>
@@ -176,6 +167,41 @@
               <h6>Automatic result</h6>
               <div id="linechart_result" class="line_automatic_result"></div>
 
+              <!-- table result -->
+              <h6>Result detail</h6>
+              <label for="macaddress" class="form-label">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="mac_automatic"
+                  name="macaddress"
+                  placeholder="MacAddress"
+              /></label>
+              <button
+                style="border-radius: 5px; height: 35px"
+                onclick="searchMacAutomatic();"
+              >
+                Search
+              </button>
+              <div class="table_result_automatic">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Mac Address</th>
+                      <th>Result</th>
+                      <th>Lasted test</th>
+                      <th>Time test</th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    id="tbody_detail_automatic"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#demo_automatic"
+                  ></tbody>
+                </table>
+              </div>
+              <br /><br />
+
               <!-- Table automatic result -->
               <h6>Result by day</h6>
               <div id="table_automatic_detail" class="table_automatic_detail">
@@ -189,17 +215,7 @@
                       <th>Substandard</th>
                     </tr>
                   </thead>
-                  <tbody id="tbody_automatic">
-                    <!-- <tr>
-                      <td>
-                        <input type="radio" name="radio_result_byday" id="" />
-                      </td>
-                      <td>01/01/2023</td>
-                      <td>01</td>
-                      <td>100</td>
-                      <td>5</td>
-                    </tr> -->
-                  </tbody>
+                  <tbody id="tbody_automatic"></tbody>
                 </table>
               </div>
             </div>
@@ -213,6 +229,8 @@
               <h6>Error reason</h6>
               <div id="piechart" class="pie_error_reason"></div>
 
+              <br /><br /><br /><br />
+
               <!-- column chart -->
               <h6>Opener test by time</h6>
               <div id="chart_div" class="column_chart_automatic"></div>
@@ -220,37 +238,6 @@
           </div>
 
           <br /><br /><br /><br />
-          <!-- table result -->
-          <h6>Result detail</h6>
-          <label for="macaddress" class="form-label">
-            <input
-              type="text"
-              class="form-control"
-              id="mac_automatic"
-              name="macaddress"
-              placeholder="MacAddress"
-          /></label>
-          <button style="border-radius: 5px; height: 35px">Search</button>
-          <div class="table_result_automatic">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Mac Address</th>
-                  <th>Result</th>
-                  <th>Lasted test</th>
-                  <th>Time test</th>
-                </tr>
-              </thead>
-              <tbody id="tbody_detail_automatic">
-                <tr>
-                  <td>34:34:34:34:34:34</td>
-                  <td>Pass</td>
-                  <td>01/01/2023</td>
-                  <td>00:00:35</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         </div>
         <!-- </div> -->
         <!-- <hr /> -->
@@ -260,8 +247,8 @@
 
         <!-- <div id="tab_manual" class="tabcontent"> -->
         <div class="manual">
-          <!-- <br /> -->
-          <!-- <br /> -->
+          <br />
+          <br />
           <h3>Manuals</h3>
           <br />
           <hr />
@@ -273,6 +260,41 @@
                 id="linechart_result_manual"
                 class="line_automatic_result"
               ></div>
+
+              <!-- table result -->
+              <h6>Result detail</h6>
+              <label for="macaddress" class="form-label">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="mac_manual"
+                  name="macaddress"
+                  placeholder="MacAddress"
+              /></label>
+              <button
+                style="border-radius: 5px; height: 35px"
+                onclick="searchMacManual();"
+              >
+                Search
+              </button>
+              <div class="table_result_automatic">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Mac Address</th>
+                      <th>Result</th>
+                      <th>Lasted test</th>
+                      <th>Time test</th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    id="tbody_detail_manual"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#demo_manual"
+                  ></tbody>
+                </table>
+              </div>
+
               <!-- Table automatic result -->
               <h6>Result by day</h6>
               <div id="table_manual_detail" class="table_automatic_detail">
@@ -300,45 +322,82 @@
               <h6>Error reason</h6>
               <div id="piechart_manual" class="pie_error_reason"></div>
 
+              <br /><br />
+
               <!-- column chart -->
               <h6>Opener test by time</h6>
-              <div id="chart_div_manual" class="column_chart_manual"></div>
+              <div id="chart_div_manual" class="column_chart_automatic"></div>
             </div>
           </div>
           <br /><br /><br /><br />
-          <!-- table result -->
-          <h6>Result detail</h6>
-          <label for="macaddress" class="form-label">
-            <input
-              type="text"
-              class="form-control"
-              id="mac_automatic"
-              name="macaddress"
-              placeholder="MacAddress"
-          /></label>
-          <button style="border-radius: 5px; height: 35px">Search</button>
-          <div class="table_result_automatic">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Mac Address</th>
-                  <th>Result</th>
-                  <th>Lasted test</th>
-                  <th>Time test</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>34:34:34:34:34:34</td>
-                  <td>Pass</td>
-                  <td>01/01/2023</td>
-                  <td>00:00:35</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         </div>
         <!-- </div> -->
+      </div>
+
+      <div class="offcanvas offcanvas-end" style="width: 60vw;" id="demo_automatic">
+        <div class="offcanvas-header">
+          <h1 class="offcanvas-title">Automatic detail</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+          <div>
+            <h6 id="total_detail_automatic"></h6>
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Mac Address</th>
+                    <th>Result</th>
+                    <th>Created date</th>
+                    <th>Time test</th>
+                    <th>Firmware name</th>
+                    <th>Error reason</th>
+                  </tr>
+                </thead>
+                <tbody
+                  id="tbody_automatic_detail_canvas"
+                ></tbody>
+              </table>
+          </div>
+            
+        </div>
+      </div>
+
+      <div class="offcanvas offcanvas-end" style="width: 60vw;" id="demo_manual">
+        <div class="offcanvas-header">
+          <h1 class="offcanvas-title">Manual detail</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+            <div>
+                <h6 id="total_detail_manual"></h6>
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Mac Address</th>
+                        <th>Result</th>
+                        <th>Created date</th>
+                        <th>Time test</th>
+                        <th>Firmware name</th>
+                        <th>Error reason</th>
+                        <th>Image</th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      id="tbody_manual_detail_canvas"
+                    ></tbody>
+                  </table>
+              </div>
+                
+            </div>
+        </div>
       </div>
       <script src="../js/statistics.js"></script>
     </body>

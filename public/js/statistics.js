@@ -5,25 +5,302 @@ const URL_PATH = "http://35.240.171.212:3000";
 google.charts.load("current", { packages: ["corechart", "line"] });
 google.charts.load("current", { packages: ["line"] });
 google.charts.load("current", { packages: ["bar"] });
-google.charts.setOnLoadCallback(callbackOnload);
+// google.charts.setOnLoadCallback(callbackOnload);
+
+window.onload = async function () {
+  callbackOnload();
+};
 
 window.addEventListener("mouseup", function (e) {
-  if (e.target.tagName === "INPUT") {
+  if (
+    e.target.tagName == "TD" &&
+    e.target.parentNode.name == "tr_offcanvas_automatic"
+  ) {
+    let mac = e.target.parentNode.children[0].innerHTML;
+    generateTableAutomaticDetail_offcanvas(mac);
+  }
+
+  if (
+    e.target.tagName == "TD" &&
+    e.target.parentNode.name == "tr_offcanvas_manual"
+  ) {
+    let mac = e.target.parentNode.children[0].innerHTML;
+    generateTableManualDetail_offcanvas(mac);
+  }
+
+  if (e.target.tagName === "INPUT" && e.target.name == "radio_result_byday") {
     drawChart_TimeOfDay_Automatic(e.target.value);
+  }
+
+  if (
+    e.target.tagName === "INPUT" &&
+    e.target.name == "radio_result_byday_manual"
+  ) {
+    drawChart_TimeOfDay_Manual(e.target.value);
   }
 });
 
-function callbackOnload() {
-  drawChart_Pie_Automatic();
-  drawChart_Line_Automatic();
-  //   DrawChart_Donut_Automatic();
-  //   drawAxisTickColors_Automatic();
-  generateTableDetailAutomatic();
+async function generateTableAutomaticDetail_offcanvas(mac) {
+  let date = getLast30Days();
+  let fristDay = date.firstDay;
+  let lastDay = date.lastDay;
 
-  drawChart_Pie_Manual();
-  drawChart_Line_Manual();
-  //   DrawChart_Donut_Manual();
+  let from = document.getElementById("inputFrom").value;
+  let to = document.getElementById("inputTo").value;
+
+  if (from != "" && to != "") {
+    fristDay = from;
+    lastDay = to;
+  }
+
+  let dataResult = [];
+  var myHeaders = new Headers();
+  myHeaders.append("accept", "application/json");
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  await fetch(
+    URL_PATH +
+      "/automatic-details?fromDate=" +
+      fristDay +
+      "&toDate=" +
+      lastDay +
+      "&macAddress=" +
+      mac,
+    requestOptions
+  )
+    .then((response) => response.text())
+    .then((result) => {
+      for (const iterator of JSON.parse(result)) {
+        dataResult.push(iterator);
+      }
+    })
+    .catch((error) => console.log("error", error));
+
+  //Generate table
+  document.getElementById("total_detail_automatic").innerHTML =
+    "Total: " + dataResult.length;
+  let tbody = document.getElementById("tbody_automatic_detail_canvas");
+  tbody.innerHTML = "";
+  for (const iterator of dataResult) {
+    let tr = document.createElement("tr");
+    let td1 = document.createElement("td");
+    let td2 = document.createElement("td");
+    let td3 = document.createElement("td");
+    let td4 = document.createElement("td");
+    let td5 = document.createElement("td");
+    let td6 = document.createElement("td");
+
+    let errorReason = JSON.parse(
+      iterator.logResult.replace(/\T/gi, "t").replace(/\F/gi, "f")
+    );
+
+    td1.innerHTML = iterator.macAddress;
+    td2.innerHTML = iterator.isPass == true ? "Pass" : "Fail";
+    td3.innerHTML = await formatDateTime(iterator.createdDate);
+    td4.innerHTML = iterator.testingTime;
+    td5.innerHTML =
+      iterator.firmwareTestName == "" ? "-" : iterator.firmwareTestName;
+    td6.innerHTML =
+      iterator.isPass == true
+        ? "-"
+        : JSON.stringify(errorReason[errorReason.length - 1]);
+
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+    tr.appendChild(td3);
+    tr.appendChild(td4);
+    tr.appendChild(td5);
+    tr.appendChild(td6);
+
+    tbody.appendChild(tr);
+  }
 }
+
+async function generateTableManualDetail_offcanvas(mac) {
+  let date = getLast30Days();
+  let fristDay = date.firstDay;
+  let lastDay = date.lastDay;
+
+  let from = document.getElementById("inputFrom").value;
+  let to = document.getElementById("inputTo").value;
+
+  if (from != "" && to != "") {
+    fristDay = from;
+    lastDay = to;
+  }
+
+  let dataResult = [];
+  var myHeaders = new Headers();
+  myHeaders.append("accept", "application/json");
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  await fetch(
+    URL_PATH +
+      "/manual-details?fromDate=" +
+      fristDay +
+      "&toDate=" +
+      lastDay +
+      "&macAddress=" +
+      mac,
+    requestOptions
+  )
+    .then((response) => response.text())
+    .then((result) => {
+      for (const iterator of JSON.parse(result)) {
+        dataResult.push(iterator);
+      }
+    })
+    .catch((error) => console.log("error", error));
+
+  //Generate table
+  document.getElementById("total_detail_manual").innerHTML =
+    "Total: " + dataResult.length;
+  let tbody = document.getElementById("tbody_manual_detail_canvas");
+  tbody.innerHTML = "";
+  for (const iterator of dataResult) {
+    let tr = document.createElement("tr");
+    let td1 = document.createElement("td");
+    let td2 = document.createElement("td");
+    let td3 = document.createElement("td");
+    let td4 = document.createElement("td");
+    let td5 = document.createElement("td");
+    let td6 = document.createElement("td");
+    let td7 = document.createElement("td");
+
+    let errorReason = JSON.parse(
+      iterator.logResult.replace(/\T/gi, "t").replace(/\F/gi, "f")
+    );
+
+    td1.innerHTML = iterator.macAddress;
+    td2.innerHTML = iterator.isPass == true ? "Pass" : "Fail";
+    td3.innerHTML = await formatDateTime(iterator.createdDate);
+    td4.innerHTML = iterator.testingTime;
+    td5.innerHTML =
+      iterator.firmwareOTA == "" ? "-" : iterator.firmwareOTA;
+    td6.innerHTML =
+      iterator.isPass == true
+        ? "-"
+        : JSON.stringify(errorReason[errorReason.length - 1]);
+    
+    let img = document.createElement("img");
+    img.src = "data:image/png;base64," + iterator.imageB64
+    img.alt = "Don't have image data"
+    img.style.width = "100px"
+    td7.appendChild(img)
+
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+    tr.appendChild(td3);
+    tr.appendChild(td4);
+    tr.appendChild(td5);
+    tr.appendChild(td6);
+    tr.appendChild(td7);
+
+    tbody.appendChild(tr);
+  }
+}
+
+function callbackOnload() {
+  let date = getLast30Days();
+  let fristDay = date.firstDay;
+  let lastDay = date.lastDay;
+
+  let from = document.getElementById("inputFrom").value;
+  let to = document.getElementById("inputTo").value;
+
+  if (from != "" && to != "") {
+    fristDay = from;
+    lastDay = to;
+  }
+
+  drawChart_Pie_Automatic(fristDay, lastDay);
+  drawChart_Line_Automatic(fristDay, lastDay);
+  generateTableDetailAutomatic(fristDay, lastDay, "");
+
+  drawChart_Pie_Manual(fristDay, lastDay);
+  drawChart_Line_Manual(fristDay, lastDay);
+  generateTableDetailManual(fristDay, lastDay, "");
+}
+
+function serachAll() {
+  resetControl();
+  callbackOnload();
+}
+
+function searchMacAutomatic() {
+  document.getElementById("tbody_detail_automatic").innerHTML = "";
+  let date = getLast30Days();
+  let fristDay = date.firstDay;
+  let lastDay = date.lastDay;
+
+  let from = document.getElementById("inputFrom").value;
+  let to = document.getElementById("inputTo").value;
+
+  if (from != "" && to != "") {
+    fristDay = from;
+    lastDay = to;
+  }
+  generateTableDetailAutomatic(
+    fristDay,
+    lastDay,
+    document.getElementById("mac_automatic").value
+  );
+}
+
+function searchMacManual() {
+  document.getElementById("tbody_detail_manual").innerHTML = "";
+  let date = getLast30Days();
+  let fristDay = date.firstDay;
+  let lastDay = date.lastDay;
+
+  let from = document.getElementById("inputFrom").value;
+  let to = document.getElementById("inputTo").value;
+
+  if (from != "" && to != "") {
+    fristDay = from;
+    lastDay = to;
+  }
+  generateTableDetailManual(
+    fristDay,
+    lastDay,
+    document.getElementById("mac_manual").value
+  );
+}
+
+function resetControl() {
+  document.getElementById("linechart_result").innerHTML = "";
+  document.getElementById("tbody_automatic").innerHTML = "";
+  document.getElementById("donutchart").innerHTML = "";
+  document.getElementById("piechart").innerHTML = "";
+  document.getElementById("chart_div").innerHTML = "";
+  document.getElementById("tbody_detail_automatic").innerHTML = "";
+  document.getElementById("linechart_result_manual").innerHTML = "";
+  document.getElementById("tbody_manual").innerHTML = "";
+  document.getElementById("donutchart_manual").innerHTML = "";
+  document.getElementById("piechart_manual").innerHTML = "";
+  document.getElementById("chart_div_manual").innerHTML = "";
+  document.getElementById("tbody_detail_manual").innerHTML = "";
+  // document.getElementById('').innerHTML = "";
+  // document.getElementById('').innerHTML = "";
+  // document.getElementById('').innerHTML = "";
+  // document.getElementById('').innerHTML = "";
+  // document.getElementById('').innerHTML = "";
+  // document.getElementById('').innerHTML = "";
+  // document.getElementById('').innerHTML = "";
+  // document.getElementById('').innerHTML = "";
+}
+
+/**Automatic********************************************************************************************************************** */
 
 async function drawChart_TimeOfDay_Automatic(date) {
   let arrDate = date;
@@ -60,6 +337,7 @@ async function drawChart_TimeOfDay_Automatic(date) {
     })
     .catch((error) => console.log("error", error));
 
+  //Draw AxisTick
   drawAxisTickColors_Automatic(arrData);
 }
 
@@ -69,15 +347,15 @@ function upSideDown_Datetime(date) {
   return date;
 }
 
-async function drawChart_Pie_Automatic() {
-  let from = document.getElementById("inputFrom").textContent;
-  let to = document.getElementById("inputTo").textContent;
+async function drawChart_Pie_Automatic(from, to) {
+  //   let from = document.getElementById("inputFrom").textContent;
+  //   let to = document.getElementById("inputTo").textContent;
   let dataResult;
 
-  if (from === "" && to === "") {
-    from = "2023-01-01";
-    to = "2023-03-01";
-  }
+  //   if (from === "" && to === "") {
+  //     from = "2023-01-01";
+  //     to = "2023-03-01";
+  //   }
 
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
@@ -125,15 +403,15 @@ async function drawChart_Pie_Automatic() {
   chart.draw(data, options);
 }
 
-async function drawChart_Line_Automatic() {
-  let from = document.getElementById("inputFrom").textContent;
-  let to = document.getElementById("inputTo").textContent;
+async function drawChart_Line_Automatic(from, to) {
+  //   let from = document.getElementById("inputFrom").textContent;
+  //   let to = document.getElementById("inputTo").textContent;
   let dataResult = [];
 
-  if (from === "" && to === "") {
-    from = "2023-01-01";
-    to = "2023-03-01";
-  }
+  //   if (from === "" && to === "") {
+  //     from = "2023-01-01";
+  //     to = "2023-03-01";
+  //   }
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
 
@@ -182,7 +460,7 @@ async function drawChart_Line_Automatic() {
   chart.draw(data, google.charts.Line.convertOptions(options));
 
   //Draw donut chart
-  DrawChart_Donut_Automatic(dataResult[dataResult.length - 1]);
+  drawChart_Donut_Automatic(dataResult[dataResult.length - 1]);
 
   //Generate table
   let tbody = document.getElementById("tbody_automatic");
@@ -215,6 +493,8 @@ async function drawChart_Line_Automatic() {
 
     tbody.appendChild(tr);
   }
+
+  drawChart_TimeOfDay_Automatic(dataResult[dataResult.length - 1][0]);
 }
 
 async function getWeekNumber(d) {
@@ -225,7 +505,7 @@ async function getWeekNumber(d) {
   return weekNo;
 }
 
-function DrawChart_Donut_Automatic(arr) {
+function drawChart_Donut_Automatic(arr) {
   var data = google.visualization.arrayToDataTable([
     ["Result", "Per times"],
     ["Pass", arr[1]],
@@ -267,15 +547,8 @@ function drawAxisTickColors_Automatic(data) {
   chart.draw(data, google.charts.Bar.convertOptions(options));
 }
 
-async function generateTableDetailAutomatic() {
-  let from = document.getElementById("inputFrom").textContent;
-  let to = document.getElementById("inputTo").textContent;
+async function generateTableDetailAutomatic(from, to, macAddress) {
   let dataResult = [];
-
-  if (from === "" && to === "") {
-    from = "2023-01-01";
-    to = "2023-03-01";
-  }
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
 
@@ -286,7 +559,13 @@ async function generateTableDetailAutomatic() {
   };
 
   await fetch(
-    URL_PATH + "/automatic-results?fromDate=" + from + "&toDate=" + to,
+    URL_PATH +
+      "/automatic-results?fromDate=" +
+      from +
+      "&toDate=" +
+      to +
+      "&macAddress=" +
+      macAddress,
     requestOptions
   )
     .then((response) => response.text())
@@ -307,7 +586,7 @@ async function generateTableDetailAutomatic() {
     let td4 = document.createElement("td");
 
     td1.innerHTML = iterator.macAddress;
-    td2.innerHTML = iterator.isPass;
+    td2.innerHTML = iterator.isPass == true ? "Pass" : "Fail";
     td3.innerHTML = await formatDate(iterator.lastDate);
     td4.innerHTML = 1;
 
@@ -316,32 +595,45 @@ async function generateTableDetailAutomatic() {
     tr.appendChild(td3);
     tr.appendChild(td4);
 
+    tr.name = "tr_offcanvas_automatic";
+
     tbody.appendChild(tr);
   }
 }
 
 async function formatDate(date) {
-    return new Date(date).toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      // hour: "2-digit",
-      // minute: "2-digit",
-      // second: "2-digit",
-    });
-  }
+  return new Date(date).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    // hour: "2-digit",
+    // minute: "2-digit",
+    // second: "2-digit",
+  });
+}
 
-//************************************************************************************************************************ */
+async function formatDateTime(date) {
+  return new Date(date).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+}
 
-async function drawChart_Pie_Manual() {
-  let from = document.getElementById("inputFrom").textContent;
-  let to = document.getElementById("inputTo").textContent;
+/**Manual********************************************************************************************************************** */
+
+async function drawChart_Pie_Manual(from, to) {
+  //   let from = document.getElementById("inputFrom").textContent;
+  //   let to = document.getElementById("inputTo").textContent;
   let dataResult;
 
-  if (from === "" && to === "") {
-    from = "2023-01-01";
-    to = "2023-03-01";
-  }
+  //   if (from === "" && to === "") {
+  //     from = "2023-01-01";
+  //     to = "2023-03-01";
+  //   }
 
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
@@ -394,30 +686,65 @@ async function drawChart_Pie_Manual() {
   chart.draw(data, options);
 }
 
-function drawChart_Line_Manual() {
+async function drawChart_Line_Manual(from, to) {
+  //   let from = document.getElementById("inputFrom").textContent;
+  //   let to = document.getElementById("inputTo").textContent;
+  let dataResult = [];
+
+  //   if (from === "" && to === "") {
+  //     from = "2023-01-01";
+  //     to = "2023-03-01";
+  //   }
+  var myHeaders = new Headers();
+  myHeaders.append("accept", "application/json");
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  await fetch(
+    URL_PATH +
+      "/statistics/line-chart-manual?fromDate=" +
+      from +
+      "&toDate=" +
+      to,
+    requestOptions
+  )
+    .then((response) => response.text())
+    .then((result) => {
+      let objData = JSON.parse(result);
+      for (const iterator of objData.result) {
+        let dateTarget = objData.targetData[0].filter(
+          (item) => item.date == upSideDown_Datetime(iterator.date)
+        );
+        let tagetValue = 0;
+        if (dateTarget.length > 0) {
+          tagetValue = dateTarget[0].value;
+        }
+        dataResult.push([
+          iterator.date,
+          iterator.isPass,
+          iterator.isFail,
+          iterator.isPass + iterator.isFail,
+          tagetValue,
+        ]);
+      }
+    })
+    .catch((error) => console.log("error", error));
+
   var data = new google.visualization.DataTable();
   data.addColumn("string", "Day");
   data.addColumn("number", "Test pass");
   data.addColumn("number", "Test fail");
   data.addColumn("number", "Current production");
   data.addColumn("number", "Target production");
-
-  data.addRows([
-    ["01/01", 37.8, 80.8, 37.8, 80.8],
-    ["02/01", 30.9, 69.5, 37.8, 80.8],
-    ["03/01", 25.4, 57, 37.8, 87.8],
-    ["04/01", 11.7, 18.8, 31.8, 80.8],
-    ["05/01", 11.9, 17.6, 37.8, 80.8],
-    ["06/01", 8.8, 13.6, 37.8, 80.8],
-    ["07/01", 7.6, 12.3, 37.8, 80.8],
-    ["08/01", 12.3, 29.2, 37.8, 80.8],
-    ["09/01", 16.9, 42.9, 37.8, 80.8],
-    ["10/01", 12.8, 30.9, 37.8, 80.8],
-    ["11/01", 5.3, 7.9, 37.8, 80.8],
-    ["12/01", 6.6, 8.4, 37.8, 80.8],
-    ["13/01", 4.8, 6.3, 37.8, 80.8],
-    ["14/01", 4.2, 6.2, 37.8, 80.8],
-  ]);
+  data.addRows(dataResult);
+  //   data.addRows([
+  //     ["01/01", 37.8, 80.8, 37.8, 80.8],
+  //     ["02/01", 30.9, 69.5, 37.8, 80.8],
+  //   ]);
 
   var options = {
     // chart: {
@@ -433,13 +760,51 @@ function drawChart_Line_Manual() {
   );
 
   chart.draw(data, google.charts.Line.convertOptions(options));
+
+  //Draw donut chart
+  drawChart_Donut_Manual(dataResult[dataResult.length - 1]);
+
+  //Generate table
+  let tbody = document.getElementById("tbody_manual");
+  for (const iterator of dataResult) {
+    let tr = document.createElement("tr");
+    let td1 = document.createElement("td");
+    let td2 = document.createElement("td");
+    let td3 = document.createElement("td");
+    let td4 = document.createElement("td");
+    let td5 = document.createElement("td");
+
+    let input = document.createElement("input");
+    input.type = "radio";
+    input.name = "radio_result_byday_manual";
+    input.value = iterator[0];
+
+    td1.appendChild(input);
+    td2.innerHTML = iterator[0];
+    td3.innerHTML = await getWeekNumber(
+      new Date(upSideDown_Datetime(iterator[0]))
+    );
+    td4.innerHTML = iterator[1];
+    td5.innerHTML = iterator[2];
+
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+    tr.appendChild(td3);
+    tr.appendChild(td4);
+    tr.appendChild(td5);
+
+    tbody.appendChild(tr);
+  }
+
+  //
+  drawChart_TimeOfDay_Manual(dataResult[dataResult.length - 1][0]);
 }
 
-function DrawChart_Donut_Manual() {
+function drawChart_Donut_Manual(arr) {
   var data = google.visualization.arrayToDataTable([
     ["Result", "Per times"],
-    ["Pass", 11],
-    ["Fail", 2],
+    ["Pass", arr[1]],
+    ["Fail", arr[2]],
   ]);
 
   var options = {
@@ -453,19 +818,159 @@ function DrawChart_Donut_Manual() {
   chart.draw(data, options);
 }
 
-function openPage(pageName, elmnt, color) {
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablink");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].style.backgroundColor = "";
-  }
-  document.getElementById(pageName).style.display = "block";
-  elmnt.style.backgroundColor = color;
+function drawAxisTickColors_Manual(data) {
+  var data = google.visualization.arrayToDataTable(data);
+
+  //   var data = google.visualization.arrayToDataTable([
+  //     ["Time of day", "Pass", "Fail"],
+  //     ["2014", 1000, 400],
+  //     ["2015", 1170, 460],
+  //     ["2016", 660, 1120],
+  //     ["2017", 1030, 540],
+  //     ["2017", 1030, 540],
+  //   ]);
+
+  var options = {
+    chart: {
+      // title: 'Company Performance',
+      // subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+    },
+  };
+
+  var chart = new google.charts.Bar(
+    document.getElementById("chart_div_manual")
+  );
+
+  chart.draw(data, google.charts.Bar.convertOptions(options));
 }
 
-// Get the element with id="defaultOpen" and click on it
-// document.getElementById("defaultOpen").click();
+async function generateTableDetailManual(from, to, macAddress) {
+  //   let from = document.getElementById("inputFrom").textContent;
+  //   let to = document.getElementById("inputTo").textContent;
+  let dataResult = [];
+
+  //   if (from === "" && to === "") {
+  //     from = "2023-01-01";
+  //     to = "2023-03-01";
+  //   }
+  var myHeaders = new Headers();
+  myHeaders.append("accept", "application/json");
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  await fetch(
+    URL_PATH +
+      "/manual-results?fromDate=" +
+      from +
+      "&toDate=" +
+      to +
+      "&macAddress=" +
+      macAddress,
+    requestOptions
+  )
+    .then((response) => response.text())
+    .then((result) => {
+      for (const iterator of JSON.parse(result)) {
+        dataResult.push(iterator);
+      }
+    })
+    .catch((error) => console.log("error", error));
+
+  //Generate table
+  let tbody = document.getElementById("tbody_detail_manual");
+  for (const iterator of dataResult) {
+    let tr = document.createElement("tr");
+    let td1 = document.createElement("td");
+    let td2 = document.createElement("td");
+    let td3 = document.createElement("td");
+    let td4 = document.createElement("td");
+
+    td1.innerHTML = iterator.macAddress;
+    td2.innerHTML = iterator.isPass == true ? "Pass" : "Fail";
+    td3.innerHTML = await formatDate(iterator.lastDate);
+    td4.innerHTML = 1;
+
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+    tr.appendChild(td3);
+    tr.appendChild(td4);
+
+    tr.name = "tr_offcanvas_manual";
+
+    tbody.appendChild(tr);
+  }
+}
+
+async function drawChart_TimeOfDay_Manual(date) {
+  let arrDate = date;
+  arrDate = arrDate.split("/");
+
+  date = arrDate[2] + "-" + arrDate[1] + "-" + arrDate[0];
+
+  let from = date;
+  let to = date;
+  var myHeaders = new Headers();
+  myHeaders.append("accept", "application/json");
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  let arrData = [["Time of day", "Pass", "Fail"]];
+
+  await fetch(
+    URL_PATH +
+      "/statistics/line-chart-manual/time-of-day?fromDate=" +
+      from +
+      "&toDate=" +
+      to,
+    requestOptions
+  )
+    .then((response) => response.text())
+    .then((result) => {
+      for (const iterator of JSON.parse(result)) {
+        arrData.push([iterator.date, iterator.isPass, iterator.isFail]);
+      }
+    })
+    .catch((error) => console.log("error", error));
+
+  drawAxisTickColors_Manual(arrData);
+}
+
+//**Function********************************************************************************************************************** */
+
+function getLast30Days() {
+  const today = new Date();
+  const last30Days = [];
+  for (let i = 0; i <= 31; i++) {
+    const day = new Date(today);
+    day.setDate(day.getDate() - i);
+    const date = day.toISOString().substr(0, 10);
+    last30Days.push(date);
+  }
+  return {
+    firstDay: last30Days[last30Days.length - 1],
+    lastDay: last30Days[0],
+  };
+}
+
+function getLast7Days() {
+  const today = new Date();
+  const last7Days = [];
+  for (let i = 0; i < 7; i++) {
+    const day = new Date(today);
+    day.setDate(day.getDate() - i);
+    const date = day.toISOString().substr(0, 10);
+    last7Days.push(date);
+  }
+  return {
+    firstDay: last7Days[last7Days.length - 1],
+    lastDay: last7Days[0],
+  };
+}

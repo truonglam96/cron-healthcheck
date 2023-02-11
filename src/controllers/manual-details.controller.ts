@@ -88,7 +88,7 @@ export class ManualDetailsController {
             { createdDate: { lte: new Date(toDate) } },
           ],
         },
-        order: ["createdDate ASC"],
+        order: ["createdDate DESC"],
       };
     } else {
       filter = {
@@ -99,7 +99,7 @@ export class ManualDetailsController {
             { createdDate: { lte: new Date(toDate) } },
           ],
         },
-        order: ["createdDate ASC"],
+        order: ["createdDate DESC"],
       };
     }
 

@@ -77,19 +77,35 @@ export class AutomaticResultsController {
   async find(
     @param.query.string("fromDate") fromDate: string,
     @param.query.string("toDate") toDate: string,
+    @param.query.string("macAddress") macAddress: string
   ): Promise<any> {
     fromDate = fromDate + " 00:00:00";
     toDate = toDate + " 23:59:59";
-    let filter = {
-      where: {
-        macAddress: { neq: "" },
-        and: [
-          { lastDate: { gte: new Date(fromDate) } },
-          { lastDate: { lte: new Date(toDate) } },
-        ],
-      },
-      order: ["lastDate ASC"],
-    };
+    let filter: any;
+
+    if (macAddress == '') {
+      filter = {
+        where: {
+          macAddress: { neq: "" },
+          and: [
+            { lastDate: { gte: new Date(fromDate) } },
+            { lastDate: { lte: new Date(toDate) } },
+          ],
+        },
+        order: ["lastDate DESC"],
+      };
+    } else {
+      filter = {
+        where: {
+          macAddress: macAddress,
+          and: [
+            { lastDate: { gte: new Date(fromDate) } },
+            { lastDate: { lte: new Date(toDate) } },
+          ],
+        },
+        order: ["lastDate DESC"],
+      };
+    }
 
     return await this.automaticResultsRepository.find(filter);
   }

@@ -7,3 +7,4 @@ export * from './manual-details.model';
 export * from './configurations.model';
 export * from './manual-results.model';
 export * from './certificates.model';
+export * from './setting-values.model';

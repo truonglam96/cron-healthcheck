@@ -24,6 +24,7 @@ import {
   AutomaticDetailsRepository,
   ManualResultsRepository,
   ManualDetailsRepository,
+  SettingValuesRepository
 } from "../repositories";
 
 export class StatisticController {
@@ -37,7 +38,9 @@ export class StatisticController {
     @repository(ManualResultsRepository)
     public ManualResultsRepository: ManualResultsRepository,
     @repository(ManualDetailsRepository)
-    public ManualDetailsRepository: ManualDetailsRepository
+    public ManualDetailsRepository: ManualDetailsRepository,
+    @repository(SettingValuesRepository)
+    public SettingValuesRepository: SettingValuesRepository
   ) {}
 
   //Get statistic of line chart automatic
@@ -379,9 +382,6 @@ export class StatisticController {
       )[0];
       arrResult.push(sort);
     }
-
-   
-
     let get_hpi = 0,
       check_battery = 0,
       get_mac = 0,
@@ -479,7 +479,31 @@ export class StatisticController {
   async getLineChartManual(
     @param.query.string("fromDate") fromDate: string,
     @param.query.string("toDate") toDate: string
-  ): Promise<[]> {
+  ): Promise<any> {
+    // let dates: any = []
+    // function printDates(startDate: any, endDate: any) {
+    //   let currentDate = new Date(startDate);
+    //   while (currentDate <= new Date(endDate)) {
+    //     dates.push({date: currentDate.toISOString().split('T')[0], value: 150})
+    //     currentDate.setDate(currentDate.getDate() + 1);
+    //   }
+    // }
+
+    // printDates('2023-01-01', '2023-05-30');
+
+    
+    // function updateValue(arr: any, date: any, value: any) {
+    //   return arr.map((item: any) => {
+    //     if (item.date === date) {
+    //       item['value'] = value;
+    //     }
+    //   });
+    // }
+    
+    // updateValue(dates, '2023-01-01', 32);
+
+    // let aaa = await this.SettingValuesRepository.create({settingName: "Target Date", data: [dates]})
+    let settingData = await this.SettingValuesRepository.find({where: {settingName: "Target Date"}});
     fromDate = fromDate + " 00:00:00";
     toDate = toDate + " 23:59:59";
     let filter = {
@@ -494,7 +518,7 @@ export class StatisticController {
       order: ["lastDate ASC"],
     };
 
-    let data = await this.AutomaticResultsRepository.find(filter);
+    let data = await this.ManualResultsRepository.find(filter);
     let arrDateTime: any = [];
     for (const iterator of data) {
       let date = await this.formatDate(
@@ -553,7 +577,7 @@ export class StatisticController {
       }
       index++;
     }
-    return arrSumUp;
+    return {result: arrSumUp, targetData: settingData[0].data};
   }
 
   //Get statistic for line chart manual time of day
