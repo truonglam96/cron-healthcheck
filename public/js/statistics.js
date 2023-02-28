@@ -28,7 +28,7 @@ async function checkAuthorize() {
   await fetch(URL_PATH + "/whoAmI", requestOptions)
     .then((response) => {
       if (response.status !== 200) {
-        window.location.href = "/public/html/login.html";
+        window.location.href = "/html/login.html";
       }else
       response.text();
     })
