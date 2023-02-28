@@ -43,12 +43,11 @@ async function checkAuthorize() {
     redirect: "follow",
   };
 
-  await fetch("http://[::1]:3000/whoAmI", requestOptions)
+  await fetch(URL_PATH + "/whoAmI", requestOptions)
     .then((response) => {
       if (response.status !== 200) {
         window.location.href = "/public/html/login.html";
-      }else
-      response.text();
+      } else response.text();
     })
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
@@ -98,6 +97,7 @@ function search() {
 function countAll() {
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
@@ -120,7 +120,7 @@ function countAll() {
 function countFilter(filter) {
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
-
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
   var requestOptions = {
     method: "GET",
     headers: myHeaders,
@@ -182,6 +182,7 @@ function generateImgB64() {
 
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
@@ -238,8 +239,12 @@ function formatDate(date) {
 
 function generateImg() {
   const panel = document.getElementById("panel");
+  var myHeaders = new Headers();
+  myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
   var requestOptions = {
     method: "GET",
+    headers: myHeaders,
     redirect: "follow",
   };
 
@@ -484,6 +489,7 @@ async function convertData(id) {
     var myHeaders = new Headers();
     myHeaders.append("accept", "application/json");
     myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
     var raw = JSON.stringify({
       id: id,
     });
@@ -508,6 +514,7 @@ async function getDeviceInfo(id) {
   return await new Promise(function (resolve, reject) {
     var myHeaders = new Headers();
     myHeaders.append("accept", "application/json");
+    myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
     var requestOptions = {
       method: "GET",

@@ -25,7 +25,7 @@ async function login() {
       .then((result) => {
         if (JSON.parse(result).token) {
           localStorage.setItem("token", JSON.parse(result).token);
-          window.location.href = "/public/html/dashboard.html";
+          window.location.href = "/html/dashboard.html";
         } else {
           console.log(result);
           alert("Invalid email or password.");

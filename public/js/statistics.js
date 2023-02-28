@@ -85,7 +85,7 @@ async function generateTableAutomaticDetail_offcanvas(mac) {
   let dataResult = [];
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
-
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
   var requestOptions = {
     method: "GET",
     headers: myHeaders,
@@ -178,6 +178,7 @@ async function generateTableManualDetail_offcanvas(mac) {
   let dataResult = [];
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
@@ -352,6 +353,7 @@ async function drawChart_TimeOfDay_Automatic(date) {
   let to = date;
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
@@ -399,6 +401,7 @@ async function drawChart_Pie_Automatic(from, to) {
 
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
@@ -454,6 +457,7 @@ async function drawChart_Line_Automatic(from, to) {
   //   }
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
@@ -591,6 +595,7 @@ async function generateTableDetailAutomatic(from, to, macAddress) {
   let dataResult = [];
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
@@ -682,6 +687,7 @@ async function drawChart_Pie_Manual(from, to) {
 
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
@@ -742,6 +748,7 @@ async function drawChart_Line_Manual(from, to) {
   //   }
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
@@ -900,6 +907,7 @@ async function generateTableDetailManual(from, to, macAddress) {
   //   }
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
@@ -960,6 +968,7 @@ async function drawChart_TimeOfDay_Manual(date) {
   let to = date;
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",

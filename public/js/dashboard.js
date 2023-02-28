@@ -41,7 +41,7 @@ async function checkAuthorize() {
   const token = localStorage.getItem("token");
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
-  myHeaders.append("Authorization", "Bearer " + token);
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
@@ -49,12 +49,11 @@ async function checkAuthorize() {
     redirect: "follow",
   };
 
-  await fetch(URL_PATH+ "/whoAmI", requestOptions)
+  await fetch(URL_PATH + "/whoAmI", requestOptions)
     .then((response) => {
       if (response.status !== 200) {
-        window.location.href = "/public/html/login.html";
-      }else
-      response.text();
+        window.location.href = "/html/login.html";
+      } else response.text();
     })
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
@@ -76,7 +75,7 @@ async function generateTableAutomaticDetail_offcanvas(mac) {
   let dataResult = [];
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
-
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
   var requestOptions = {
     method: "GET",
     headers: myHeaders,
@@ -169,6 +168,7 @@ async function generateTableManualDetail_offcanvas(mac) {
   let dataResult = [];
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
@@ -413,7 +413,7 @@ async function getDataPie1(from, to) {
   let dataResult;
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
-
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
   var requestOptions = {
     method: "GET",
     headers: myHeaders,
@@ -439,6 +439,7 @@ async function getDataColumn1(from, to) {
   let dataResult = [];
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
@@ -469,6 +470,7 @@ async function getDataColumn2(from, to) {
   let dataResult = [];
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
@@ -1215,6 +1217,7 @@ async function generateTableDetailAutomatic(from, to, macAddress) {
   let dataResult = [];
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
@@ -1490,6 +1493,7 @@ async function getDataTimeOfDayAutomatic(date) {
   let to = date;
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
@@ -1529,6 +1533,7 @@ async function generateTableDetailManual(from, to, macAddress) {
   //   }
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
@@ -1595,6 +1600,7 @@ async function getDataColumn1_1(from, to) {
   let dataResult = [];
   var myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
   var requestOptions = {
     method: "GET",
