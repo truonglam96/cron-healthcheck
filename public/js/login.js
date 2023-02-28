@@ -26,6 +26,7 @@ async function login() {
         if (JSON.parse(result).token) {
           localStorage.setItem("token", JSON.parse(result).token);
           window.location.href = "/html/dashboard.html";
+        // window.location.href = "/view-page.html";
         } else {
           console.log(result);
           alert("Invalid email or password.");

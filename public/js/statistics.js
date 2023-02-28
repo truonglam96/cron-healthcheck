@@ -28,7 +28,7 @@ async function checkAuthorize() {
   await fetch(URL_PATH + "/whoAmI", requestOptions)
     .then((response) => {
       if (response.status !== 200) {
-        window.location.href = "/html/login.html";
+        window.location.href = "http://35.240.171.212:3000/html/login.html";
       }else
       response.text();
     })
