@@ -1,3 +1,4 @@
+import { authenticate } from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -20,6 +21,7 @@ import {
 import {OtaInfo} from '../models';
 import {OtaInfoRepository} from '../repositories';
 
+@authenticate('jwt')
 export class OtaInfoController {
   constructor(
     @repository(OtaInfoRepository)

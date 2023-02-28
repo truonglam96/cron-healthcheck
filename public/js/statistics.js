@@ -8,14 +8,42 @@ google.charts.load("current", { packages: ["bar"] });
 // google.charts.setOnLoadCallback(callbackOnload);
 
 window.onload = async function () {
+  checkAuthorize();
   callbackOnload();
 };
+
+async function checkAuthorize() {
+  const token = localStorage.getItem("token");
+  let res;
+  var myHeaders = new Headers();
+  myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + token);
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  await fetch(URL_PATH + "/whoAmI", requestOptions)
+    .then((response) => {
+      if (response.status !== 200) {
+        window.location.href = "/public/html/login.html";
+      }else
+      response.text();
+    })
+    .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
+
+  return res;
+}
 
 window.addEventListener("mouseup", function (e) {
   if (
     e.target.tagName == "TD" &&
     e.target.parentNode.name == "tr_offcanvas_automatic"
   ) {
+    document.getElementById("tbody_automatic_detail_canvas").innerHTML = "";
     let mac = e.target.parentNode.children[0].innerHTML;
     generateTableAutomaticDetail_offcanvas(mac);
   }
@@ -24,6 +52,7 @@ window.addEventListener("mouseup", function (e) {
     e.target.tagName == "TD" &&
     e.target.parentNode.name == "tr_offcanvas_manual"
   ) {
+    document.getElementById("tbody_manual_detail_canvas").innerHTML = "";
     let mac = e.target.parentNode.children[0].innerHTML;
     generateTableManualDetail_offcanvas(mac);
   }
@@ -101,9 +130,9 @@ async function generateTableAutomaticDetail_offcanvas(mac) {
       iterator.logResult.replace(/\T/gi, "t").replace(/\F/gi, "f")
     );
 
-    let type = iterator.type
-    if(type != 'A' && type != 'B'){
-        type = '-'
+    let type = iterator.type;
+    if (type != "A" && type != "B") {
+      type = "-";
     }
 
     td1.innerHTML = iterator.macAddress;
@@ -117,7 +146,8 @@ async function generateTableAutomaticDetail_offcanvas(mac) {
         ? "-"
         : JSON.stringify(errorReason[errorReason.length - 1]);
     td7.innerHTML = type;
-    td8.innerHTML = iterator.resultData!=undefined?iterator.resultData: '-';
+    td8.innerHTML =
+      iterator.resultData != undefined ? iterator.resultData : "-";
 
     tr.appendChild(td1);
     tr.appendChild(td2);
@@ -196,18 +226,17 @@ async function generateTableManualDetail_offcanvas(mac) {
     td2.innerHTML = iterator.isPass == true ? "Pass" : "Fail";
     td3.innerHTML = await formatDateTime(iterator.createdDate);
     td4.innerHTML = iterator.testingTime;
-    td5.innerHTML =
-      iterator.firmwareOTA == "" ? "-" : iterator.firmwareOTA;
+    td5.innerHTML = iterator.firmwareOTA == "" ? "-" : iterator.firmwareOTA;
     td6.innerHTML =
       iterator.isPass == true
         ? "-"
         : JSON.stringify(errorReason[errorReason.length - 1]);
-    
+
     let img = document.createElement("img");
-    img.src = "data:image/png;base64," + iterator.imageB64
-    img.alt = "Don't have image data"
-    img.style.width = "100px"
-    td7.appendChild(img)
+    img.src = "data:image/png;base64," + iterator.imageB64;
+    img.alt = "Don't have image data";
+    img.style.width = "100px";
+    td7.appendChild(img);
 
     tr.appendChild(td1);
     tr.appendChild(td2);
@@ -596,9 +625,9 @@ async function generateTableDetailAutomatic(from, to, macAddress) {
     let td3 = document.createElement("td");
     let td4 = document.createElement("td");
 
-    let type = iterator.type
-    if(type != 'A' && type != 'B'){
-        type = '-'
+    let type = iterator.type;
+    if (type != "A" && type != "B") {
+      type = "-";
     }
 
     td1.innerHTML = iterator.macAddress;

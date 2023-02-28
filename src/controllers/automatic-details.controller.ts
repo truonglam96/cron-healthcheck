@@ -1,3 +1,4 @@
+import { authenticate } from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -20,6 +21,7 @@ import {
 import {AutomaticDetails} from '../models';
 import {AutomaticDetailsRepository} from '../repositories';
 
+@authenticate('jwt')
 export class AutomaticDetailsController {
   constructor(
     @repository(AutomaticDetailsRepository)

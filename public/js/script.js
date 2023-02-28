@@ -2,6 +2,7 @@
 const URL_PATH = "http://35.240.171.212:3000";
 
 window.onload = async function () {
+  checkAuthorize();
   generateImgB64();
 };
 
@@ -28,6 +29,29 @@ function refreshTag() {
   document.getElementById("linechartIMUGyroscope").innerHTML = "";
   document.getElementById("linechartForce").innerHTML = "";
   document.getElementById("json").innerHTML = "";
+}
+
+async function checkAuthorize() {
+  const token = localStorage.getItem("token");
+  var myHeaders = new Headers();
+  myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + token);
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  await fetch("http://[::1]:3000/whoAmI", requestOptions)
+    .then((response) => {
+      if (response.status !== 200) {
+        window.location.href = "/public/html/login.html";
+      }else
+      response.text();
+    })
+    .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
 }
 
 async function loadJson(id) {
@@ -272,16 +296,16 @@ function drawCharts(id) {
       arrAcc = [];
     let indexIMU = 0;
     // for (let index = 0; index < imuData.length; index++) {
-      for (let index = 0; index < 1248; index++) {
-      const element = imuData[index]?imuData[index]:[0,0,0,0,0,0];
+    for (let index = 0; index < 1248; index++) {
+      const element = imuData[index] ? imuData[index] : [0, 0, 0, 0, 0, 0];
       arrGyro.push([
-        parseFloat((indexIMU).toFixed(3)),
+        parseFloat(indexIMU.toFixed(3)),
         element[0],
         element[1],
         element[2],
       ]);
       arrAcc.push([
-        parseFloat((indexIMU).toFixed(3)),
+        parseFloat(indexIMU.toFixed(3)),
         element[3],
         element[4],
         element[5],

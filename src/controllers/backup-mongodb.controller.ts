@@ -1,3 +1,4 @@
+import { authenticate } from "@loopback/authentication";
 import { inject } from "@loopback/core";
 import {
   Count,
@@ -34,6 +35,7 @@ export class BackupMongodbController {
     public otaInfoRepository: OtaInfoRepository
   ) {}
 
+  @authenticate('jwt')
   @get("/DrinkMoments/{id}")
   @response(200, {
     description: "DrinkMoments model instance",
@@ -47,6 +49,7 @@ export class BackupMongodbController {
     return this.drinkMomentsRepository.findById(id);
   }
 
+  @authenticate('jwt')
   @get("/get_img")
   @response(200, {})
   async getLink(): Promise<any> {
@@ -167,6 +170,7 @@ export class BackupMongodbController {
     // }
   }
 
+  @authenticate('jwt')
   //Create 1 data opener
   @post("/create-drink-moments")
   @response(200, {
@@ -213,6 +217,7 @@ export class BackupMongodbController {
   }
 
   //Convert data force sensor b64 to chart
+  @authenticate('jwt')
   @post("/convert-force")
   @response(200, {
     description: "Testing upload to server",
@@ -227,6 +232,7 @@ export class BackupMongodbController {
   }
 
   //Convert data imu sensor b64 to chart
+  @authenticate('jwt')
   @post("/convert-imu")
   @response(200, {
     description: "Testing upload to server",
@@ -241,6 +247,7 @@ export class BackupMongodbController {
   }
 
   //Convert b64 to array (force, imu)
+  @authenticate('jwt')
   @post("/convert-force-imu")
   @response(200, {
     description: "Testing upload to server",
@@ -271,6 +278,7 @@ export class BackupMongodbController {
   }
 
   //Get data of macAddress
+  @authenticate('jwt')
   @get("/get-info-device")
   @response(200, {
     description: "Testing upload to server",

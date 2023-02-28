@@ -12,9 +12,9 @@ const config = {
   user: '',
   password: '',
   database: '',
-  useNewUrlParser: true,
-  retryWrites: false,
-  authSource: '',
+  // useNewUrlParser: true,
+  // retryWrites: true,
+  // authSource: 'DRINK-MOMENTS',
 };
 
 // Observe application's life cycle to disconnect the datasource when

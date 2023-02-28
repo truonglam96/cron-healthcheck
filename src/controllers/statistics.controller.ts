@@ -1,3 +1,4 @@
+import { authenticate } from "@loopback/authentication";
 import {
   Count,
   CountSchema,
@@ -24,9 +25,10 @@ import {
   AutomaticDetailsRepository,
   ManualResultsRepository,
   ManualDetailsRepository,
-  SettingValuesRepository
+  SettingValuesRepository,
 } from "../repositories";
 
+@authenticate('jwt')
 export class StatisticController {
   constructor(
     @repository(DrinkMomentsRepository)
@@ -159,6 +161,176 @@ export class StatisticController {
   }
 
   //Get statistic of line chart automatic
+  @get("/statistics/pie-automatic-type")
+  @response(200, {
+    description: "Testing upload to server",
+    content: { "application/json": { schema: {} } },
+  })
+  async getPie2Data_Type(
+    @param.query.string("fromDate") fromDate: string,
+    @param.query.string("toDate") toDate: string
+  ): Promise<{}> {
+    fromDate = fromDate + " 00:00:00";
+    toDate = toDate + " 23:59:59";
+    let filterPassA = {
+      // "limit": 100,
+      where: {
+        macAddress: { neq: "" },
+        type: "A",
+        isPass: true,
+        and: [
+          { lastDate: { gte: new Date(fromDate) } },
+          { lastDate: { lte: new Date(toDate) } },
+        ],
+      },
+      order: ["lastDate ASC"],
+    };
+
+    let filterPassB = {
+      // "limit": 100,
+      where: {
+        macAddress: { neq: "" },
+        type: "B",
+        isPass: false,
+        and: [
+          { lastDate: { gte: new Date(fromDate) } },
+          { lastDate: { lte: new Date(toDate) } },
+        ],
+      },
+      order: ["lastDate ASC"],
+    };
+
+    let filterFailA = {
+      // "limit": 100,
+      where: {
+        macAddress: { neq: "" },
+        type: "A",
+        isPass: true,
+        and: [
+          { lastDate: { gte: new Date(fromDate) } },
+          { lastDate: { lte: new Date(toDate) } },
+        ],
+      },
+      order: ["lastDate ASC"],
+    };
+
+    let filterFailB = {
+      // "limit": 100,
+      where: {
+        macAddress: { neq: "" },
+        type: "B",
+        isPass: false,
+        and: [
+          { lastDate: { gte: new Date(fromDate) } },
+          { lastDate: { lte: new Date(toDate) } },
+        ],
+      },
+      order: ["lastDate ASC"],
+    };
+
+    let dataPassA = await this.AutomaticResultsRepository.find(filterPassA);
+    let dataPassB = await this.AutomaticResultsRepository.find(filterPassB);
+    let dataFailA = await this.AutomaticResultsRepository.find(filterFailA);
+    let dataFailB = await this.AutomaticResultsRepository.find(filterFailB);
+
+    return {
+      a: {
+        pass: dataPassA.length,
+        fail: dataFailA.length,
+      },
+      b: {
+        pass: dataPassB.length,
+        fail: dataFailB.length,
+      },
+    };
+  }
+
+  //Get statistic of line chart manual
+  @get("/statistics/pie-manual-type")
+  @response(200, {
+    description: "Testing upload to server",
+    content: { "application/json": { schema: {} } },
+  })
+  async getPie2Data_TypeManual(
+    @param.query.string("fromDate") fromDate: string,
+    @param.query.string("toDate") toDate: string
+  ): Promise<{}> {
+    fromDate = fromDate + " 00:00:00";
+    toDate = toDate + " 23:59:59";
+    let filterPassA = {
+      // "limit": 100,
+      where: {
+        macAddress: { neq: "" },
+        type: "A",
+        isPass: true,
+        and: [
+          { lastDate: { gte: new Date(fromDate) } },
+          { lastDate: { lte: new Date(toDate) } },
+        ],
+      },
+      order: ["lastDate ASC"],
+    };
+
+    let filterPassB = {
+      // "limit": 100,
+      where: {
+        macAddress: { neq: "" },
+        type: "B",
+        isPass: true,
+        and: [
+          { lastDate: { gte: new Date(fromDate) } },
+          { lastDate: { lte: new Date(toDate) } },
+        ],
+      },
+      order: ["lastDate ASC"],
+    };
+
+    let filterFailA = {
+      // "limit": 100,
+      where: {
+        macAddress: { neq: "" },
+        type: "A",
+        isPass: true,
+        and: [
+          { lastDate: { gte: new Date(fromDate) } },
+          { lastDate: { lte: new Date(toDate) } },
+        ],
+      },
+      order: ["lastDate ASC"],
+    };
+
+    let filterFailB = {
+      // "limit": 100,
+      where: {
+        macAddress: { neq: "" },
+        type: "B",
+        isPass: true,
+        and: [
+          { lastDate: { gte: new Date(fromDate) } },
+          { lastDate: { lte: new Date(toDate) } },
+        ],
+      },
+      order: ["lastDate ASC"],
+    };
+
+    let dataPassA = await this.ManualResultsRepository.find(filterPassA);
+    let dataPassB = await this.ManualResultsRepository.find(filterPassB);
+    let dataFailA = await this.ManualResultsRepository.find(filterFailA);
+    let dataFailB = await this.ManualResultsRepository.find(filterFailB);
+
+    return {
+      a: {
+        pass: dataPassA.length,
+        fail: dataFailA.length,
+      },
+      b: {
+        pass: dataPassB.length,
+        fail: dataFailB.length,
+      },
+    };
+  }
+
+  //Get statistic of line chart automatic
   @get("/statistics/line-chart-automatic")
   @response(200, {
     description: "Testing upload to server",
@@ -245,6 +417,184 @@ export class StatisticController {
       index++;
     }
     return arrSumUp;
+  }
+
+  //Get statistic of line chart automatic bar
+  @get("/statistics/line-chart-automatic-bar")
+  @response(200, {
+    description: "Testing upload to server",
+    content: { "application/json": { schema: {} } },
+  })
+  async getLineChartAutomatic_Bar(
+    @param.query.string("fromDate") fromDate: string,
+    @param.query.string("toDate") toDate: string
+  ): Promise<[]> {
+    fromDate = fromDate + " 00:00:00";
+    toDate = toDate + " 23:59:59";
+    let filter = {
+      // "limit": 100,
+      where: {
+        macAddress: { neq: "" },
+        and: [
+          { lastDate: { gte: new Date(fromDate) } },
+          { lastDate: { lte: new Date(toDate) } },
+        ],
+      },
+      order: ["lastDate ASC"],
+    };
+
+    let data = await this.AutomaticResultsRepository.find(filter);
+    let arrDateTime: any = [];
+    for (const iterator of data) {
+      // let date = await this.formatDate(
+      //   await this.timeFormat(iterator.lastDate, 7)
+      // );
+      let date = await this.formatDate(
+        await this.timeFormat(iterator.lastDate, 0)
+      );
+
+      if (!arrDateTime.hasOwnProperty(date)) {
+        let isPass = 0,
+          isFail = 0;
+        if (iterator.isPass) {
+          isPass = 1;
+          isFail = 0;
+        } else {
+          isPass = 0;
+          isFail = 1;
+        }
+        //Push new object to array
+        arrDateTime[date] = {
+          isPass: isPass,
+          isFail: isFail,
+        };
+      } else {
+        let isPass = 0,
+          isFail = 0;
+        if (iterator.isPass) {
+          isPass = arrDateTime[date].isPass + 1;
+          isFail = arrDateTime[date].isFail;
+        } else {
+          isFail = arrDateTime[date].isFail + 1;
+          isPass = arrDateTime[date].isPass;
+        }
+        //Update value for exist object
+        arrDateTime[date] = {
+          isPass: isPass,
+          isFail: isFail,
+        };
+      }
+    }
+    let arrResult: any = [];
+    // let arrSumUp: any = [];
+    // let index = 0;
+    for (const key in arrDateTime) {
+      arrResult.push({ date: key, ...arrDateTime[key] });
+      //   if (index != 0) {
+      //     arrSumUp.push({
+      //       date: key,
+      //       isPass: arrSumUp[index - 1].isPass + arrResult[index].isPass,
+      //       isFail: arrSumUp[index - 1].isFail + arrResult[index].isFail,
+      //     });
+      //   } else {
+      //     arrSumUp.push({
+      //       date: key,
+      //       isPass: arrResult[index].isPass,
+      //       isFail: arrResult[index].isFail,
+      //     });
+      //   }
+      //   index++;
+    }
+    return arrResult;
+  }
+
+  //Get statistic of line chart manual bar
+  @get("/statistics/line-chart-manual-bar")
+  @response(200, {
+    description: "Testing upload to server",
+    content: { "application/json": { schema: {} } },
+  })
+  async getLineChartManual_Bar(
+    @param.query.string("fromDate") fromDate: string,
+    @param.query.string("toDate") toDate: string
+  ): Promise<[]> {
+    fromDate = fromDate + " 00:00:00";
+    toDate = toDate + " 23:59:59";
+    let filter = {
+      // "limit": 100,
+      where: {
+        macAddress: { neq: "" },
+        and: [
+          { lastDate: { gte: new Date(fromDate) } },
+          { lastDate: { lte: new Date(toDate) } },
+        ],
+      },
+      order: ["lastDate ASC"],
+    };
+
+    let data = await this.ManualResultsRepository.find(filter);
+    let arrDateTime: any = [];
+    for (const iterator of data) {
+      // let date = await this.formatDate(
+      //   await this.timeFormat(iterator.lastDate, 7)
+      // );
+      let date = await this.formatDate(
+        await this.timeFormat(iterator.lastDate, 0)
+      );
+
+      if (!arrDateTime.hasOwnProperty(date)) {
+        let isPass = 0,
+          isFail = 0;
+        if (iterator.isPass) {
+          isPass = 1;
+          isFail = 0;
+        } else {
+          isPass = 0;
+          isFail = 1;
+        }
+        //Push new object to array
+        arrDateTime[date] = {
+          isPass: isPass,
+          isFail: isFail,
+        };
+      } else {
+        let isPass = 0,
+          isFail = 0;
+        if (iterator.isPass) {
+          isPass = arrDateTime[date].isPass + 1;
+          isFail = arrDateTime[date].isFail;
+        } else {
+          isFail = arrDateTime[date].isFail + 1;
+          isPass = arrDateTime[date].isPass;
+        }
+        //Update value for exist object
+        arrDateTime[date] = {
+          isPass: isPass,
+          isFail: isFail,
+        };
+      }
+    }
+    let arrResult: any = [];
+    // let arrSumUp: any = [];
+    // let index = 0;
+    for (const key in arrDateTime) {
+      arrResult.push({ date: key, ...arrDateTime[key] });
+      //   if (index != 0) {
+      //     arrSumUp.push({
+      //       date: key,
+      //       isPass: arrSumUp[index - 1].isPass + arrResult[index].isPass,
+      //       isFail: arrSumUp[index - 1].isFail + arrResult[index].isFail,
+      //     });
+      //   } else {
+      //     arrSumUp.push({
+      //       date: key,
+      //       isPass: arrResult[index].isPass,
+      //       isFail: arrResult[index].isFail,
+      //     });
+      //   }
+      //   index++;
+    }
+    return arrResult;
   }
 
   //Get statistic for line chart automatic time of day
@@ -480,18 +830,20 @@ export class StatisticController {
     @param.query.string("fromDate") fromDate: string,
     @param.query.string("toDate") toDate: string
   ): Promise<any> {
-    // let dates: any = []
+    // let dates: any = [];
     // function printDates(startDate: any, endDate: any) {
     //   let currentDate = new Date(startDate);
     //   while (currentDate <= new Date(endDate)) {
-    //     dates.push({date: currentDate.toISOString().split('T')[0], value: 150})
+    //     dates.push({
+    //       date: currentDate.toISOString().split("T")[0],
+    //       value: 150,
+    //     });
     //     currentDate.setDate(currentDate.getDate() + 1);
     //   }
     // }
 
-    // printDates('2023-01-01', '2023-05-30');
+    // printDates("2023-01-01", "2023-05-30");
 
-    
     // function updateValue(arr: any, date: any, value: any) {
     //   return arr.map((item: any) => {
     //     if (item.date === date) {
@@ -499,11 +851,22 @@ export class StatisticController {
     //     }
     //   });
     // }
-    
+
     // updateValue(dates, '2023-01-01', 32);
 
-    // let aaa = await this.SettingValuesRepository.create({settingName: "Target Date", data: [dates]})
-    let settingData = await this.SettingValuesRepository.find({where: {settingName: "Target Date"}});
+    // try {
+      // let aaa = await this.SettingValuesRepository.create({
+      //   settingName: "Target Date",
+      //   data: [dates],
+      // });
+    //   console.log(aaa);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+
+    let settingData = await this.SettingValuesRepository.find({
+      where: { settingName: "Target Date" },
+    });
     fromDate = fromDate + " 00:00:00";
     toDate = toDate + " 23:59:59";
     let filter = {
@@ -577,7 +940,7 @@ export class StatisticController {
       }
       index++;
     }
-    return {result: arrSumUp, targetData: settingData[0].data};
+    return { result: arrSumUp, targetData: settingData[0].data };
   }
 
   //Get statistic for line chart manual time of day

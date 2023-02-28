@@ -1,0 +1,122 @@
+.main {
+  background-color: #f4f5f7;
+  font-family: 'Archivo', sans-serif;
+  /* font-size: 0.75em;  */
+  font-weight: 550; 
+  /* white-space: nowrap;  */
+  vertical-align: baseline;
+}
+
+.top-div{
+  width: 97vw;
+  margin: auto;
+}
+
+.main-automatic {
+  width: 97vw;
+  margin: auto;
+}
+
+.main-manual {
+  width: 97vw;
+  margin: auto;
+  display: none;
+}
+
+.menu-left {
+  float: left;
+  width: 8vw;
+  /* height: 177vh; */
+  height: 177vh;
+  background-color: #ffffff;
+  border-radius: 5px;
+  position: relative;
+}
+
+.search-area {
+  height: 5vh;
+  /* border: 1px solid black; */
+}
+
+.col-one {
+  /* border: 1px solid black; */
+  height: 15vh;
+  background-color: #f4f5f7;
+}
+
+.col-two {
+  /* border: 1px solid black; */
+  height: 50vh;
+  background-color: #f4f5f7;
+  padding: 5px;
+}
+
+.col-three {
+  /* border: 1px solid black; */
+  padding-top: 23px;
+  height: 50vh;
+  background-color: #f4f5f7;
+}
+
+.col-four {
+  /* border: 1px solid black; */
+  padding-top: 23px;
+  height: 50vh;
+  background-color: #f4f5f7;
+}
+
+.header-bar {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: #ffffff;
+  font-family: "Cerebri Sans,sans-serif";
+  font-size: larger;
+}
+
+.view-chart {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  border-radius: 5px;
+  background-color: #ffffff;
+  position: relative;
+}
+
+h1 {
+  text-align: center;
+  /* color: #6658dd; */
+  /* font-family: "Cerebri Sans,sans-serif"; */
+}
+
+.align-center {
+  position: absolute;
+  bottom: 40px;
+  text-align: center;
+  color: #6658dd;
+  /* font-family: "Cerebri Sans,sans-serif"; */
+  font-size: 40px;
+  width: 100%;
+  font-style: italic;
+}
+
+.bottom-right {
+  position: absolute;
+  bottom: 19px;
+  left: 5px;
+  color: #6658dd;
+  font-family: "Cerebri Sans,sans-serif";
+  font-size: 18px;
+}
+
+
+
+
+
+
+.tableFixHead          { overflow: auto; height: 100%; }
+.tableFixHead thead th { position: sticky; top: 0; z-index: 1; background-color: rgb(255, 254, 254); color: #6658dd;}
+
+/* Just common table stuff. Really. */
+table  { border-collapse: collapse; width: 100%; }
+th, td { padding: 8px 16px;}
+th     { background:#eee;  }

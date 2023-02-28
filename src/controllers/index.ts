@@ -1,11 +1,12 @@
 export * from './ping.controller';
-export * from './elastic.controller';
+// export * from './elastic.controller';
 export * from './backup-mongodb.controller';
 export * from './statistics.controller';
-export * from './file-download.controller';
-export * from './file-upload.controller';
+// export * from './file-download.controller';
+// export * from './file-upload.controller';
 export * from './ota-info.controller';
 export * from './automatic-details.controller';
 export * from './automatic-results.controller';
 export * from './manual-results.controller';
 export * from './manual-details.controller';
+export * from './qctool-request.controller';

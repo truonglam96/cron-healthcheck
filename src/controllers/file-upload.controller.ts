@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import { authenticate } from '@loopback/authentication';
 import {inject} from '@loopback/core';
 import {
   post,
@@ -17,6 +18,7 @@ import {FileUploadHandler} from '../types';
 /**
  * A controller to handle file uploads using multipart/form-data media type
  */
+@authenticate('jwt')
 export class FileUploadController {
   /**
    * Constructor

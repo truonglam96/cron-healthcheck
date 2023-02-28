@@ -8,3 +8,5 @@ export * from './configurations.model';
 export * from './manual-results.model';
 export * from './certificates.model';
 export * from './setting-values.model';
+export * from './users.model';
+export * from './user-credentials.model';

@@ -16,6 +16,13 @@ import * as dotenv from 'dotenv';
 import {MetricsBindings, MetricsComponent} from '@loopback/metrics';
 import multer from 'multer';
 import {FILE_UPLOAD_SERVICE, STORAGE_DIRECTORY} from './keys';
+import {AuthenticationComponent} from '@loopback/authentication';
+import {
+  JWTAuthenticationComponent,
+  MyUserService,
+  UserServiceBindings,
+} from '@loopback/authentication-jwt';
+import {QcDataDataSource} from './datasources';
 
 
 export {ApplicationConfig};
@@ -80,7 +87,17 @@ export class GetUrlApplication extends BootMixin(
     });
 
     //
+    // ------ ADD SNIPPET AT THE BOTTOM ---------
+    // Mount authentication system
+    this.component(AuthenticationComponent);
+    // Mount jwt component
+    this.component(JWTAuthenticationComponent);
+    // Bind datasource
+    this.dataSource(QcDataDataSource, UserServiceBindings.DATASOURCE_NAME);
+    // ------------- END OF SNIPPET -------------
     
+    //new
+    this.bind(UserServiceBindings.USER_SERVICE).toClass(MyUserService);
   }
 
   protected configureFileUpload(destination?: string) {
