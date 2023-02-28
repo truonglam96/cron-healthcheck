@@ -286,7 +286,7 @@ function manualClick() {
 }
 
 function drinkMomentClick() {
-  window.location.href = "/public/view-page.html";
+  window.location.href = "http://35.240.171.212:3000/view-page.html";
 }
 
 function getLast30Days() {
