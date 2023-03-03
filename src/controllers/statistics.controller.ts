@@ -28,7 +28,7 @@ import {
   SettingValuesRepository,
 } from "../repositories";
 
-@authenticate('jwt')
+@authenticate("jwt")
 export class StatisticController {
   constructor(
     @repository(DrinkMomentsRepository)
@@ -191,7 +191,7 @@ export class StatisticController {
       where: {
         macAddress: { neq: "" },
         type: "B",
-        isPass: false,
+        isPass: true,
         and: [
           { lastDate: { gte: new Date(fromDate) } },
           { lastDate: { lte: new Date(toDate) } },
@@ -205,7 +205,7 @@ export class StatisticController {
       where: {
         macAddress: { neq: "" },
         type: "A",
-        isPass: true,
+        isPass: false,
         and: [
           { lastDate: { gte: new Date(fromDate) } },
           { lastDate: { lte: new Date(toDate) } },
@@ -234,13 +234,15 @@ export class StatisticController {
     let dataFailB = await this.AutomaticResultsRepository.find(filterFailB);
 
     return {
-      a: {
-        pass: dataPassA.length,
-        fail: dataFailA.length,
+      pass: {
+        total: dataPassA.length + dataPassB.length,
+        typeA: dataPassA.length,
+        typeB: dataPassB.length,
       },
-      b: {
-        pass: dataPassB.length,
-        fail: dataFailB.length,
+      fail: {
+        total: dataFailA.length + dataFailB.length,
+        typeA: dataFailA.length,
+        typeB: dataFailB.length,
       },
     };
   }
@@ -319,15 +321,82 @@ export class StatisticController {
     let dataFailB = await this.ManualResultsRepository.find(filterFailB);
 
     return {
-      a: {
-        pass: dataPassA.length,
-        fail: dataFailA.length,
+      pass: {
+        total: dataPassA.length + dataPassB.length,
+        typeA: dataPassA.length,
+        typeB: dataPassB.length,
       },
-      b: {
-        pass: dataPassB.length,
-        fail: dataFailB.length,
+      fail: {
+        total: dataFailA.length + dataFailB.length,
+        typeA: dataFailA.length,
+        typeB: dataFailB.length,
       },
     };
+  }
+
+  //Get statistic count4Column
+  @get("/statistics/count4Column")
+  @response(200, {
+    description: "Testing upload to server",
+    content: { "application/json": { schema: {} } },
+  })
+  async getCount4Column(
+    @param.query.string("fromDate") fromDate: string,
+    @param.query.string("toDate") toDate: string
+  ): Promise<any> {
+    fromDate = fromDate + " 00:00:00";
+    toDate = toDate + " 23:59:59";
+    
+    let filterPassManual = {
+      where: {
+        macAddress: { neq: "" },
+        isPass: true,
+        and: [
+          { lastDate: { gte: new Date(fromDate) } },
+          { lastDate: { lte: new Date(toDate) } },
+        ],
+      },
+      order: ["lastDate ASC"],
+    };
+
+    let filterFailManual = {
+      where: {
+        macAddress: { neq: "" },
+        isPass: false,
+        and: [
+          { lastDate: { gte: new Date(fromDate) } },
+          { lastDate: { lte: new Date(toDate) } },
+        ],
+      },
+      order: ["lastDate ASC"],
+    };
+
+    let filterPassAutomaticResult = {
+      where: {
+        macAddress: { neq: "" },
+        isPass: true,
+        and: [
+          { lastDate: { gte: new Date(fromDate) } },
+          { lastDate: { lte: new Date(toDate) } },
+        ],
+      },
+      order: ["lastDate ASC"],
+    };
+
+    let dataPassManual = await this.ManualResultsRepository.find(filterPassManual);
+    let dataFailManual = await this.ManualResultsRepository.find(filterFailManual);
+    let dataPassAutomaticResult = await this.AutomaticResultsRepository.find(filterPassAutomaticResult);
+    
+    return {
+      totalAchieved: dataPassManual.length,
+      percentAchieved: ((dataPassManual.length*100)/21000).toFixed(1),
+      totalQualified: dataPassManual.length,
+      percentQualified: ((dataPassManual.length*100)/21000).toFixed(1),
+      totalUnsatisfactory: dataFailManual.length,
+      percentUnsatisfactory: ((dataFailManual.length*100)/21000).toFixed(1),
+      totalPCBTestAutomatic: dataPassAutomaticResult.length,
+      percentPCBTestAutomatic:((dataPassAutomaticResult.length*100)/21000).toFixed(1)
+    }
   }
 
   //Get statistic of line chart automatic
@@ -418,6 +487,141 @@ export class StatisticController {
     }
     return arrSumUp;
   }
+
+  // //Get statistic of line chart automatic
+  // @get("/statistics/pie2-chart-automatic")
+  // @response(200, {
+  //   description: "Testing upload to server",
+  //   content: { "application/json": { schema: {} } },
+  // })
+  // async getPie2Automatic(
+  //   @param.query.string("fromDate") fromDate: string,
+  //   @param.query.string("toDate") toDate: string
+  // ): Promise<any> {
+  //   fromDate = fromDate + " 00:00:00";
+  //   toDate = toDate + " 23:59:59";
+  //   let filterPass = {
+  //     // "limit": 100,
+  //     where: {
+  //       macAddress: { neq: "" },
+  //       isPass: true,
+  //       and: [
+  //         { lastDate: { gte: new Date(fromDate) } },
+  //         { lastDate: { lte: new Date(toDate) } },
+  //       ],
+  //     },
+  //     order: ["lastDate ASC"],
+  //   };
+
+  //   let filterPass = {
+  //     // "limit": 100,
+  //     where: {
+  //       macAddress: { neq: "" },
+  //       isPass: true,
+  //       and: [
+  //         { lastDate: { gte: new Date(fromDate) } },
+  //         { lastDate: { lte: new Date(toDate) } },
+  //       ],
+  //     },
+  //     order: ["lastDate ASC"],
+  //   };
+
+  //   let data = await this.AutomaticResultsRepository.find(filter);
+
+  //   let res = {
+  //     pass: {
+  //       value: 100,
+  //       typeA: 100,
+  //       typeB: 100
+  //     },
+  //     fail: {
+  //       value: 100,
+  //       typeA: 100,
+  //       typeB: 100
+  //     }
+  //   };
+
+  //   return [
+  //     {
+  //       category: "Fail",
+  //       value: 300,
+  //       subData: [
+  //         { category: "Type A", value: 350 },
+  //         { category: "Type B", value: 150 },
+  //       ],
+  //     },
+  //     {
+  //       category: "Pass",
+  //       value: 500,
+  //       subData: [
+  //         { category: "Type A", value: 200 },
+  //         { category: "Type B", value: 150 },
+  //       ],
+  //     },
+  //   ];
+  //   // let arrDateTime: any = [];
+  //   // for (const iterator of data) {
+  //   //   // let date = await this.formatDate(
+  //   //   //   await this.timeFormat(iterator.lastDate, 7)
+  //   //   // );
+  //   //   let date = await this.formatDate(
+  //   //     await this.timeFormat(iterator.lastDate, 0)
+  //   //   );
+
+  //   //   if (!arrDateTime.hasOwnProperty(date)) {
+  //   //     let isPass = 0,
+  //   //       isFail = 0;
+  //   //     if (iterator.isPass) {
+  //   //       isPass = 1;
+  //   //       isFail = 0;
+  //   //     } else {
+  //   //       isPass = 0;
+  //   //       isFail = 1;
+  //   //     }
+  //   //     //Push new object to array
+  //   //     arrDateTime[date] = {
+  //   //       isPass: isPass,
+  //   //       isFail: isFail,
+  //   //     };
+  //   //   } else {
+  //   //     let isPass = 0,
+  //   //       isFail = 0;
+  //   //     if (iterator.isPass) {
+  //   //       isPass = arrDateTime[date].isPass + 1;
+  //   //       isFail = arrDateTime[date].isFail;
+  //   //     } else {
+  //   //       isFail = arrDateTime[date].isFail + 1;
+  //   //       isPass = arrDateTime[date].isPass;
+  //   //     }
+  //   //     //Update value for exist object
+  //   //     arrDateTime[date] = {
+  //   //       isPass: isPass,
+  //   //       isFail: isFail,
+  //   //     };
+  //   //   }
+  //   // }
+  //   // let arrResult: any = [];
+  //   // let arrSumUp: any = [];
+  //   // let index = 0;
+  //   // for (const key in arrDateTime) {
+  //   //   arrResult.push({ date: key, ...arrDateTime[key] });
+  //   //   if (index != 0) {
+  //   //     arrSumUp.push({
+  //   //       date: key,
+  //   //       isPass: arrSumUp[index - 1].isPass + arrResult[index].isPass,
+  //   //       isFail: arrSumUp[index - 1].isFail + arrResult[index].isFail,
+  //   //     });
+  //   //   } else {
+  //   //     arrSumUp.push({
+  //   //       date: key,
+  //   //       isPass: arrResult[index].isPass,
+  //   //       isFail: arrResult[index].isFail,
+  //   //     });
+  //   //   }
+  //   //   index++;
+  //   // }
+  //   // return arrSumUp;
+  // }
 
   //Get statistic of line chart automatic bar
   @get("/statistics/line-chart-automatic-bar")
@@ -855,10 +1059,10 @@ export class StatisticController {
     // updateValue(dates, '2023-01-01', 32);
 
     // try {
-      // let aaa = await this.SettingValuesRepository.create({
-      //   settingName: "Target Date",
-      //   data: [dates],
-      // });
+    // let aaa = await this.SettingValuesRepository.create({
+    //   settingName: "Target Date",
+    //   data: [dates],
+    // });
     //   console.log(aaa);
     // } catch (error) {
     //   console.log(error);

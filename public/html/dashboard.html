@@ -30,7 +30,7 @@
     ></script>
 
     <title>Dashboard</title>
-    <link rel="icon" type="image/x-icon" href="../ico/wecheerapp.ico">
+    <link rel="icon" type="image/x-icon" href="../ico/wecheerapp.ico" />
   </head>
   <body>
     <div class="main">
@@ -104,7 +104,9 @@
                     <div _ngcontent-njn-c126="" class="col-6">
                       <div _ngcontent-njn-c126="" class="text-end">
                         <h3 _ngcontent-njn-c126="" class="text-dark my-1">
-                          <span _ngcontent-njn-c126="" id="">12,145</span>
+                          <span _ngcontent-njn-c126="" id="totalAchieved"
+                            >12,145</span
+                          >
                         </h3>
                         <p
                           _ngcontent-njn-c126=""
@@ -145,6 +147,75 @@
               </div></app-widget-statistics-card2
             >
           </div>
+
+          <div _ngcontent-njn-c130="" class="col-md-6 col-xl-3">
+            <app-widget-statistics-card2
+              _ngcontent-njn-c130=""
+              _nghost-njn-c126=""
+              ><div
+                _ngcontent-njn-c126=""
+                class="card"
+                style="border: 1px solid rgb(255, 255, 255)"
+              >
+                <div _ngcontent-njn-c126="" class="card-body">
+                  <div _ngcontent-njn-c126="" class="row">
+                    <div _ngcontent-njn-c126="" class="col-6">
+                      <div
+                        _ngcontent-njn-c126=""
+                        class="avatar-sm bg-warning rounded"
+                      >
+                        <i
+                          _ngcontent-njn-c126=""
+                          class="fe-bar-chart-2 text-white avatar-title font-22"
+                        ></i>
+                      </div>
+                    </div>
+                    <div _ngcontent-njn-c126="" class="col-6">
+                      <div _ngcontent-njn-c126="" class="text-end">
+                        <h3 _ngcontent-njn-c126="" class="text-dark my-1">
+                          <span _ngcontent-njn-c126="" id="totalUnsatisfactory"
+                            >8,947</span
+                          >
+                        </h3>
+                        <p
+                          _ngcontent-njn-c126=""
+                          class="text-muted mb-1 text-truncate"
+                        >
+                          Total Unsatisfactory
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div _ngcontent-njn-c126="" class="mt-3">
+                    <h6 _ngcontent-njn-c126="" class="text-uppercase">
+                      Current
+                      <span
+                        _ngcontent-njn-c126=""
+                        class="float-end"
+                        id="target-3"
+                        >0%</span
+                      >
+                    </h6>
+                    <ngb-progressbar
+                      _ngcontent-njn-c126=""
+                      class="progress progress-sm m-0"
+                      ><div
+                        role="progressbar"
+                        aria-valuemin="0"
+                        class="bg-warning progress-bar"
+                        aria-valuenow="0"
+                        aria-valuemax="100"
+                        style="width: 0%"
+                        id="progressbar_three"
+                      >
+                        <!---->
+                      </div></ngb-progressbar
+                    >
+                  </div>
+                </div>
+              </div></app-widget-statistics-card2
+            >
+          </div>
           <div _ngcontent-njn-c130="" class="col-md-6 col-xl-3">
             <app-widget-statistics-card2
               _ngcontent-njn-c130=""
@@ -164,7 +235,9 @@
                     <div _ngcontent-njn-c126="" class="col-6">
                       <div _ngcontent-njn-c126="" class="text-end">
                         <h3 _ngcontent-njn-c126="" class="text-dark my-1">
-                          <span _ngcontent-njn-c126="">1,576</span>
+                          <span _ngcontent-njn-c126="" id="totalQualified"
+                            >1,576</span
+                          >
                         </h3>
                         <p
                           _ngcontent-njn-c126=""
@@ -177,7 +250,7 @@
                   </div>
                   <div _ngcontent-njn-c126="" class="mt-3">
                     <h6 _ngcontent-njn-c126="" class="text-uppercase">
-                      Target
+                      Current
                       <span
                         _ngcontent-njn-c126=""
                         class="float-end"
@@ -219,72 +292,6 @@
                     <div _ngcontent-njn-c126="" class="col-6">
                       <div
                         _ngcontent-njn-c126=""
-                        class="avatar-sm bg-warning rounded"
-                      >
-                        <i
-                          _ngcontent-njn-c126=""
-                          class="fe-bar-chart-2 text-white avatar-title font-22"
-                        ></i>
-                      </div>
-                    </div>
-                    <div _ngcontent-njn-c126="" class="col-6">
-                      <div _ngcontent-njn-c126="" class="text-end">
-                        <h3 _ngcontent-njn-c126="" class="text-dark my-1">
-                          <span _ngcontent-njn-c126="">8,947</span>
-                        </h3>
-                        <p
-                          _ngcontent-njn-c126=""
-                          class="text-muted mb-1 text-truncate"
-                        >
-                          Total Unsatisfactory
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div _ngcontent-njn-c126="" class="mt-3">
-                    <h6 _ngcontent-njn-c126="" class="text-uppercase">
-                      Target
-                      <span
-                        _ngcontent-njn-c126=""
-                        class="float-end"
-                        id="target-3"
-                        >0%</span
-                      >
-                    </h6>
-                    <ngb-progressbar
-                      _ngcontent-njn-c126=""
-                      class="progress progress-sm m-0"
-                      ><div
-                        role="progressbar"
-                        aria-valuemin="0"
-                        class="bg-warning progress-bar"
-                        aria-valuenow="0"
-                        aria-valuemax="100"
-                        style="width: 0%"
-                        id="progressbar_three"
-                      >
-                        <!---->
-                      </div></ngb-progressbar
-                    >
-                  </div>
-                </div>
-              </div></app-widget-statistics-card2
-            >
-          </div>
-          <div _ngcontent-njn-c130="" class="col-md-6 col-xl-3">
-            <app-widget-statistics-card2
-              _ngcontent-njn-c130=""
-              _nghost-njn-c126=""
-              ><div
-                _ngcontent-njn-c126=""
-                class="card"
-                style="border: 1px solid rgb(255, 255, 255)"
-              >
-                <div _ngcontent-njn-c126="" class="card-body">
-                  <div _ngcontent-njn-c126="" class="row">
-                    <div _ngcontent-njn-c126="" class="col-6">
-                      <div
-                        _ngcontent-njn-c126=""
                         class="avatar-sm bg-info rounded"
                       >
                         <i
@@ -296,20 +303,24 @@
                     <div _ngcontent-njn-c126="" class="col-6">
                       <div _ngcontent-njn-c126="" class="text-end">
                         <h3 _ngcontent-njn-c126="" class="text-dark my-1">
-                          <span _ngcontent-njn-c126="">178</span>
+                          <span
+                            _ngcontent-njn-c126=""
+                            id="totalPCBTestAutomatic"
+                            >178</span
+                          >
                         </h3>
                         <p
                           _ngcontent-njn-c126=""
                           class="text-muted mb-1 text-truncate"
                         >
-                          Available Stores
+                          Available PCB Automatic
                         </p>
                       </div>
                     </div>
                   </div>
                   <div _ngcontent-njn-c126="" class="mt-3">
                     <h6 _ngcontent-njn-c126="" class="text-uppercase">
-                      Target
+                      Exists
                       <span
                         _ngcontent-njn-c126=""
                         class="float-end"
@@ -441,11 +452,11 @@
               <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th>Check</th>
-                    <th>Date</th>
-                    <th>Week Number</th>
-                    <th>Standards</th>
-                    <th>Substandard</th>
+                    <th>CHECK</th>
+                    <th>DATE</th>
+                    <th>WEEK NUMBER</th>
+                    <th>STANDARD</th>
+                    <th>SUBSTANDARDS</th>
                   </tr>
                 </thead>
                 <tbody id="tbody_automatic"></tbody>
@@ -530,7 +541,7 @@
                 Search
               </button>
             </div>
-            <div class="view-chart tableFixHead" id="">
+            <div class="view-chart tableFixHead" id="" style="height: 44vh">
               <table class="table table-hover">
                 <thead style="white-space: nowrap">
                   <tr>
@@ -564,7 +575,7 @@
                     <th>Substandard</th>
                   </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody id="tbody_manual"></tbody>
               </table>
             </div>
           </div>
@@ -602,7 +613,7 @@
             value="Drink Moments"
             class="btn"
             onclick="drinkMomentClick();"
-            style="background-color: #67e0e3; width: 100px"
+            style="background-color: #67e0e3; width: 100px; width: fit-content"
             id="btn__tab"
           />
         </a>

@@ -1,6 +1,9 @@
 // const URL_PATH = "http://[::1]:3000";
 const URL_PATH = "http://35.240.171.212:3000";
 
+const ROOT = '';
+// const ROOT = '/public';
+
 //
 google.charts.load("current", { packages: ["corechart", "line"] });
 google.charts.load("current", { packages: ["line"] });
@@ -28,7 +31,7 @@ async function checkAuthorize() {
   await fetch(URL_PATH + "/whoAmI", requestOptions)
     .then((response) => {
       if (response.status !== 200) {
-        window.location.href = "http://35.240.171.212:3000/html/login.html";
+        window.location.href = ROOT + "/html/login.html";
       }else
       response.text();
     })
