@@ -259,11 +259,10 @@ export class StatisticController {
   ): Promise<{}> {
     fromDate = fromDate + " 00:00:00";
     toDate = toDate + " 23:59:59";
-    let filterPassA = {
+    let filterPassExistENV = {
       // "limit": 100,
       where: {
         macAddress: { neq: "" },
-        type: "A",
         isPass: true,
         and: [
           { lastDate: { gte: new Date(fromDate) } },
@@ -273,11 +272,11 @@ export class StatisticController {
       order: ["lastDate ASC"],
     };
 
-    let filterPassB = {
+    let filterPassNotENV = {
       // "limit": 100,
       where: {
         macAddress: { neq: "" },
-        type: "B",
+        HPI: {like: '%4c4e%'},
         isPass: true,
         and: [
           { lastDate: { gte: new Date(fromDate) } },
@@ -287,12 +286,11 @@ export class StatisticController {
       order: ["lastDate ASC"],
     };
 
-    let filterFailA = {
+    let filterFailExistENV = {
       // "limit": 100,
       where: {
         macAddress: { neq: "" },
-        type: "A",
-        isPass: true,
+        isPass: false,
         and: [
           { lastDate: { gte: new Date(fromDate) } },
           { lastDate: { lte: new Date(toDate) } },
@@ -301,12 +299,12 @@ export class StatisticController {
       order: ["lastDate ASC"],
     };
 
-    let filterFailB = {
+    let filterFailNotENV = {
       // "limit": 100,
       where: {
         macAddress: { neq: "" },
-        type: "B",
-        isPass: true,
+        HPI: {like: '%4c4e%'},
+        isPass: false,
         and: [
           { lastDate: { gte: new Date(fromDate) } },
           { lastDate: { lte: new Date(toDate) } },
@@ -315,21 +313,21 @@ export class StatisticController {
       order: ["lastDate ASC"],
     };
 
-    let dataPassA = await this.ManualResultsRepository.find(filterPassA);
-    let dataPassB = await this.ManualResultsRepository.find(filterPassB);
-    let dataFailA = await this.ManualResultsRepository.find(filterFailA);
-    let dataFailB = await this.ManualResultsRepository.find(filterFailB);
+    let dataPassENV = await this.ManualResultsRepository.find(filterPassExistENV);
+    let dataPass = await this.ManualResultsRepository.find(filterPassNotENV);
+    let dataFailENV = await this.ManualResultsRepository.find(filterFailExistENV);
+    let dataFail = await this.ManualResultsRepository.find(filterFailNotENV);
 
     return {
       pass: {
-        total: dataPassA.length + dataPassB.length,
-        typeA: dataPassA.length,
-        typeB: dataPassB.length,
+        total: dataPassENV.length + dataPass.length,
+        existENV: dataPassENV.length,
+        notExistENV: dataPass.length,
       },
       fail: {
-        total: dataFailA.length + dataFailB.length,
-        typeA: dataFailA.length,
-        typeB: dataFailB.length,
+        total: dataFailENV.length + dataFail.length,
+        existENV: dataFailENV.length,
+        notExistENV: dataFail.length,
       },
     };
   }

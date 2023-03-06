@@ -1,7 +1,7 @@
 // const URL_PATH = "http://[::1]:3000";
 const URL_PATH = "http://35.240.171.212:3000";
 
-const ROOT = '';
+const ROOT = "";
 // const ROOT = "/public";
 
 window.onload = async function () {
@@ -389,14 +389,16 @@ async function draw4Column(from, to) {
     .setAttribute("style", "width:" + data.percentQualified + "%");
   document.getElementById("target-2").innerHTML = data.percentQualified + "%";
 
-  document.getElementById("totalUnsatisfactory").innerHTML = data.totalUnsatisfactory;
+  document.getElementById("totalUnsatisfactory").innerHTML =
+    data.totalUnsatisfactory;
   document
     .getElementsByClassName("progress-bar")[2]
     .setAttribute("style", "width:" + data.percentUnsatisfactory + "%");
   document.getElementById("target-3").innerHTML =
     data.percentUnsatisfactory + "%";
 
-  document.getElementById("totalPCBTestAutomatic").innerHTML = data.totalPCBTestAutomatic;
+  document.getElementById("totalPCBTestAutomatic").innerHTML =
+    data.totalPCBTestAutomatic;
   document
     .getElementsByClassName("progress-bar")[3]
     .setAttribute("style", "width:" + data.percentPCBTestAutomatic + "%");
@@ -873,8 +875,12 @@ async function drawChartColumn1(from, to, darkMode) {
       data: ["Pass", "Fail"],
     },
     toolbox: {
+      show: true,
       feature: {
-        saveAsImage: {},
+        dataView: { show: true, readOnly: false },
+        magicType: { show: true, type: ["line", "bar"] },
+        restore: { show: true },
+        saveAsImage: { show: true },
       },
     },
     grid: {
@@ -900,6 +906,7 @@ async function drawChartColumn1(from, to, darkMode) {
       {
         name: "Fail",
         type: "line",
+        smooth: true,
         stack: "Total",
         label: {
           show: true,
@@ -916,6 +923,7 @@ async function drawChartColumn1(from, to, darkMode) {
       {
         name: "Pass",
         type: "line",
+        smooth: true,
         stack: "Total",
         label: {
           show: true,
@@ -1679,29 +1687,18 @@ async function drawChartColumn1_1(from, to, darkMode) {
   }
 
   var chartDom = document.getElementById("column-1.1");
-  var myChart = echarts.init(chartDom, darkMode);
+  var myChart = echarts.init(chartDom);
   var option;
 
   option = {
-    title: {
-      // text: "Stacked Area Chart",
-    },
+    // title: {
+    //   text: 'Stacked Line'
+    // },
     tooltip: {
       trigger: "axis",
-      axisPointer: {
-        type: "cross",
-        label: {
-          backgroundColor: "#6a7985",
-        },
-      },
     },
     legend: {
-      data: ["Pass", "Fail", "Current", "Target"],
-    },
-    toolbox: {
-      feature: {
-        saveAsImage: {},
-      },
+      data: ["Pass", "Fail", "Total", "Target"],
     },
     grid: {
       left: "3%",
@@ -1709,91 +1706,178 @@ async function drawChartColumn1_1(from, to, darkMode) {
       bottom: "3%",
       containLabel: true,
     },
-    xAxis: [
-      {
-        type: "category",
-        boundaryGap: false,
-        // data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        data: arrLabel,
+    toolbox: {
+      // feature: {
+      //   saveAsImage: {},
+      // },
+      show: true,
+      feature: {
+        dataView: { show: true, readOnly: false },
+        magicType: { show: true, type: ["line", "bar"] },
+        restore: { show: true },
+        saveAsImage: { show: true },
       },
-    ],
-    yAxis: [
-      {
-        type: "value",
-      },
-    ],
+    },
+    xAxis: {
+      type: "category",
+      boundaryGap: false,
+      data: arrLabel,
+    },
+    yAxis: {
+      type: "value",
+    },
     series: [
-      {
-        name: "Fail",
-        type: "line",
-        stack: "Total",
-        label: {
-          show: true,
-          position: "top",
-        },
-        areaStyle: {},
-        emphasis: {
-          focus: "series",
-        },
-        // data: [120, 132, 101, 134, 90, 230, 210],
-        data: arrFail,
-        color: "red",
-      },
       {
         name: "Pass",
         type: "line",
         stack: "Total",
-        label: {
-          show: true,
-          position: "top",
-        },
-        areaStyle: {},
-        emphasis: {
-          focus: "series",
-        },
-        // data: [820, 932, 901, 934, 1290, 1330, 1320],
-        data: arrPass,
+        smooth: true,
         color: "green",
+        data: arrPass,
       },
-      
       {
-        name: "Current",
+        name: "Fail",
         type: "line",
         stack: "Total",
-        label: {
-          show: true,
-          position: "top",
-        },
-        areaStyle: {},
-        emphasis: {
-          focus: "series",
-        },
-        // data: [820, 932, 901, 934, 1290, 1330, 1320],
-        data: arrCurrent,
+        smooth: true,
+        color: "red",
+        data: arrFail,
+      },
+      {
+        name: "Total",
+        type: "line",
+        stack: "Total",
+        smooth: true,
         color: "yellow",
+        data: arrCurrent,
       },
       {
         name: "Target",
         type: "line",
         stack: "Total",
-        label: {
-          show: true,
-          position: "top",
-        },
-        areaStyle: {},
-        emphasis: {
-          focus: "series",
-        },
-        // data: [820, 932, 901, 934, 1290, 1330, 1320],
-        data: arrTarget,
+        smooth: true,
         color: "blue",
+        data: arrTarget,
       },
     ],
   };
 
   option && myChart.setOption(option);
 
-  // drawChartPie2();
+  // var chartDom = document.getElementById("column-1.1");
+  // var myChart = echarts.init(chartDom, darkMode);
+  // var option;
+
+  // option = {
+  //   title: {
+  //     // text: "Stacked Area Chart",
+  //   },
+  //   tooltip: {
+  //     trigger: "axis",
+  //     axisPointer: {
+  //       type: "cross",
+  //       label: {
+  //         backgroundColor: "#6a7985",
+  //       },
+  //     },
+  //   },
+  //   legend: {
+  //     data: ["Pass", "Fail", "Current", "Target"],
+  //   },
+  //   toolbox: {
+  //     feature: {
+  //       saveAsImage: {},
+  //     },
+  //   },
+  //   grid: {
+  //     left: "3%",
+  //     right: "4%",
+  //     bottom: "3%",
+  //     containLabel: true,
+  //   },
+  //   xAxis: [
+  //     {
+  //       type: "category",
+  //       boundaryGap: false,
+  //       // data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+  //       data: arrLabel,
+  //     },
+  //   ],
+  //   yAxis: [
+  //     {
+  //       type: "value",
+  //     },
+  //   ],
+  //   series: [
+  //     {
+  //       name: "Fail",
+  //       type: "line",
+  //       stack: "Total",
+  //       label: {
+  //         show: true,
+  //         position: "top",
+  //       },
+  //       areaStyle: {},
+  //       emphasis: {
+  //         focus: "series",
+  //       },
+  //       // data: [120, 132, 101, 134, 90, 230, 210],
+  //       data: arrFail,
+  //       color: "red",
+  //     },
+  //     {
+  //       name: "Pass",
+  //       type: "line",
+  //       stack: "Total",
+  //       label: {
+  //         show: true,
+  //         position: "top",
+  //       },
+  //       areaStyle: {},
+  //       emphasis: {
+  //         focus: "series",
+  //       },
+  //       // data: [820, 932, 901, 934, 1290, 1330, 1320],
+  //       data: arrPass,
+  //       color: "green",
+  //     },
+
+  //     {
+  //       name: "Current",
+  //       type: "line",
+  //       stack: "Total",
+  //       label: {
+  //         show: true,
+  //         position: "top",
+  //       },
+  //       areaStyle: {},
+  //       emphasis: {
+  //         focus: "series",
+  //       },
+  //       // data: [820, 932, 901, 934, 1290, 1330, 1320],
+  //       data: arrCurrent,
+  //       color: "yellow",
+  //     },
+  //     {
+  //       name: "Target",
+  //       type: "line",
+  //       stack: "Total",
+  //       label: {
+  //         show: true,
+  //         position: "top",
+  //       },
+  //       areaStyle: {},
+  //       emphasis: {
+  //         focus: "series",
+  //       },
+  //       // data: [820, 932, 901, 934, 1290, 1330, 1320],
+  //       data: arrTarget,
+  //       color: "blue",
+  //     },
+  //   ],
+  // };
+
+  // option && myChart.setOption(option);
 }
 
 async function drawChartColumn2_2(from, to, darkMode) {
@@ -1973,7 +2057,7 @@ async function drawChartPie1_1(from, to, darkMode) {
     },
     series: [
       {
-        name: "Ratio Type",
+        name: "Ratio ENV",
         type: "pie",
         selectedMode: "single",
         radius: [0, "40%"],
@@ -1985,12 +2069,12 @@ async function drawChartPie1_1(from, to, darkMode) {
           show: true,
         },
         data: [
-          { value: dataTypeError.fail.typeA, name: "Type A" },
-          { value: dataTypeError.fail.typeB, name: "Type B" },
+          { value: dataTypeError.fail.notExistENV, name: "Not Exist ENV" },
+          { value: dataTypeError.fail.ExistENV, name: "Exist ENV" },
         ],
       },
       {
-        name: "Ratio Error",
+        name: "Ratio Error Reason",
         type: "pie",
         radius: ["45%", "60%"],
         labelLine: {
@@ -2204,16 +2288,16 @@ async function drawChartPie2_2(from, to, darkMode) {
       category: "Fail",
       value: data.fail.total,
       subData: [
-        { category: "Type A", value: data.fail.typeA },
-        { category: "Type B", value: data.fail.typeB },
+        { category: "Exist ENV", value: data.fail.existENV },
+        { category: "Not Exist ENV", value: data.fail.notExistENV },
       ],
     },
     {
       category: "Pass",
       value: data.pass.total,
       subData: [
-        { category: "Type A", value: data.pass.typeA },
-        { category: "Type B", value: data.pass.typeB },
+        { category: "Exist ENV", value: data.pass.existENV },
+        { category: "Not Exist ENV", value: data.pass.notExistENV },
       ],
     },
   ]);
