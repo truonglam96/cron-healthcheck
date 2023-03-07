@@ -425,9 +425,12 @@
               >
                 Search
               </button>
+              <div style="float: right; ">
+                <button class="btn" onclick="downloadTableAutomaticResult()"><i class="fa fa-download"></i></button>
+              </div>
             </div>
             <div class="view-chart tableFixHead" id="" style="height: 44vh">
-              <table class="table table-hover">
+              <table class="table table-hover" id="table_automatic_result">
                 <thead>
                   <tr>
                     <th>MACID</th>
@@ -540,9 +543,12 @@
               >
                 Search
               </button>
+              <div style="float: right; ">
+                <button class="btn" onclick="downloadTableManualResult()"><i class="fa fa-download"></i></button>
+              </div>
             </div>
             <div class="view-chart tableFixHead" id="" style="height: 44vh">
-              <table class="table table-hover">
+              <table class="table table-hover" id="table_manual_result">
                 <thead style="white-space: nowrap">
                   <tr>
                     <th>MACID</th>
@@ -634,20 +640,24 @@
             data-bs-dismiss="offcanvas"
           ></button>
         </div>
+        
         <div class="offcanvas-body">
+          <div style="float: right; ">
+            <button class="btn" onclick="downloadTableAutomaticDetail()"><i class="fa fa-download"></i></button>
+          </div>
           <div>
             <h6 id="total_detail_automatic"></h6>
-            <table class="table table-striped">
+            <table class="table table-striped" id="table_automatic_detail">
               <thead style="text-align: center">
                 <tr>
-                  <th>Mac Address</th>
-                  <th>Result</th>
-                  <th>Type</th>
-                  <th>Created date</th>
-                  <th>Times</th>
-                  <th>Firmware name</th>
-                  <th>Error reason</th>
-                  <th>Value</th>
+                  <th>MACID</th>
+                  <th>RESULT</th>
+                  <th>TYPE</th>
+                  <th>CREATED DATE</th>
+                  <th>TIMES</th>
+                  <th>FW NAME</th>
+                  <th>ERROR REASON</th>
+                  <th>VALUE</th>
                 </tr>
               </thead>
               <tbody
@@ -670,18 +680,21 @@
           ></button>
         </div>
         <div class="offcanvas-body">
+          <div style="float: right; ">
+            <button class="btn" onclick="downloadTableManualDetail()"><i class="fa fa-download"></i></button>
+          </div>
           <div>
             <h6 id="total_detail_manual"></h6>
-            <table class="table table-striped">
+            <table class="table table-striped" id="table_manual_detail">
               <thead>
                 <tr>
-                  <th>Mac Address</th>
-                  <th>Result</th>
-                  <th>Created date</th>
-                  <th>Time test</th>
-                  <th>Firmware name</th>
-                  <th>Error reason</th>
-                  <th>Image</th>
+                  <th>MACID</th>
+                  <th>RESULT</th>
+                  <th>CREATED DATE</th>
+                  <th>TIMES</th>
+                  <th>FW NAME</th>
+                  <th>ERROR REASON</th>
+                  <th>IMAGE</th>
                 </tr>
               </thead>
               <tbody id="tbody_manual_detail_canvas"></tbody>

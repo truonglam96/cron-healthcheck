@@ -464,6 +464,118 @@ function search() {
   generateTableDetailManual(fristDay, lastDay, "");
 }
 
+function downloadTableAutomaticResult() {
+  // Get the table element
+  const table = document.getElementById('table_automatic_result');
+  
+  // Extract the data from the table
+  const rows = table.rows;
+  const data = [];
+  for (let i = 0; i < rows.length; i++) {
+    const cells = rows[i].cells;
+    const row_data = [];
+    for (let j = 0; j < cells.length; j++) {
+      row_data.push(cells[j].innerText.trim());
+    }
+    data.push(row_data);
+  }
+
+  // Convert the data to CSV format
+  const csv = data.map(row => row.join(',')).join('\n');
+
+  // Create a download link and click it
+  const link = document.createElement('a');
+  link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
+  link.setAttribute('download', 'automatic_results.csv');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function downloadTableManualResult() {
+  // Get the table element
+  const table = document.getElementById('table_manual_result');
+  
+  // Extract the data from the table
+  const rows = table.rows;
+  const data = [];
+  for (let i = 0; i < rows.length; i++) {
+    const cells = rows[i].cells;
+    const row_data = [];
+    for (let j = 0; j < cells.length; j++) {
+      row_data.push(cells[j].innerText.trim());
+    }
+    data.push(row_data);
+  }
+
+  // Convert the data to CSV format
+  const csv = data.map(row => row.join(',')).join('\n');
+
+  // Create a download link and click it
+  const link = document.createElement('a');
+  link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
+  link.setAttribute('download', 'manual_results.csv');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function downloadTableAutomaticDetail() {
+  // Get the table element
+  const table = document.getElementById('table_automatic_detail');
+  
+  // Extract the data from the table
+  const rows = table.rows;
+  const data = [];
+  for (let i = 0; i < rows.length; i++) {
+    const cells = rows[i].cells;
+    const row_data = [];
+    for (let j = 0; j < cells.length; j++) {
+      row_data.push(cells[j].innerText.trim());
+    }
+    data.push(row_data);
+  }
+
+  // Convert the data to CSV format
+  const csv = data.map(row => row.join(',')).join('\n');
+
+  // Create a download link and click it
+  const link = document.createElement('a');
+  link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
+  link.setAttribute('download', 'automatic_details.csv');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function downloadTableManualDetail() {
+  // Get the table element
+  const table = document.getElementById('table_manual_detail');
+  
+  // Extract the data from the table
+  const rows = table.rows;
+  const data = [];
+  for (let i = 0; i < rows.length; i++) {
+    const cells = rows[i].cells;
+    const row_data = [];
+    for (let j = 0; j < cells.length; j++) {
+      row_data.push(cells[j].innerText.trim());
+    }
+    data.push(row_data);
+  }
+
+  // Convert the data to CSV format
+  const csv = data.map(row => row.join(',')).join('\n');
+
+  // Create a download link and click it
+  const link = document.createElement('a');
+  link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
+  link.setAttribute('download', 'manual_details.csv');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
 // Automatic
 async function generateTableDetailAutomatic(from, to, macAddress) {
   let dataResult = [];

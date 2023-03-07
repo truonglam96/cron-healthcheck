@@ -1,13 +1,13 @@
 .main {
   background-color: #f4f5f7;
-  font-family: 'Archivo', sans-serif;
+  font-family: "Archivo", sans-serif;
   /* font-size: 0.75em;  */
-  font-weight: 550; 
+  font-weight: 550;
   /* white-space: nowrap;  */
   vertical-align: baseline;
 }
 
-.top-div{
+.top-div {
   width: 97vw;
   margin: auto;
 }
@@ -108,15 +108,35 @@ h1 {
   font-size: 18px;
 }
 
+.btn {
+  border-radius: 5px;
+  width: fit-content;
+  height: 35px;
+  margin-top: 5px;
+  margin-right: 5px;
+}
 
-
-
-
-
-.tableFixHead          { overflow: auto; height: 100%; }
-.tableFixHead thead th { position: sticky; top: 0; z-index: 1; background-color: rgb(255, 254, 254); color: #6658dd;}
+.tableFixHead {
+  overflow: auto;
+  height: 100%;
+}
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: rgb(255, 254, 254);
+  color: #6658dd;
+}
 
 /* Just common table stuff. Really. */
-table  { border-collapse: collapse; width: 100%; }
-th, td { padding: 8px 16px;}
-th     { background:#eee;  }
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th,
+td {
+  padding: 8px 16px;
+}
+th {
+  background: #eee;
+}
