@@ -64,22 +64,6 @@
           </nav>
         </div>
         <hr />
-        <!-- <div style="position: relative; margin-top: 10px">
-          <a>
-            <input
-              type="button"
-              value="Automatic"
-              class="btn"
-              style="background-color: #67E0E3; width: 100px"
-              id="btn_automatic_tab" />
-            <input
-              type="button"
-              value="Manual"
-              class="btn"
-              style="background-color: #67E0E3; width: 100px"
-              id="btn_manual_tab"
-          /></a>
-        </div> -->
       </div>
 
       <!-- Total bar -->
@@ -105,7 +89,7 @@
                       <div _ngcontent-njn-c126="" class="text-end">
                         <h3 _ngcontent-njn-c126="" class="text-dark my-1">
                           <span _ngcontent-njn-c126="" id="totalAchieved"
-                            >12,145</span
+                            >0000</span
                           >
                         </h3>
                         <p
@@ -174,14 +158,14 @@
                       <div _ngcontent-njn-c126="" class="text-end">
                         <h3 _ngcontent-njn-c126="" class="text-dark my-1">
                           <span _ngcontent-njn-c126="" id="totalUnsatisfactory"
-                            >8,947</span
+                            >0000</span
                           >
                         </h3>
                         <p
                           _ngcontent-njn-c126=""
                           class="text-muted mb-1 text-truncate"
                         >
-                          Total Unsatisfactory
+                          Total Tested
                         </p>
                       </div>
                     </div>
@@ -236,7 +220,7 @@
                       <div _ngcontent-njn-c126="" class="text-end">
                         <h3 _ngcontent-njn-c126="" class="text-dark my-1">
                           <span _ngcontent-njn-c126="" id="totalQualified"
-                            >1,576</span
+                            >0000</span
                           >
                         </h3>
                         <p
@@ -289,7 +273,7 @@
               >
                 <div _ngcontent-njn-c126="" class="card-body">
                   <div _ngcontent-njn-c126="" class="row">
-                    <div _ngcontent-njn-c126="" class="col-6">
+                    <!-- <div _ngcontent-njn-c126="" class="col-6">
                       <div
                         _ngcontent-njn-c126=""
                         class="avatar-sm bg-info rounded"
@@ -299,8 +283,8 @@
                           class="fe-cpu text-white avatar-title font-22"
                         ></i>
                       </div>
-                    </div>
-                    <div _ngcontent-njn-c126="" class="col-6">
+                    </div> -->
+                    <div _ngcontent-njn-c126="" class="col-12">
                       <div _ngcontent-njn-c126="" class="text-end">
                         <h3 _ngcontent-njn-c126="" class="text-dark my-1">
                           <span
@@ -313,7 +297,7 @@
                           _ngcontent-njn-c126=""
                           class="text-muted mb-1 text-truncate"
                         >
-                          Available PCB Automatic
+                          Passed Automatic & Wait For Manual Test
                         </p>
                       </div>
                     </div>
@@ -363,19 +347,19 @@
 
         <div class="row">
           <div class="col-sm-6 col-two">
-            <!-- <div class="header-bar">
-              <b> Chart 1 </b>
-            </div> -->
+            <div class="header-bar">
+              <b>Opener testing result culmulative</b>
+            </div>
             <div class="view-chart" id="column-1"></div>
           </div>
           <div class="col-sm-6 col-two">
-            <!-- <div class="header-bar">
-              <b> Chart 1 </b>
-            </div> -->
+            <div class="header-bar">
+              <b>Opener testing result by day</b>
+            </div>
             <div class="view-chart" id="column-2"></div>
           </div>
         </div>
-        <!-- <br /> -->
+        <br />
 
         <div class="row">
           <div class="col-sm-4 col-four">
@@ -417,7 +401,7 @@
                   class="form-control"
                   id="mac_automatic"
                   name="macaddress"
-                  placeholder="MacAddress"
+                  placeholder="Mac address"
               /></label>
               <button
                 style="border-radius: 5px; height: 35px"
@@ -425,8 +409,10 @@
               >
                 Search
               </button>
-              <div style="float: right; ">
-                <button class="btn" onclick="downloadTableAutomaticResult()"><i class="fa fa-download"></i></button>
+              <div style="float: right">
+                <button class="btn" onclick="downloadTableAutomaticResult()">
+                  <i class="fa fa-download"></i>
+                </button>
               </div>
             </div>
             <div class="view-chart tableFixHead" id="" style="height: 44vh">
@@ -481,19 +467,19 @@
         <br />
         <div class="row">
           <div class="col-sm-6 col-two">
-            <!-- <div class="header-bar">
-              <b> Chart 1 </b>
-            </div> -->
+            <div class="header-bar">
+              <b>Opener testing result culmulative</b>
+            </div>
             <div class="view-chart" id="column-1.1"></div>
           </div>
           <div class="col-sm-6 col-two">
-            <!-- <div class="header-bar">
-              <b> Chart 1 </b>
-            </div> -->
+            <div class="header-bar">
+              <b>Opener testing result by day</b>
+            </div>
             <div class="view-chart" id="column-2.2"></div>
           </div>
         </div>
-        <!-- <br /> -->
+        <br />
 
         <div class="row">
           <div class="col-sm-4 col-four">
@@ -535,7 +521,7 @@
                   class="form-control"
                   id="mac_manual"
                   name="macaddress"
-                  placeholder="MacAddress"
+                  placeholder="Mac address"
               /></label>
               <button
                 style="border-radius: 5px; height: 35px"
@@ -543,8 +529,10 @@
               >
                 Search
               </button>
-              <div style="float: right; ">
-                <button class="btn" onclick="downloadTableManualResult()"><i class="fa fa-download"></i></button>
+              <div style="float: right">
+                <button class="btn" onclick="downloadTableManualResult()">
+                  <i class="fa fa-download"></i>
+                </button>
               </div>
             </div>
             <div class="view-chart tableFixHead" id="" style="height: 44vh">
@@ -640,10 +628,12 @@
             data-bs-dismiss="offcanvas"
           ></button>
         </div>
-        
+
         <div class="offcanvas-body">
-          <div style="float: right; ">
-            <button class="btn" onclick="downloadTableAutomaticDetail()"><i class="fa fa-download"></i></button>
+          <div style="float: right">
+            <button class="btn" onclick="downloadTableAutomaticDetail()">
+              <i class="fa fa-download"></i>
+            </button>
           </div>
           <div>
             <h6 id="total_detail_automatic"></h6>
@@ -680,8 +670,10 @@
           ></button>
         </div>
         <div class="offcanvas-body">
-          <div style="float: right; ">
-            <button class="btn" onclick="downloadTableManualDetail()"><i class="fa fa-download"></i></button>
+          <div style="float: right">
+            <button class="btn" onclick="downloadTableManualDetail()">
+              <i class="fa fa-download"></i>
+            </button>
           </div>
           <div>
             <h6 id="total_detail_manual"></h6>
