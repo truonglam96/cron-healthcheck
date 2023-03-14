@@ -14,7 +14,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "http://localhost:5500/public/view-page.html",
+            "url": "http://localhost:5500/public/html/dashboard.html",
             "webRoot": "${workspaceFolder}"
         }
     ]
