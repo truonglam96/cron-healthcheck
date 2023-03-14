@@ -642,7 +642,7 @@ export class StatisticController {
           { lastDate: { lte: new Date(toDate) } },
         ],
       },
-      order: ["lastDate ASC"],
+      order: ["lastDate DESC"],
     };
 
     let data = await this.AutomaticResultsRepository.find(filter);
@@ -731,7 +731,7 @@ export class StatisticController {
           { lastDate: { lte: new Date(toDate) } },
         ],
       },
-      order: ["lastDate ASC"],
+      order: ["lastDate DESC"],
     };
 
     let data = await this.ManualResultsRepository.find(filter);
