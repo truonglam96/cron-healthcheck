@@ -1840,25 +1840,26 @@ async function drawChartColumn1_1(from, to, darkMode) {
     },
     series: [
       {
-        name: "Pass",
-        type: "line",
-        stack: "Total",
-        smooth: true,
-        color: "green",
-        data: arrPass,
-      },
-      {
         name: "Fail",
         type: "line",
-        stack: "Total",
+        // stack: "Total",
         smooth: true,
         color: "red",
         data: arrFail,
       },
       {
+        name: "Pass",
+        type: "line",
+        // stack: "Total",
+        smooth: true,
+        color: "green",
+        data: arrPass,
+      },
+      
+      {
         name: "Total",
         type: "line",
-        stack: "Total",
+        // stack: "Total",
         smooth: true,
         color: "yellow",
         data: arrCurrent,
@@ -1866,7 +1867,7 @@ async function drawChartColumn1_1(from, to, darkMode) {
       {
         name: "Target",
         type: "line",
-        stack: "Total",
+        // stack: "Total",
         smooth: true,
         color: "blue",
         data: arrTarget,

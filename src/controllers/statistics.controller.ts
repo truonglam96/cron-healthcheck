@@ -880,6 +880,7 @@ export class StatisticController {
       // }
       // index++
     }
+    arrResult = arrResult.sort((a: any, b: any) => a.date.localeCompare(b.date));
     return arrResult;
   }
 
@@ -1173,7 +1174,7 @@ export class StatisticController {
     let arrDateTime: any = [];
     for (const iterator of data) {
       let date = await this.formatDateDay(
-        await this.timeFormat(iterator.lastDate, 0)
+        await this.timeFormat(iterator.lastDate, 7)
       );
       date = date.split(", ")[1];
 
@@ -1226,6 +1227,7 @@ export class StatisticController {
       // }
       // index++
     }
+    arrResult = arrResult.sort((a: any, b: any) => a.date.localeCompare(b.date));
     return arrResult;
   }
 
