@@ -731,7 +731,8 @@ async function generateTableCheckAutomatic(from, to) {
     tbody.appendChild(tr);
   }
 
-  drawChartColumn3(res[res.length - 1][0]);
+  // drawChartColumn3(res[res.length - 1][0]);
+  drawChartColumn3(res[0][0]);
 }
 
 async function getWeekNumber(d) {
@@ -1553,7 +1554,8 @@ async function generateTableCheckManual(from, to) {
     tbody.appendChild(tr);
   }
 
-  drawChartColumn3_3(res[res.length - 1][0]);
+  // drawChartColumn3_3(res[res.length - 1][0]);
+  drawChartColumn3_3(res[0][0]);
 }
 
 async function drawChartColumn3_3(date, darkMode) {
