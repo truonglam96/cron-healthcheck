@@ -392,8 +392,8 @@ export class StatisticController {
       percentQualified: ((dataPassManual.length*100)/21000).toFixed(1),
       totalUnsatisfactory: dataFailManual.length,
       percentUnsatisfactory: ((dataFailManual.length*100)/21000).toFixed(1),
-      totalPCBTestAutomatic: dataPassAutomaticResult.length,
-      percentPCBTestAutomatic:((dataPassAutomaticResult.length*100)/21000).toFixed(1)
+      totalPCBTestAutomatic: dataPassAutomaticResult.length - (dataPassManual.length + dataFailManual.length),
+      percentPCBTestAutomatic:(((dataPassAutomaticResult.length - (dataPassManual.length + dataFailManual.length))*100)/21000).toFixed(1)
     }
   }
 
