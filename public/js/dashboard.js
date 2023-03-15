@@ -1226,6 +1226,7 @@ async function drawChartPie1(from, to, darkMode) {
         data: [
           { value: dataTypeError.fail.typeA, name: "Type A" },
           { value: dataTypeError.fail.typeB, name: "Type B" },
+          { value: dataTypeError.fail.orders, name: "Order" },
         ],
       },
       {
@@ -1385,10 +1386,6 @@ async function drawChartPie2(from, to, darkMode) {
     { category: "A", value: 0 },
     { category: "B", value: 0 },
     { category: "C", value: 0 },
-    { category: "D", value: 0 },
-    { category: "E", value: 0 },
-    { category: "F", value: 0 },
-    { category: "G", value: 0 },
   ]);
   subSeries.slices.template.set("toggleKey", "none");
 
@@ -1456,14 +1453,17 @@ async function drawChartPie2(from, to, darkMode) {
   // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
   series.data.setAll([
     {
+      // category: "Fail: (" + data.fail.total + ") ",
       category: "Fail",
       value: data.fail.total,
       subData: [
         { category: "Type A", value: data.fail.typeA },
         { category: "Type B", value: data.fail.typeB },
+        { category: "Other", value: data.fail.orders },
       ],
     },
     {
+      // category: "Pass: (" + data.pass.total + ") ",
       category: "Pass",
       value: data.pass.total,
       subData: [
@@ -1863,7 +1863,7 @@ async function drawChartColumn1_1(from, to, darkMode) {
         type: "line",
         // stack: "Total",
         smooth: true,
-        color: "yellow",
+        color: "#8378EA",
         data: arrCurrent,
       },
       {

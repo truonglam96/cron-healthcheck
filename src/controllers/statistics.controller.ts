@@ -173,76 +173,71 @@ export class StatisticController {
     fromDate = fromDate + " 00:00:00";
     toDate = toDate + " 23:59:59";
     let filterPassA = {
-      // "limit": 100,
-      where: {
-        macAddress: { neq: "" },
-        type: "A",
-        isPass: true,
-        and: [
-          { lastDate: { gte: new Date(fromDate) } },
-          { lastDate: { lte: new Date(toDate) } },
-        ],
-      },
-      order: ["lastDate ASC"],
+      macAddress: { neq: "" },
+      type: "A",
+      isPass: true,
+      and: [
+        { lastDate: { gte: new Date(fromDate) } },
+        { lastDate: { lte: new Date(toDate) } },
+      ],
     };
 
     let filterPassB = {
-      // "limit": 100,
-      where: {
-        macAddress: { neq: "" },
-        type: "B",
-        isPass: true,
-        and: [
-          { lastDate: { gte: new Date(fromDate) } },
-          { lastDate: { lte: new Date(toDate) } },
-        ],
-      },
-      order: ["lastDate ASC"],
+      macAddress: { neq: "" },
+      type: "B",
+      isPass: true,
+      and: [
+        { lastDate: { gte: new Date(fromDate) } },
+        { lastDate: { lte: new Date(toDate) } },
+      ],
     };
 
     let filterFailA = {
-      // "limit": 100,
-      where: {
-        macAddress: { neq: "" },
-        type: "A",
-        isPass: false,
-        and: [
-          { lastDate: { gte: new Date(fromDate) } },
-          { lastDate: { lte: new Date(toDate) } },
-        ],
-      },
-      order: ["lastDate ASC"],
+      macAddress: { neq: "" },
+      type: "A",
+      isPass: false,
+      and: [
+        { lastDate: { gte: new Date(fromDate) } },
+        { lastDate: { lte: new Date(toDate) } },
+      ],
     };
 
     let filterFailB = {
-      // "limit": 100,
-      where: {
-        macAddress: { neq: "" },
-        type: "B",
-        isPass: false,
-        and: [
-          { lastDate: { gte: new Date(fromDate) } },
-          { lastDate: { lte: new Date(toDate) } },
-        ],
-      },
-      order: ["lastDate ASC"],
+      macAddress: { neq: "" },
+      type: "B",
+      isPass: false,
+      and: [
+        { lastDate: { gte: new Date(fromDate) } },
+        { lastDate: { lte: new Date(toDate) } },
+      ],
     };
 
-    let dataPassA = await this.AutomaticResultsRepository.find(filterPassA);
-    let dataPassB = await this.AutomaticResultsRepository.find(filterPassB);
-    let dataFailA = await this.AutomaticResultsRepository.find(filterFailA);
-    let dataFailB = await this.AutomaticResultsRepository.find(filterFailB);
+    let filterFailOrdersFail = {
+      macAddress: { neq: "" },
+      isPass: false,
+      and: [
+        { lastDate: { gte: new Date(fromDate) } },
+        { lastDate: { lte: new Date(toDate) } },
+      ],
+    };
+
+    let dataPassA = await this.AutomaticResultsRepository.count(filterPassA);
+    let dataPassB = await this.AutomaticResultsRepository.count(filterPassB);
+    let dataFailA = await this.AutomaticResultsRepository.count(filterFailA);
+    let dataFailB = await this.AutomaticResultsRepository.count(filterFailB);
+    let dataFailOrders = await this.AutomaticResultsRepository.count(filterFailOrdersFail);
 
     return {
       pass: {
-        total: dataPassA.length + dataPassB.length,
-        typeA: dataPassA.length,
-        typeB: dataPassB.length,
+        total: dataPassA.count + dataPassB.count,
+        typeA: dataPassA.count,
+        typeB: dataPassB.count,
       },
       fail: {
-        total: dataFailA.length + dataFailB.length,
-        typeA: dataFailA.length,
-        typeB: dataFailB.length,
+        total: dataFailOrders.count,
+        typeA: dataFailA.count,
+        typeB: dataFailB.count,
+        orders: dataFailOrders.count - (dataFailA.count + dataFailB.count),
       },
     };
   }
@@ -276,7 +271,7 @@ export class StatisticController {
       // "limit": 100,
       where: {
         macAddress: { neq: "" },
-        HPI: {like: '%4c4e%'},
+        HPI: { like: "%4c4e%" },
         isPass: true,
         and: [
           { lastDate: { gte: new Date(fromDate) } },
@@ -303,7 +298,7 @@ export class StatisticController {
       // "limit": 100,
       where: {
         macAddress: { neq: "" },
-        HPI: {like: '%4c4e%'},
+        HPI: { like: "%4c4e%" },
         isPass: false,
         and: [
           { lastDate: { gte: new Date(fromDate) } },
@@ -313,9 +308,13 @@ export class StatisticController {
       order: ["lastDate ASC"],
     };
 
-    let dataPassENV = await this.ManualResultsRepository.find(filterPassExistENV);
+    let dataPassENV = await this.ManualResultsRepository.find(
+      filterPassExistENV
+    );
     let dataPass = await this.ManualResultsRepository.find(filterPassNotENV);
-    let dataFailENV = await this.ManualResultsRepository.find(filterFailExistENV);
+    let dataFailENV = await this.ManualResultsRepository.find(
+      filterFailExistENV
+    );
     let dataFail = await this.ManualResultsRepository.find(filterFailNotENV);
 
     return {
@@ -344,7 +343,7 @@ export class StatisticController {
   ): Promise<any> {
     fromDate = fromDate + " 00:00:00";
     toDate = toDate + " 23:59:59";
-    
+
     let filterPassManual = {
       where: {
         macAddress: { neq: "" },
@@ -381,20 +380,33 @@ export class StatisticController {
       order: ["lastDate ASC"],
     };
 
-    let dataPassManual = await this.ManualResultsRepository.find(filterPassManual);
-    let dataFailManual = await this.ManualResultsRepository.find(filterFailManual);
-    let dataPassAutomaticResult = await this.AutomaticResultsRepository.find(filterPassAutomaticResult);
-    
+    let dataPassManual = await this.ManualResultsRepository.find(
+      filterPassManual
+    );
+    let dataFailManual = await this.ManualResultsRepository.find(
+      filterFailManual
+    );
+    let dataPassAutomaticResult = await this.AutomaticResultsRepository.find(
+      filterPassAutomaticResult
+    );
+
     return {
       totalAchieved: dataPassManual.length,
-      percentAchieved: ((dataPassManual.length*100)/21000).toFixed(1),
+      percentAchieved: ((dataPassManual.length * 100) / 21000).toFixed(1),
       totalQualified: dataPassManual.length,
-      percentQualified: ((dataPassManual.length*100)/21000).toFixed(1),
+      percentQualified: ((dataPassManual.length * 100) / 21000).toFixed(1),
       totalUnsatisfactory: dataFailManual.length,
-      percentUnsatisfactory: ((dataFailManual.length*100)/21000).toFixed(1),
-      totalPCBTestAutomatic: dataPassAutomaticResult.length - (dataPassManual.length + dataFailManual.length),
-      percentPCBTestAutomatic:(((dataPassAutomaticResult.length - (dataPassManual.length + dataFailManual.length))*100)/21000).toFixed(1)
-    }
+      percentUnsatisfactory: ((dataFailManual.length * 100) / 21000).toFixed(1),
+      totalPCBTestAutomatic:
+        dataPassAutomaticResult.length -
+        (dataPassManual.length + dataFailManual.length),
+      percentPCBTestAutomatic: (
+        ((dataPassAutomaticResult.length -
+          (dataPassManual.length + dataFailManual.length)) *
+          100) /
+        21000
+      ).toFixed(1),
+    };
   }
 
   //Get statistic of line chart automatic
@@ -880,7 +892,9 @@ export class StatisticController {
       // }
       // index++
     }
-    arrResult = arrResult.sort((a: any, b: any) => a.date.localeCompare(b.date));
+    arrResult = arrResult.sort((a: any, b: any) =>
+      a.date.localeCompare(b.date)
+    );
     return arrResult;
   }
 
@@ -1227,7 +1241,9 @@ export class StatisticController {
       // }
       // index++
     }
-    arrResult = arrResult.sort((a: any, b: any) => a.date.localeCompare(b.date));
+    arrResult = arrResult.sort((a: any, b: any) =>
+      a.date.localeCompare(b.date)
+    );
     return arrResult;
   }
 
