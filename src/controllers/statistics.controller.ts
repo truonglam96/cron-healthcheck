@@ -18,7 +18,7 @@ import {
   requestBody,
   response,
 } from "@loopback/rest";
-import { DrinkMoments } from "../models";
+import { DrinkMoments, SettingValues } from "../models";
 import {
   DrinkMomentsRepository,
   AutomaticResultsRepository,
@@ -225,7 +225,9 @@ export class StatisticController {
     let dataPassB = await this.AutomaticResultsRepository.count(filterPassB);
     let dataFailA = await this.AutomaticResultsRepository.count(filterFailA);
     let dataFailB = await this.AutomaticResultsRepository.count(filterFailB);
-    let dataFailOrders = await this.AutomaticResultsRepository.count(filterFailOrdersFail);
+    let dataFailOrders = await this.AutomaticResultsRepository.count(
+      filterFailOrdersFail
+    );
 
     return {
       pass: {
@@ -1158,6 +1160,75 @@ export class StatisticController {
       index++;
     }
     return { result: arrSumUp, targetData: settingData[0].data };
+  }
+
+  //update-target-date
+  @get("/statistics/update-target-date")
+  @response(200, {
+    description: "Testing upload to server",
+    content: { "application/json": { schema: {} } },
+  })
+  async updateTargetDate(
+    @param.query.string("fromDate") fromDate: string,
+    @param.query.string("toDate") toDate: string,
+    @param.query.string("value") value: string
+  ): Promise<any> {
+    let arrDates: any = [];
+    function printDates(startDate: any, endDate: any) {
+      let currentDate = new Date(startDate);
+      while (currentDate <= new Date(endDate)) {
+        arrDates.push({
+          date: currentDate.toISOString().split("T")[0],
+          value: value,
+        });
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    }
+    printDates(fromDate, toDate);
+
+    let res = await this.SettingValuesRepository.create({
+      settingName: "Target Date",
+      data: [arrDates],
+    });
+
+    return res;
+  }
+
+  //update-target-date
+  @get("/statistics/update-value-date")
+  @response(200, {
+    description: "Testing upload to server",
+    content: { "application/json": { schema: {} } },
+  })
+  async upadateValueOfDate(
+    @param.query.string("date") date: string,
+    @param.query.string("value") value: string
+  ): Promise<any> {
+    let setting: any = await this.SettingValuesRepository.findOne({
+      where: {
+        settingName: "Target Date",
+      },
+    });
+
+    console.log();
+
+    function updateValue(arr: any, date: any, value: any) {
+      return arr.map((item: any) => {
+        if (item.date === date) {
+          item["value"] = value;
+        }
+      });
+    }
+
+    updateValue(setting.data[0], date, value);
+
+    let set = new SettingValues();
+    set.data = setting.data[0][0];
+
+    let a = await this.SettingValuesRepository.updateAll(set, {
+      settingName: "Target Date",
+    });
+    return true;
   }
 
   //Get statistic for line chart manual time of day

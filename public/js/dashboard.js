@@ -385,14 +385,14 @@ async function draw4Column(from, to) {
 
   document.getElementById("totalQualified").innerHTML = data.totalQualified;
   document
-    .getElementsByClassName("progress-bar")[1]
+    .getElementsByClassName("progress-bar")[2]
     .setAttribute("style", "width:" + data.percentQualified + "%");
   document.getElementById("target-2").innerHTML = data.percentQualified + "%";
 
   document.getElementById("totalUnsatisfactory").innerHTML =
     data.totalUnsatisfactory;
   document
-    .getElementsByClassName("progress-bar")[2]
+    .getElementsByClassName("progress-bar")[1]
     .setAttribute("style", "width:" + data.percentUnsatisfactory + "%");
   document.getElementById("target-3").innerHTML =
     data.percentUnsatisfactory + "%";
