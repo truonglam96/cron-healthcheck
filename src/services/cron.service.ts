@@ -64,8 +64,16 @@ export class CronService extends CronJob {
         .then(function (response: any) {
           console.log(JSON.stringify(response.data));
         })
-        .catch(function (error: any) {
-          console.log(error);
+        .catch( async (error: any) => {
+          this.telegramService.sendMessageToChannel(
+            "Exception in Cron-Check-Process: \n{\n\t\t\tname: " +
+              error.name +
+              ", \n\t\t\terror: " +
+              error.message +
+              ", \n\t\t\tdate: " +
+              await this.formatDate(new Date(await this.timeFormat(7))) +
+              "\n}"
+          );
         });
     } catch (error) {
       this.telegramService.sendMessageToChannel(
