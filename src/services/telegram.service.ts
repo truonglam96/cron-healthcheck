@@ -1,6 +1,7 @@
 var axios = require("axios");
 import { injectable, /* inject, */ BindingScope } from '@loopback/core';
 // import axios from 'axios';
+const CLIENT_ID_TELEGRAM = process.env.CLIENT_ID_TELEGRAM;
 
 @injectable({ scope: BindingScope.TRANSIENT })
 export class TelegramService {
@@ -24,7 +25,7 @@ export class TelegramService {
 
       var config = {
         method: "post",
-        url: "https://api.telegram.org/bot6199766795:AAFgaWtAbr7roG2zTgGUv_PdZYAbv1fP1xA/sendMessage",
+        url: "https://api.telegram.org/"+CLIENT_ID_TELEGRAM,
         headers: {
           "Content-Type": "application/json",
         },
