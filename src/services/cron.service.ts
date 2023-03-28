@@ -37,8 +37,8 @@ export class CronService extends CronJob {
         //   this.backupStart();
         // }
       },
-        cronTime: '*/1 * * * * *',  //every 1s
-      // cronTime: "*/2 * * * * ", // every 2 minutes
+        // cronTime: '*/1 * * * * *',  //every 1s
+      cronTime: "*/2 * * * * ", // every 2 minutes
       start: true, // Chạy ngay lập tức
       onComplete: async () => {
         this.telegramService.sendMessageToChannel(
