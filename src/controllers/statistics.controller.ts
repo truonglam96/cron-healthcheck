@@ -1223,7 +1223,7 @@ export class StatisticController {
     updateValue(setting.data[0], date, value);
 
     let set = new SettingValues();
-    set.data = setting.data[0][0];
+    set.data = [setting.data[0]];
 
     let a = await this.SettingValuesRepository.updateAll(set, {
       settingName: "Target Date",

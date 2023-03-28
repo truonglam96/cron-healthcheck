@@ -1,4 +1,5 @@
 import { inject } from "@loopback/core";
+import { repository } from "@loopback/repository";
 import {
   Request,
   RestBindings,
@@ -8,6 +9,7 @@ import {
   param,
 } from "@loopback/rest";
 import { query } from "express";
+import { DrinkMomentsRepository } from "../repositories";
 import { ElasticService } from "../services";
 
 /**
@@ -42,6 +44,8 @@ const PING_RESPONSE: ResponseObject = {
  */
 export class PingController {
   constructor(
+    @repository(DrinkMomentsRepository)
+    public DrinkMomentsRepository: DrinkMomentsRepository,
     @inject("services.ElasticService") protected elastic: ElasticService,
     @inject(RestBindings.Http.REQUEST) private req: Request
   ) {}
@@ -49,8 +53,33 @@ export class PingController {
   // Map to `GET /ping`
   @get("/ping")
   @response(200, PING_RESPONSE)
-  ping(): object {
+  async ping(): Promise<object> {
     // Reply with a greeting, the current time, the url, and request headers
+    // const fs = require("fs");
+
+    // let data: any = await this.DrinkMomentsRepository.find();
+
+    // for (const iterator of data) {
+    //   if(iterator.imageB64 != ""){
+    //     try {
+    //       var b64 = iterator.imageB64;
+    //       const fs = require("fs");
+    //       // var b64 = b64.replace(/^data:image\/png;base64,/, "");
+    //       let pathFile = './public/image/' + iterator.boxId?.toString().replace(/:/gi, '_') + '_' + new Date().getTime() + '_' + iterator._id.toString() + '.jpg';
+    //       fs.writeFile(
+    //         pathFile,
+    //         b64,
+    //         "base64",
+    //         function (err: any) {
+    //           console.log(err);
+    //         }
+    //       );
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
+    //   }  
+    // }
+
     return {
       greeting: "Hello from LoopBack",
       // date: new Date(),

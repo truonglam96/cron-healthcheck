@@ -66,7 +66,7 @@ export class Convertdata2JsonService {
         //Save json to file
         if (iterator.length > 0) {
           let filename = iterator[iterator.length - 1].filename;
-          let path = './src/temple_folder/backup_mongodb/' + filename + '_' + time + '.backup';
+          let path = './src/temple_folder/backup_mongodb/' + filename + '_' + time + '.json';
 
           fs.writeFile(path, JSON.stringify(iterator), (err: any) => {
             if (err) throw err;
@@ -87,12 +87,12 @@ export class Convertdata2JsonService {
     const archive = archiver('zip', {
       zlib: { level: 9 } // Sets the compression level.
     });
-    archive.pipe(output);
+    await archive.pipe(output);
     for (const iterator of arrPath) {
-      archive.file(iterator, { name: iterator.split('/').pop() });
+      await archive.file(iterator, { name: iterator.split('/').pop() });
     }
-    archive.finalize();
-    output.on('close', () => {
+    await archive.finalize();
+    await output.on('close', () => {
       console.log('done');
       //Remove file after compress
       for (const iterator of arrPath) {
@@ -102,11 +102,19 @@ export class Convertdata2JsonService {
         });
       }
     });
+    
+    let pathq = __dirname.replace(/\\/gi, "/");
+    let filePathZip = pathZip.replace("./", "/")
+    let filePath = pathq.replace("/dist/services","") + filePathZip;
 
     return {
-      path: pathZip,
+      path: filePath,
       status: true
     }
+  }
+
+  async replaceRegex(input: string, pattern: RegExp, replacement: string) {
+    return input.replace(pattern, replacement);
   }
 
   async formatDate(date: any) {

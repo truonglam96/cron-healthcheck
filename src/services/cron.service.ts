@@ -10,6 +10,7 @@ import { TelegramService } from "./telegram.service";
 
 let flagUpdated = false;
 let nameFile: any;
+let debug = true;
 @cronJob()
 export class CronService extends CronJob {
   constructor(
@@ -29,15 +30,20 @@ export class CronService extends CronJob {
           "Cron is running..." +
             (await this.formatDate(new Date(await this.timeFormat(7))))
         );
-        this.runningProcess();
+        // this.runningProcess();
+        this.runScript();
+        // if(debug){
+        //   debug = false;
+        //   this.runScript();
+        // }
       },
-      //   cronTime: '*/1 * * * * *',  //every 1s
+        // cronTime: '*/1 * * * * *',  //every 1s
       cronTime: "*/2 * * * * ", // every 2 minutes
       start: true, // Chạy ngay lập tức
       onComplete: async () => {
         this.telegramService.sendMessageToChannel(
           "Service cronjob is STOPED !!!" +
-            this.formatDate(new Date(await this.timeFormat(7)))
+            await this.formatDate(new Date(await this.timeFormat(7)))
         );
         console.log(this.name + " Stop");
       },
@@ -68,9 +74,21 @@ export class CronService extends CronJob {
           ", \n\t\t\terror: " +
           error.message +
           ", \n\t\t\tdate: " +
-          this.formatDate(new Date(await this.timeFormat(7))) +
+          await this.formatDate(new Date(await this.timeFormat(7))) +
           "\n}"
       );
+    }
+  }
+
+  async runScript(){
+    let isUpdateWeek = await this.timeStartUpdateWeek();
+    if(isUpdateWeek){
+      this.backupStart();
+    }
+
+    let isBackupDB = await this.timeStartBackupDB();
+    if(isBackupDB){
+      this.setWeekProd();
     }
   }
 
@@ -93,14 +111,15 @@ export class CronService extends CronJob {
         "T00:00:00.000+00:00";
       let file = await this.convertdata2JsonService.convertData2Json(
         currentDate,
-        nameFile[0].fileName
+        ''
       );
       this.googleapisService.uploadFile(file.path);
+      // this.googleapisService.uploadFile('D:/Github/cron-healthcheck/src/temple_folder/backup_mongodb/Backup_28032023230259.zip');
       this.telegramService.sendMessageToChannel(
         "Backup mongoDB today completed 🎉🎉🎉 \n{\n\t\t\tfilename: " +
-          file.path.replace("./src/temple_folder/backup_mongodb/", "") +
+          file.path +
           ",\n\t\t\tdate: " +
-          this.formatDate(new Date(await this.timeFormat(7))) +
+          await this.formatDate(new Date(await this.timeFormat(7))) +
           "\n}"
       );
       flagUpdated = true;
@@ -191,10 +210,10 @@ export class CronService extends CronJob {
     let hours = d.getHours();
     let minutes = d.getMinutes();
 
-    if (hours == 23 && minutes > 2 && minutes < 8) {
+    if ((hours == 23 && minutes > 2 && minutes < 8)||(hours == 12 && minutes > 2 && minutes < 8)) {
       flagUpdated = false;
     }
-    if (hours == 23 && minutes >= 0 && minutes <= 2) {
+    if ((hours == 23 && minutes >= 0 && minutes <= 2)||(hours == 12 && minutes >= 0 && minutes <= 2)) {
       return true;
     } else {
       return false;

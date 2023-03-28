@@ -19,12 +19,12 @@ export class TelegramService {
     const res = await new Promise((resolve, reject) => {
       var data = JSON.stringify({
         text: text,
-        chat_id: "@factorymachine_error",
+        chat_id: "@wecheer_factory",
       });
 
       var config = {
         method: "post",
-        url: "https://api.telegram.org/bot5358849811:AAEleLRx6CiC7ZLxoxpi1M58zRj5r2Ps8CE/sendMessage",
+        url: "https://api.telegram.org/bot6199766795:AAFgaWtAbr7roG2zTgGUv_PdZYAbv1fP1xA/sendMessage",
         headers: {
           "Content-Type": "application/json",
         },

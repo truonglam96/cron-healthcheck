@@ -7,11 +7,17 @@ import GoogleAuth from 'google-auth-library';
 // import { TelegramService } from './telegram.service';
 
 //#region Google Drive
-const CLIENT_ID = process.env.CLIENT_ID;
-const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const REDIRECT_URI = process.env.REDIRECT_URI;
-const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
-const FOLDER_ID = process.env.FOLDER_ID;
+// const CLIENT_ID = process.env.CLIENT_ID;
+// const CLIENT_SECRET = process.env.CLIENT_SECRET;
+// const REDIRECT_URI = process.env.REDIRECT_URI;
+// const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
+// const FOLDER_ID = process.env.FOLDER_ID;
+
+const CLIENT_ID = '387845914304-3rscv3ntgv4va8j3rm5eu3nrpp6g38j1.apps.googleusercontent.com';
+const CLIENT_SECRET = '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';
+const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
+const REFRESH_TOKEN = '1//04zBaftpPX9ZtCgYIARAAGAQSNwF-L9Ir2PjvZDMdzqWHSaze_cPt21vsH4WwbRFumEiyDPfOkKByJ80EY9Kbx4aPVoh0qYQxD-4';
+const FOLDER_ID = '1NX4x4B1EowWi42gqcDFTtEQZNCHoMbbm'
 
 const oauth2Client = new google.auth.OAuth2(
     CLIENT_ID,
@@ -27,7 +33,7 @@ const drive = google.drive({
 
 //#endregion
 
-const filePath = path.join(__dirname, 'photo.jpg');
+// const filePath = path.join(__dirname, 'photo.jpg');
 let fileId: any;
 @injectable({ scope: BindingScope.TRANSIENT })
 export class GoogleapisService {
@@ -48,7 +54,7 @@ async function uploadFile(filePath: string) {
     try {
         const response = await drive.files.create({
             requestBody: {
-                name: filePath.replace('./src/temple_folder/backup_mongodb/', ''), //This can be name of your choice
+                name: filePath, //This can be name of your choice
                 mimeType: 'application/zip',
             },
             media: {
