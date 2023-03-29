@@ -91,12 +91,12 @@ export class CronService extends CronJob {
   async runScript(){
     let isUpdateWeek = await this.timeStartUpdateWeek();
     if(isUpdateWeek){
-      this.backupStart();
+      // this.setWeekProd();
     }
 
     let isBackupDB = await this.timeStartBackupDB();
     if(isBackupDB){
-      // this.setWeekProd();
+      this.backupStart();
     }
   }
 
