@@ -218,10 +218,10 @@ export class CronService extends CronJob {
     let hours = d.getHours();
     let minutes = d.getMinutes();
 
-    if ((hours == 23 && minutes > 2 && minutes < 8)||(hours == 12 && minutes > 2 && minutes < 8)) {
+    if ((hours == 23 && minutes > 2 && minutes < 6)||(hours == 12 && minutes > 2 && minutes < 6)) {
       flagUpdated = false;
     }
-    if ((hours == 23 && minutes >= 0 && minutes <= 2)||(hours == 12 && minutes >= 0 && minutes <= 2)) {
+    if ((hours == 23 && minutes >= 0 && minutes <= 6)||(hours == 12 && minutes >= 0 && minutes <= 6)) {
       return true;
     } else {
       return false;
