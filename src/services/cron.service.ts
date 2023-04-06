@@ -1,9 +1,9 @@
 import { injectable, /* inject, */ BindingScope, inject } from "@loopback/core";
 import { CronJob, cronJob } from "@loopback/cron";
-import { repository, Where } from '@loopback/repository';
-import { stringify } from 'querystring';
+import { repository, Where } from "@loopback/repository";
+import { stringify } from "querystring";
 // import { certificateinfos } from '../models';
-import { ConfigurationsRepository } from '../repositories';
+import { ConfigurationsRepository } from "../repositories";
 import { Convertdata2JsonService } from "./convertdata-2-json.service";
 import { GoogleapisService } from "./googleapis.service";
 import { TelegramService } from "./telegram.service";
@@ -21,7 +21,7 @@ export class CronService extends CronJob {
     @inject("services.Convertdata2JsonService")
     private convertdata2JsonService: Convertdata2JsonService,
     @repository(ConfigurationsRepository)
-    public configurationsRepository: ConfigurationsRepository,
+    public configurationsRepository: ConfigurationsRepository
   ) {
     super({
       name: "Process backup and update week number !!!",
@@ -37,13 +37,13 @@ export class CronService extends CronJob {
         //   this.backupStart();
         // }
       },
-        // cronTime: '*/1 * * * * *',  //every 1s
+      // cronTime: '*/1 * * * * *',  //every 1s
       cronTime: "*/2 * * * * ", // every 2 minutes
       start: true, // Chạy ngay lập tức
       onComplete: async () => {
         this.telegramService.sendMessageToChannel(
           "Service cronjob is STOPED !!!" +
-            await this.formatDate(new Date(await this.timeFormat(7)))
+            (await this.formatDate(new Date(await this.timeFormat(7))))
         );
         console.log(this.name + " Stop");
       },
@@ -64,14 +64,14 @@ export class CronService extends CronJob {
         .then(function (response: any) {
           console.log(JSON.stringify(response.data));
         })
-        .catch( async (error: any) => {
+        .catch(async (error: any) => {
           this.telegramService.sendMessageToChannel(
             "Exception in Cron-Check-Process: \n{\n\t\t\tname: " +
               error.name +
               ", \n\t\t\terror: " +
               error.message +
               ", \n\t\t\tdate: " +
-              await this.formatDate(new Date(await this.timeFormat(7))) +
+              (await this.formatDate(new Date(await this.timeFormat(7)))) +
               "\n}"
           );
         });
@@ -82,20 +82,20 @@ export class CronService extends CronJob {
           ", \n\t\t\terror: " +
           error.message +
           ", \n\t\t\tdate: " +
-          await this.formatDate(new Date(await this.timeFormat(7))) +
+          (await this.formatDate(new Date(await this.timeFormat(7)))) +
           "\n}"
       );
     }
   }
 
-  async runScript(){
+  async runScript() {
     let isUpdateWeek = await this.timeStartUpdateWeek();
-    if(isUpdateWeek){
+    if (isUpdateWeek) {
       // this.setWeekProd();
     }
 
     let isBackupDB = await this.timeStartBackupDB();
-    if(isBackupDB){
+    if (isBackupDB) {
       this.backupStart();
     }
   }
@@ -119,7 +119,7 @@ export class CronService extends CronJob {
         "T00:00:00.000+00:00";
       let file = await this.convertdata2JsonService.convertData2Json(
         currentDate,
-        ''
+        ""
       );
       this.googleapisService.uploadFile(file.path);
       // this.googleapisService.uploadFile('D:/Github/cron-healthcheck/src/temple_folder/backup_mongodb/Backup_28032023230259.zip');
@@ -127,7 +127,7 @@ export class CronService extends CronJob {
         "Backup mongoDB today completed 🎉🎉🎉 \n{\n\t\t\tfilename: " +
           file.path +
           ",\n\t\t\tdate: " +
-          await this.formatDate(new Date(await this.timeFormat(7))) +
+          (await this.formatDate(new Date(await this.timeFormat(7)))) +
           "\n}"
       );
       flagUpdated = true;
@@ -218,10 +218,16 @@ export class CronService extends CronJob {
     let hours = d.getHours();
     let minutes = d.getMinutes();
 
-    if ((hours == 23 && minutes > 2 && minutes < 6)||(hours == 12 && minutes > 2 && minutes < 6)) {
+    if (
+      (hours == 23 && minutes > 2 && minutes < 2) ||
+      (hours == 12 && minutes > 2 && minutes < 2)
+    ) {
       flagUpdated = false;
     }
-    if ((hours == 23 && minutes >= 0 && minutes <= 6)||(hours == 12 && minutes >= 0 && minutes <= 6)) {
+    if (
+      (hours == 23 && minutes >= 0 && minutes < 2) ||
+      (hours == 12 && minutes >= 0 && minutes < 2)
+    ) {
       return true;
     } else {
       return false;
