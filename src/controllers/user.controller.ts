@@ -17,8 +17,10 @@ import { model, property, repository } from "@loopback/repository";
 import {
   get,
   getModelSchemaRef,
+  param,
   post,
   requestBody,
+  response,
   SchemaObject,
 } from "@loopback/rest";
 import { SecurityBindings, securityId, UserProfile } from "@loopback/security";
@@ -66,7 +68,7 @@ export class UserController {
     public userService: MyUserService,
     @inject(SecurityBindings.USER, { optional: true })
     public user: UserProfile,
-    @repository(UserRepository) protected userRepository: UserRepository
+    @repository(UserRepository) protected userRepository: UserRepository,
   ) {}
 
   @post("/users/login", {
@@ -170,6 +172,27 @@ export class UserController {
       .create({ password });
 
     return savedUser;
+  }
+
+  @get('/user')
+  @response(200, {
+    description: 'Array of AutomaticDetails model instances',
+    content: {
+      'application/json': {
+        schema: {},
+      },
+    },
+  })
+  async getName(
+    @param.query.string("id") id: string,
+  ): Promise<any> {
+      let filter = {
+        where: {
+          _id: id,
+        },
+      };
+
+    return await this.userRepository.find(filter);
   }
 
   // @get('/test', {
