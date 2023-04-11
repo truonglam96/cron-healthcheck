@@ -30,14 +30,13 @@ export class CronService extends CronJob {
           "Cron is running..." +
             (await this.formatDate(new Date(await this.timeFormat(7))))
         );
-        // this.runningProcess();
         this.runScript();
-        // if(debug){
+        // if (debug) {
         //   debug = false;
-        //   this.backupStart();
+        //   this.setWeekProd();
         // }
       },
-      // cronTime: '*/1 * * * * *',  //every 1s
+      // cronTime: "*/1 * * * * *", //every 1s
       cronTime: "*/2 * * * * ", // every 2 minutes
       start: true, // Chạy ngay lập tức
       onComplete: async () => {
@@ -91,7 +90,7 @@ export class CronService extends CronJob {
   async runScript() {
     let isUpdateWeek = await this.timeStartUpdateWeek();
     if (isUpdateWeek) {
-      // this.setWeekProd();
+      this.setWeekProd();
     }
 
     let isBackupDB = await this.timeStartBackupDB();
@@ -147,22 +146,30 @@ export class CronService extends CronJob {
   async setWeekProd() {
     try {
       let info: any = await this.configurationsRepository.findOne();
-      let productionCode = info.efuseConfig.productionCode.substr(0, 6);
       let time = await this.getWeekNumber(new Date(await this.timeFormat(7)));
-      let code = productionCode + time[1];
       //Update
+      info.weekNumber = time[1].toString();
       this.configurationsRepository
-        .updateById(info?._id, {
-          //@ts-ignore
-          "efuseConfig.productionCode": code,
-        })
+        .updateAll(info)
         .then(() => {
           this.telegramService.sendMessageToChannel(
             "Update week number success, from " +
               info.efuseConfig.productionCode +
               " to " +
-              code
+              time[1]
           );
+        })
+        .catch(async (error) => {
+          let b = await this.telegramService.sendMessageToChannel(
+            "Exception in Update week number: \n{\n\t\t\tname: " +
+              error.name +
+              ", \n\t\t\terror: " +
+              error.message +
+              ", \n\t\t\tdate: " +
+              this.formatDate(new Date(await this.timeFormat(7))) +
+              "\n}"
+          );
+          console.log(b);
         });
     } catch (error) {
       let b = await this.telegramService.sendMessageToChannel(
