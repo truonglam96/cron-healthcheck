@@ -211,7 +211,7 @@ export class CronService extends CronJob {
     let day = weekday[d.getDay()];
     let hours = d.getHours();
     let minutes = d.getMinutes();
-    if (day == "Monday" && hours == 0 && minutes >= 0 && minutes <= 5) {
+    if (day == "Monday" && hours == 0 && minutes >= 0 && minutes <= 2) {
       return true;
     } else {
       return false;
@@ -231,10 +231,15 @@ export class CronService extends CronJob {
     ) {
       flagUpdated = false;
     }
-    if (
-      (hours == 23 && minutes >= 0 && minutes < 2) ||
-      (hours == 12 && minutes >= 0 && minutes < 2)
-    ) {
+    // if (
+    //   (hours == 23 && minutes >= 0 && minutes < 2) ||
+    //   (hours == 12 && minutes >= 0 && minutes < 2)
+    // ) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+    if ((hours == 23 && minutes == 0) || (hours == 12 && minutes == 0)) {
       return true;
     } else {
       return false;
