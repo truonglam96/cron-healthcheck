@@ -39,17 +39,31 @@ export const log: Middleware = async (middlewareCtx, next) => {
     }
 
     //Check request from QC-Tool
-    if (request.url.includes('/qctool-request') && x_rest_api_key !== X_REST_API_KEY) {
+    if (
+      request.url.includes("/qctool-request") &&
+      x_rest_api_key !== X_REST_API_KEY
+    ) {
       throw new HttpErrors[401]();
     }
 
     // Process response
     return await next();
-    
   } catch (err: any) {
     if (request.url === "/box_comming") {
+      // return {
+      //   result: "false",
+      //   brand: "test",
+      //   doReset: false,
+      //   doUpdate: false,
+      //   fwUrl: "",
+      //   image: "",
+      //   timeUTC: parseInt((new Date().getTime() / 1000).toFixed()),
+      // };
+      const sleep = (waitTimeInMs: any) =>
+        new Promise((resolve) => setTimeout(resolve, waitTimeInMs));
+      await sleep(25000);
       return {
-        result: "false",
+        result: "success",
         brand: "test",
         doReset: false,
         doUpdate: false,

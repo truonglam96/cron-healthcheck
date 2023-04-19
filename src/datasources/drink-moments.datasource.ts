@@ -32,6 +32,6 @@ export class DrinkMomentsDataSource extends juggler.DataSource
     dsConfig: object = config,
   ) {
     super(dsConfig);
-    console.log(config);
+    // console.log(config);
   }
 }

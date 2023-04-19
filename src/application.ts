@@ -62,8 +62,8 @@ export class GetUrlApplication extends BootMixin(
     };
 
     // Set up Cron Jobs
-    this.component(CronComponent);
-    this.add(createBindingFromClass(CronService));
+    // this.component(CronComponent);
+    // this.add(createBindingFromClass(CronService));
 
     // Configure file upload with multer options
     this.configureFileUpload(options.fileStorageDirectory);
