@@ -35,7 +35,7 @@ export class BackupMongodbController {
     public otaInfoRepository: OtaInfoRepository
   ) {}
 
-  @authenticate('jwt')
+  @authenticate("jwt")
   @get("/DrinkMoments/{id}")
   @response(200, {
     description: "DrinkMoments model instance",
@@ -49,7 +49,7 @@ export class BackupMongodbController {
     return this.drinkMomentsRepository.findById(id);
   }
 
-  @authenticate('jwt')
+  @authenticate("jwt")
   @get("/get_img")
   @response(200, {})
   async getLink(): Promise<any> {
@@ -69,108 +69,126 @@ export class BackupMongodbController {
     content: { "application/json": { schema: {} } },
   })
   async create(@requestBody() body: any): Promise<{}> {
-    let doUpdate: any = false,
-      doReset: any = false,
-      fwUrl: any = "";
-    console.log(body);
-
-    let obj = new DrinkMoments();
-    obj.firmware = body.firmware ? body.firmware : "";
-    obj.boxId = body.boxId ? body.boxId : "";
-    obj.deviceSerial = body.deviceSerial ? body.deviceSerial : "";
-    obj.battery = body.battery ? body.battery : "";
-    obj.count = body.count ? body.count : "";
-    obj.deviceTime = body.deviceTime ? body.deviceTime : "";
-    obj.totalAwakeTime = body.totalAwakeTime ? body.totalAwakeTime : "";
-    obj.restartCount = body.restartCount ? body.restartCount : "";
-    obj.connection = body.connection ? body.connection : "";
-    obj.wifiConnectStart = body.wifiConnectStart ? body.wifiConnectStart : "";
-    obj.wifiConnectDone = body.wifiConnectDone ? body.wifiConnectDone : "";
-    obj.rssi = body.rssi ? body.rssi : "";
-    obj.cameraWakeupCount = body.cameraWakeupCount
-      ? body.cameraWakeupCount
-      : "";
-    obj.imgType = body.imgType ? body.imgType : "";
-    obj.imageCaptureTime = body.imageCaptureTime ? body.imageCaptureTime : "";
-    obj.captureTimeRel = body.captureTimeRel ? body.captureTimeRel : "";
-    obj.successfulImageUploadCount = body.successfulImageUploadCount
-      ? body.successfulImageUploadCount
-      : "";
-    obj.serialNr = body.serialNr ? body.serialNr : "";
-    obj.uniqueID = body.uniqueID ? body.uniqueID : "";
-    obj.imagesRemaining = body.imagesRemaining ? body.imagesRemaining : "";
-    obj.imagesUploadedInCycle = body.imagesUploadedInCycle
-      ? body.imagesUploadedInCycle
-      : "";
-    obj.HPI = body.HPI ? body.HPI : "";
-    obj.temperature = body.temperature ? body.temperature : "";
-    obj.humidity = body.humidity ? body.humidity : "";
-    obj.remainingImgInfo = body.remainingImgInfo ? body.remainingImgInfo : "";
-    obj.imageB64 = body.imageB64 ? body.imageB64 : "";
-    obj.imu = body.imu ? body.imu : "";
-    obj.force = body.force ? body.force : "";
-    this.drinkMomentsRepository.create(obj);
-
-    // if(obj.boxId !== "" && obj.serialNr === "TEST"){
-    //   //Find info OTA
-    //   let getInfo: any = await this.otaInfoRepository.findOne({
-    //     where: {
-    //       boxId: obj.boxId,
-    //     },
-    //   });
-
-    //   if (getInfo.doUpdate === true) {
-    //     doUpdate = getInfo.doUpdate;
-    //     doReset = getInfo.doReset;
-    //     fwUrl = getInfo.fwUrl;
-
-    //     //Set status after OTA runing
-    //     this.otaInfoRepository.updateById(getInfo._id, new OtaInfo({doUpdate : false}));
-    //   }
-    // }
-
-    if (obj.imageB64 === "" && obj.serialNr !== "TEST") {
-      return {
-        result: "failed",
-        brand: "test",
-        doReset: doReset,
-        doUpdate: doUpdate,
-        fwUrl: fwUrl,
-        image: "",
-        timeUTC: parseInt((new Date().getTime() / 1000).toFixed()),
-      };
-    } else {
-      return {
-        result: "success",
-        brand: "test",
-        doReset: doReset,
-        doUpdate: doUpdate,
-        fwUrl: fwUrl,
-        image: "",
-        timeUTC: parseInt((new Date().getTime() / 1000).toFixed()),
-      };
-    }
-    // if(obj.imageB64 != ""){
-    //   try {
-    //     var b64 = body.imageB64;
-    //     const fs = require("fs");
-    //     // var b64 = b64.replace(/^data:image\/png;base64,/, "");
-    //     let pathFile = './public/image/' + obj.boxId?.toString().replace(/:/gi, '_') + '_' + new Date().getTime() + '_' + drinkMomentNew._id.toString() + '.jpg';
-    //     fs.writeFile(
-    //       pathFile,
-    //       b64,
-    //       "base64",
-    //       function (err: any) {
-    //         console.log(err);
-    //       }
-    //     );
-    //   } catch (error) {
-    //     // console.log(error);
-    //   }
-    // }
+    const sleep = (waitTimeInMs: any) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
+    await sleep(25000)
+    return {
+      result: "success",
+      brand: "test",
+      doReset: false,
+      doUpdate: false,
+      fwUrl: "",
+      image: "",
+      timeUTC: parseInt((new Date().getTime() / 1000).toFixed()),
+    };
   }
 
-  @authenticate('jwt')
+  async delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  // async create(@requestBody() body: any): Promise<{}> {
+  //   let doUpdate: any = false,
+  //     doReset: any = false,
+  //     fwUrl: any = "";
+  //   console.log(body);
+
+  //   let obj = new DrinkMoments();
+  //   obj.firmware = body.firmware ? body.firmware : "";
+  //   obj.boxId = body.boxId ? body.boxId : "";
+  //   obj.deviceSerial = body.deviceSerial ? body.deviceSerial : "";
+  //   obj.battery = body.battery ? body.battery : "";
+  //   obj.count = body.count ? body.count : "";
+  //   obj.deviceTime = body.deviceTime ? body.deviceTime : "";
+  //   obj.totalAwakeTime = body.totalAwakeTime ? body.totalAwakeTime : "";
+  //   obj.restartCount = body.restartCount ? body.restartCount : "";
+  //   obj.connection = body.connection ? body.connection : "";
+  //   obj.wifiConnectStart = body.wifiConnectStart ? body.wifiConnectStart : "";
+  //   obj.wifiConnectDone = body.wifiConnectDone ? body.wifiConnectDone : "";
+  //   obj.rssi = body.rssi ? body.rssi : "";
+  //   obj.cameraWakeupCount = body.cameraWakeupCount
+  //     ? body.cameraWakeupCount
+  //     : "";
+  //   obj.imgType = body.imgType ? body.imgType : "";
+  //   obj.imageCaptureTime = body.imageCaptureTime ? body.imageCaptureTime : "";
+  //   obj.captureTimeRel = body.captureTimeRel ? body.captureTimeRel : "";
+  //   obj.successfulImageUploadCount = body.successfulImageUploadCount
+  //     ? body.successfulImageUploadCount
+  //     : "";
+  //   obj.serialNr = body.serialNr ? body.serialNr : "";
+  //   obj.uniqueID = body.uniqueID ? body.uniqueID : "";
+  //   obj.imagesRemaining = body.imagesRemaining ? body.imagesRemaining : "";
+  //   obj.imagesUploadedInCycle = body.imagesUploadedInCycle
+  //     ? body.imagesUploadedInCycle
+  //     : "";
+  //   obj.HPI = body.HPI ? body.HPI : "";
+  //   obj.temperature = body.temperature ? body.temperature : "";
+  //   obj.humidity = body.humidity ? body.humidity : "";
+  //   obj.remainingImgInfo = body.remainingImgInfo ? body.remainingImgInfo : "";
+  //   obj.imageB64 = body.imageB64 ? body.imageB64 : "";
+  //   obj.imu = body.imu ? body.imu : "";
+  //   obj.force = body.force ? body.force : "";
+  //   this.drinkMomentsRepository.create(obj);
+
+  //   // if(obj.boxId !== "" && obj.serialNr === "TEST"){
+  //   //   //Find info OTA
+  //   //   let getInfo: any = await this.otaInfoRepository.findOne({
+  //   //     where: {
+  //   //       boxId: obj.boxId,
+  //   //     },
+  //   //   });
+
+  //   //   if (getInfo.doUpdate === true) {
+  //   //     doUpdate = getInfo.doUpdate;
+  //   //     doReset = getInfo.doReset;
+  //   //     fwUrl = getInfo.fwUrl;
+
+  //   //     //Set status after OTA runing
+  //   //     this.otaInfoRepository.updateById(getInfo._id, new OtaInfo({doUpdate : false}));
+  //   //   }
+  //   // }
+
+  //   if (obj.imageB64 === "" && obj.serialNr !== "TEST") {
+  //     return {
+  //       result: "failed",
+  //       brand: "test",
+  //       doReset: doReset,
+  //       doUpdate: doUpdate,
+  //       fwUrl: fwUrl,
+  //       image: "",
+  //       timeUTC: parseInt((new Date().getTime() / 1000).toFixed()),
+  //     };
+  //   } else {
+  //     return {
+  //       result: "success",
+  //       brand: "test",
+  //       doReset: doReset,
+  //       doUpdate: doUpdate,
+  //       fwUrl: fwUrl,
+  //       image: "",
+  //       timeUTC: parseInt((new Date().getTime() / 1000).toFixed()),
+  //     };
+  //   }
+  //   // if(obj.imageB64 != ""){
+  //   //   try {
+  //   //     var b64 = body.imageB64;
+  //   //     const fs = require("fs");
+  //   //     // var b64 = b64.replace(/^data:image\/png;base64,/, "");
+  //   //     let pathFile = './public/image/' + obj.boxId?.toString().replace(/:/gi, '_') + '_' + new Date().getTime() + '_' + drinkMomentNew._id.toString() + '.jpg';
+  //   //     fs.writeFile(
+  //   //       pathFile,
+  //   //       b64,
+  //   //       "base64",
+  //   //       function (err: any) {
+  //   //         console.log(err);
+  //   //       }
+  //   //     );
+  //   //   } catch (error) {
+  //   //     // console.log(error);
+  //   //   }
+  //   // }
+  // }
+
+  @authenticate("jwt")
   //Create 1 data opener
   @post("/create-drink-moments")
   @response(200, {
@@ -217,7 +235,7 @@ export class BackupMongodbController {
   }
 
   //Convert data force sensor b64 to chart
-  @authenticate('jwt')
+  @authenticate("jwt")
   @post("/convert-force")
   @response(200, {
     description: "Testing upload to server",
@@ -232,7 +250,7 @@ export class BackupMongodbController {
   }
 
   //Convert data imu sensor b64 to chart
-  @authenticate('jwt')
+  @authenticate("jwt")
   @post("/convert-imu")
   @response(200, {
     description: "Testing upload to server",
@@ -247,7 +265,7 @@ export class BackupMongodbController {
   }
 
   //Convert b64 to array (force, imu)
-  @authenticate('jwt')
+  @authenticate("jwt")
   @post("/convert-force-imu")
   @response(200, {
     description: "Testing upload to server",
@@ -278,7 +296,7 @@ export class BackupMongodbController {
   }
 
   //Get data of macAddress
-  @authenticate('jwt')
+  @authenticate("jwt")
   @get("/get-info-device")
   @response(200, {
     description: "Testing upload to server",
@@ -349,7 +367,7 @@ function convertForce(b64: any) {
     // val = val.replace("'", '"');
     // console.log(val + ",");
   }
-  
+
   // var arrMean: any = [];
   // for (const iterator of data_points) {
   //   arrMean.push(iterator[1]);

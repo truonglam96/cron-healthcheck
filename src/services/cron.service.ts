@@ -49,7 +49,7 @@ export class CronService extends CronJob {
     });
   }
 
-  async runningProcess() {
+  async pingService() {
     try {
       var axios = require("axios");
 
