@@ -61,7 +61,7 @@ export const log: Middleware = async (middlewareCtx, next) => {
       // };
       const sleep = (waitTimeInMs: any) =>
         new Promise((resolve) => setTimeout(resolve, waitTimeInMs));
-      await sleep(15000);
+      await sleep(35000);
       return {
         result: "success",
         brand: "test",
