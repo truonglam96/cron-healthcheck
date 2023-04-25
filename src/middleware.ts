@@ -50,20 +50,8 @@ export const log: Middleware = async (middlewareCtx, next) => {
     return await next();
   } catch (err: any) {
     if (request.url === "/box_comming") {
-      // return {
-      //   result: "false",
-      //   brand: "test",
-      //   doReset: false,
-      //   doUpdate: false,
-      //   fwUrl: "",
-      //   image: "",
-      //   timeUTC: parseInt((new Date().getTime() / 1000).toFixed()),
-      // };
-      const sleep = (waitTimeInMs: any) =>
-        new Promise((resolve) => setTimeout(resolve, waitTimeInMs));
-      await sleep(35000);
       return {
-        result: "success",
+        result: "false",
         brand: "test",
         doReset: false,
         doUpdate: false,
@@ -71,6 +59,18 @@ export const log: Middleware = async (middlewareCtx, next) => {
         image: "",
         timeUTC: parseInt((new Date().getTime() / 1000).toFixed()),
       };
+      // const sleep = (waitTimeInMs: any) =>
+      //   new Promise((resolve) => setTimeout(resolve, waitTimeInMs));
+      // await sleep(35000);
+      // return {
+      //   result: "success",
+      //   brand: "test",
+      //   doReset: false,
+      //   doUpdate: false,
+      //   fwUrl: "",
+      //   image: "",
+      //   timeUTC: parseInt((new Date().getTime() / 1000).toFixed()),
+      // };
     }
 
     // Catch errors from downstream middleware
