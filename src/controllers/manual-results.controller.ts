@@ -102,6 +102,7 @@ export class ManualResultsController {
           ],
         },
         order: ["lastDate DESC"],
+        limit: 50
       };
     }
 
