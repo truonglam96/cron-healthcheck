@@ -88,6 +88,8 @@ export class CronService extends CronJob {
   }
 
   async runScript() {
+    console.log('Time run: ' + new Date().toISOString());
+    
     let isUpdateWeek = await this.timeStartUpdateWeek();
     if (isUpdateWeek) {
       this.setWeekProd();
