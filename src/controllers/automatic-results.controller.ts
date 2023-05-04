@@ -107,6 +107,7 @@ export class AutomaticResultsController {
           ],
         },
         order: ["lastDate DESC"],
+        limit: 50
       };
     }
 
