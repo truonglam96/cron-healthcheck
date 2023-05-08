@@ -1848,6 +1848,10 @@ async function drawChartColumn1_1(from, to, darkMode) {
         smooth: true,
         color: "red",
         data: arrFail,
+        // label: {
+        //   show: true,
+        //   position: "top",
+        // },
       },
       {
         name: "Pass",
@@ -1856,6 +1860,10 @@ async function drawChartColumn1_1(from, to, darkMode) {
         smooth: true,
         color: "green",
         data: arrPass,
+        // label: {
+        //   show: true,
+        //   position: "top",
+        // },
       },
       
       {
@@ -1865,6 +1873,10 @@ async function drawChartColumn1_1(from, to, darkMode) {
         smooth: true,
         color: "#8378EA",
         data: arrCurrent,
+        // label: {
+        //   show: true,
+        //   position: "top",
+        // },
       },
       {
         name: "Target",
@@ -1873,6 +1885,10 @@ async function drawChartColumn1_1(from, to, darkMode) {
         smooth: true,
         color: "blue",
         data: arrTarget,
+        // label: {
+        //   show: true,
+        //   position: "top",
+        // },
       },
     ],
   };
