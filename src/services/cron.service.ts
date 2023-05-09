@@ -156,7 +156,7 @@ export class CronService extends CronJob {
         .then(() => {
           this.telegramService.sendMessageToChannel(
             "Update week number success, from " +
-              info.efuseConfig.productionCode +
+              info.weekNumber +
               " to " +
               time[1]
           );
