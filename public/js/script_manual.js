@@ -21,8 +21,8 @@ window.addEventListener("mouseup", function (e) {
       : "";
     refreshTag();
     loadImgCanvas(src, mac, times);
-    drawCharts(id);
-    loadJson(id);
+    // drawCharts(id);
+    // loadJson(id);
   }
 });
 
@@ -149,12 +149,12 @@ function generateImgB64() {
   let tagDateTo = document.getElementById("input_DateTo");
 
   let _where = {
-    serialNr: { neq: "TEST" },
-    // ,imageB64: { neq: ""}
+    isPass: true,
+    imageB64: { neq: ""}
   };
 
   if (tagMacId.value !== "") {
-    _where["boxId"] = tagMacId.value.toString();
+    _where["macAddress"] = tagMacId.value.toString();
   }
 
   if (tagDateFrom.value !== "" && tagDateTo.value !== "") {
@@ -164,24 +164,45 @@ function generateImgB64() {
     ];
   }
 
+  // let filter = {
+  //   limit: 60,
+  //   skip: indexParser,
+  //   where: _where,
+  //   order: "createdDate DESC",
+  //   fields: {
+  //     _id: true,
+  //     boxId: true,
+  //     createdDate: true,
+  //     imageB64: true,
+  //     deviceTime: true,
+  //   },
+  // };
+
   let filter = {
-    limit: 60,
-    skip: indexParser,
-    where: _where,
-    order: "createdDate DESC",
-    fields: {
-      _id: true,
-      boxId: true,
-      createdDate: true,
-      imageB64: true,
-      deviceTime: true,
-    },
-  };
+    "offset": 0,
+    "limit": 60,
+    "skip": indexParser,
+    "order": "createdDate DESC",
+    "where": _where,
+    "fields": {
+      "_id": true,
+      "testNumber": true,
+      "isPass": true,
+      "macAddress": true,
+      "logResult": true,
+      "type": true,
+      "resultData": true,
+      "imageB64": true,
+      "testingTime": true,
+      "firmwareOTA": true,
+      "createdDate": true
+    }
+  }
   indexParser += 60;
   tagIndex.innerHTML = indexParser;
 
-  countAll();
-  countFilter(JSON.stringify(_where));
+  // countAll();
+  // countFilter(JSON.stringify(_where));
 
   //
   var myHeaders = new Headers();
@@ -195,7 +216,7 @@ function generateImgB64() {
   };
 
   fetch(
-    URL_PATH + "/manual-details?fromDate=2023-01-01&toDate=2023-01-06",
+    URL_PATH + "/list-manual-details?filter=" + JSON.stringify(filter),
     requestOptions
   )
     .then((response) => response.text())
@@ -211,11 +232,11 @@ function generateImgB64() {
 
         var div_mac = document.createElement("div");
         div_mac.setAttribute("class", "bottom-left");
-        div_mac.innerHTML = element.boxId;
+        div_mac.innerHTML = element.macAddress;
 
         var div_timer = document.createElement("div");
         div_timer.setAttribute("class", "bottom-right");
-        let date = formatDate(new Date(parseInt(element.deviceTime + "000")));
+        let date = formatDate(element.createdDate);
         div_timer.innerHTML = date;
 
         var div_layer = document.createElement("div");
