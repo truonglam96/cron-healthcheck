@@ -49,7 +49,7 @@ async function checkAuthorize() {
   await fetch(URL_PATH + "/whoAmI", requestOptions)
     .then((response) => {
       if (response.status !== 200) {
-        window.location.href = ROOT + "/html/login.html";
+        window.location.href = ROOT + "/html/tce-login.html";
       } else response.text();
     })
     .then((result) => console.log(result))
