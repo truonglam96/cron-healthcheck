@@ -81,10 +81,10 @@ export class ManualResultsController {
     toDate = toDate + " 23:59:59";
     let filter: any;
 
-    if (macAddress === "") {
+    if (macAddress === "" || macAddress === undefined) {
       filter = {
         where: {
-          macAddress: { neq: "" },
+          macAddress: {nin: ["", null]},
           and: [
             { lastDate: { gte: new Date(fromDate) } },
             { lastDate: { lte: new Date(toDate) } },
