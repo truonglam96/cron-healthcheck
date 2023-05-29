@@ -88,7 +88,7 @@ export class AutomaticResultsController {
     if (macAddress == '') {
       filter = {
         where: {
-          macAddress: { neq: "" },
+          macAddress: {nin: ["", null]},
           and: [
             { lastDate: { gte: new Date(fromDate) } },
             { lastDate: { lte: new Date(toDate) } },

@@ -86,7 +86,7 @@ export class ManualDetailsController {
     if (macAddress === "") {
       filter = {
         where: {
-          macAddress: { neq: "" },
+          macAddress: {nin: ["", null]},
           and: [
             { createdDate: { gte: new Date(fromDate) } },
             { createdDate: { lte: new Date(toDate) } },
