@@ -302,7 +302,8 @@ function getLast30Days() {
     last30Days.push(date);
   }
   return {
-    firstDay: last30Days[last30Days.length - 1],
+    // firstDay: last30Days[last30Days.length - 1],
+    firstDay: '2023-04-01',
     lastDay: last30Days[0],
   };
 }
