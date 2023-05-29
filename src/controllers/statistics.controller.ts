@@ -59,7 +59,7 @@ export class StatisticController {
     toDate = toDate + " 23:59:59";
     let filter = {
       where: {
-        macAddress: { neq: "" },
+        macAddress: {nin: ["", null]},
         and: [
           { lastDate: { gte: new Date(fromDate) } },
           { lastDate: { lte: new Date(toDate) } },
@@ -173,7 +173,7 @@ export class StatisticController {
     fromDate = fromDate + " 00:00:00";
     toDate = toDate + " 23:59:59";
     let filterPassA = {
-      macAddress: { neq: "" },
+      macAddress: {nin: ["", null]},
       type: "A",
       isPass: true,
       and: [
@@ -183,7 +183,7 @@ export class StatisticController {
     };
 
     let filterPassB = {
-      macAddress: { neq: "" },
+      macAddress: {nin: ["", null]},
       type: "B",
       isPass: true,
       and: [
@@ -193,7 +193,7 @@ export class StatisticController {
     };
 
     let filterFailA = {
-      macAddress: { neq: "" },
+      macAddress: {nin: ["", null]},
       type: "A",
       isPass: false,
       and: [
@@ -203,7 +203,7 @@ export class StatisticController {
     };
 
     let filterFailB = {
-      macAddress: { neq: "" },
+      macAddress: {nin: ["", null]},
       type: "B",
       isPass: false,
       and: [
@@ -213,7 +213,7 @@ export class StatisticController {
     };
 
     let filterFailOrdersFail = {
-      macAddress: { neq: "" },
+      macAddress: {nin: ["", null]},
       isPass: false,
       and: [
         { lastDate: { gte: new Date(fromDate) } },
@@ -259,7 +259,7 @@ export class StatisticController {
     let filterPassExistENV = {
       // "limit": 100,
       where: {
-        macAddress: { neq: "" },
+        macAddress: {nin: ["", null]},
         isPass: true,
         and: [
           { lastDate: { gte: new Date(fromDate) } },
@@ -272,7 +272,7 @@ export class StatisticController {
     let filterPassNotENV = {
       // "limit": 100,
       where: {
-        macAddress: { neq: "" },
+        macAddress: {nin: ["", null]},
         HPI: { like: "%4c4e%" },
         isPass: true,
         and: [
@@ -286,7 +286,7 @@ export class StatisticController {
     let filterFailExistENV = {
       // "limit": 100,
       where: {
-        macAddress: { neq: "" },
+        macAddress: {nin: ["", null]},
         isPass: false,
         and: [
           { lastDate: { gte: new Date(fromDate) } },
@@ -299,7 +299,7 @@ export class StatisticController {
     let filterFailNotENV = {
       // "limit": 100,
       where: {
-        macAddress: { neq: "" },
+        macAddress: {nin: ["", null]},
         HPI: { like: "%4c4e%" },
         isPass: false,
         and: [
@@ -348,7 +348,7 @@ export class StatisticController {
 
     let filterPassManual = {
       where: {
-        macAddress: { neq: "" },
+        macAddress: {nin: ["", null]},
         isPass: true,
         and: [
           { lastDate: { gte: new Date(fromDate) } },
@@ -360,7 +360,7 @@ export class StatisticController {
 
     let filterFailManual = {
       where: {
-        macAddress: { neq: "" },
+        macAddress: {nin: ["", null]},
         isPass: false,
         and: [
           { lastDate: { gte: new Date(fromDate) } },
@@ -372,7 +372,7 @@ export class StatisticController {
 
     let filterPassAutomaticResult = {
       where: {
-        macAddress: { neq: "" },
+        macAddress: {nin: ["", null]},
         isPass: true,
         and: [
           { lastDate: { gte: new Date(fromDate) } },
@@ -426,7 +426,7 @@ export class StatisticController {
     let filter = {
       // "limit": 100,
       where: {
-        macAddress: { neq: "" },
+        macAddress: {nin: ["", null]},
         and: [
           { lastDate: { gte: new Date(fromDate) } },
           { lastDate: { lte: new Date(toDate) } },
@@ -515,7 +515,7 @@ export class StatisticController {
   //   let filterPass = {
   //     // "limit": 100,
   //     where: {
-  //       macAddress: { neq: "" },
+  //       macAddress: {nin: ["", null]},
   //       isPass: true,
   //       and: [
   //         { lastDate: { gte: new Date(fromDate) } },
@@ -528,7 +528,7 @@ export class StatisticController {
   //   let filterPass = {
   //     // "limit": 100,
   //     where: {
-  //       macAddress: { neq: "" },
+  //       macAddress: {nin: ["", null]},
   //       isPass: true,
   //       and: [
   //         { lastDate: { gte: new Date(fromDate) } },
@@ -650,7 +650,7 @@ export class StatisticController {
     let filter = {
       // "limit": 100,
       where: {
-        macAddress: { neq: "" },
+        macAddress: {nin: ["", null]},
         and: [
           { lastDate: { gte: new Date(fromDate) } },
           { lastDate: { lte: new Date(toDate) } },
@@ -739,7 +739,7 @@ export class StatisticController {
     let filter = {
       // "limit": 100,
       where: {
-        macAddress: { neq: "" },
+        macAddress: {nin: ["", null]},
         and: [
           { lastDate: { gte: new Date(fromDate) } },
           { lastDate: { lte: new Date(toDate) } },
@@ -828,7 +828,7 @@ export class StatisticController {
     let filter = {
       // "limit": 100,
       where: {
-        macAddress: { neq: "" },
+        macAddress: {nin: ["", null]},
         and: [
           { lastDate: { gte: new Date(fromDate) } },
           { lastDate: { lte: new Date(toDate) } },
@@ -914,7 +914,7 @@ export class StatisticController {
     toDate = toDate + " 23:59:59";
     let filter = {
       where: {
-        macAddress: { neq: "" },
+        macAddress: {nin: ["", null]},
         and: [
           { lastDate: { gte: new Date(fromDate) } },
           { lastDate: { lte: new Date(toDate) } },
@@ -1091,7 +1091,7 @@ export class StatisticController {
     let filter = {
       // "limit": 100,
       where: {
-        macAddress: { neq: "" },
+        macAddress: {nin: ["", null]},
         and: [
           { lastDate: { gte: new Date(fromDate) } },
           { lastDate: { lte: new Date(toDate) } },
@@ -1246,7 +1246,7 @@ export class StatisticController {
     let filter = {
       // "limit": 100,
       where: {
-        macAddress: { neq: "" },
+        macAddress: {nin: ["", null]},
         and: [
           { lastDate: { gte: new Date(fromDate) } },
           { lastDate: { lte: new Date(toDate) } },
