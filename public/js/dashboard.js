@@ -303,7 +303,7 @@ function getLast30Days() {
   }
   return {
     // firstDay: last30Days[last30Days.length - 1],
-    firstDay: '2023-04-01',
+    firstDay: "2023-04-01",
     lastDay: last30Days[0],
   };
 }
@@ -467,8 +467,8 @@ function search() {
 
 function downloadTableAutomaticResult() {
   // Get the table element
-  const table = document.getElementById('table_automatic_result');
-  
+  const table = document.getElementById("table_automatic_result");
+
   // Extract the data from the table
   const rows = table.rows;
   const data = [];
@@ -482,12 +482,15 @@ function downloadTableAutomaticResult() {
   }
 
   // Convert the data to CSV format
-  const csv = data.map(row => row.join(',')).join('\n');
+  const csv = data.map((row) => row.join(",")).join("\n");
 
   // Create a download link and click it
-  const link = document.createElement('a');
-  link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
-  link.setAttribute('download', 'automatic_results.csv');
+  const link = document.createElement("a");
+  link.setAttribute(
+    "href",
+    "data:text/csv;charset=utf-8," + encodeURIComponent(csv)
+  );
+  link.setAttribute("download", "automatic_results.csv");
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -495,8 +498,8 @@ function downloadTableAutomaticResult() {
 
 function downloadTableManualResult() {
   // Get the table element
-  const table = document.getElementById('table_manual_result');
-  
+  const table = document.getElementById("table_manual_result");
+
   // Extract the data from the table
   const rows = table.rows;
   const data = [];
@@ -510,12 +513,15 @@ function downloadTableManualResult() {
   }
 
   // Convert the data to CSV format
-  const csv = data.map(row => row.join(',')).join('\n');
+  const csv = data.map((row) => row.join(",")).join("\n");
 
   // Create a download link and click it
-  const link = document.createElement('a');
-  link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
-  link.setAttribute('download', 'manual_results.csv');
+  const link = document.createElement("a");
+  link.setAttribute(
+    "href",
+    "data:text/csv;charset=utf-8," + encodeURIComponent(csv)
+  );
+  link.setAttribute("download", "manual_results.csv");
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -523,8 +529,8 @@ function downloadTableManualResult() {
 
 function downloadTableAutomaticDetail() {
   // Get the table element
-  const table = document.getElementById('table_automatic_detail');
-  
+  const table = document.getElementById("table_automatic_detail");
+
   // Extract the data from the table
   const rows = table.rows;
   const data = [];
@@ -538,12 +544,15 @@ function downloadTableAutomaticDetail() {
   }
 
   // Convert the data to CSV format
-  const csv = data.map(row => row.join(',')).join('\n');
+  const csv = data.map((row) => row.join(",")).join("\n");
 
   // Create a download link and click it
-  const link = document.createElement('a');
-  link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
-  link.setAttribute('download', 'automatic_details.csv');
+  const link = document.createElement("a");
+  link.setAttribute(
+    "href",
+    "data:text/csv;charset=utf-8," + encodeURIComponent(csv)
+  );
+  link.setAttribute("download", "automatic_details.csv");
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -551,8 +560,8 @@ function downloadTableAutomaticDetail() {
 
 function downloadTableManualDetail() {
   // Get the table element
-  const table = document.getElementById('table_manual_detail');
-  
+  const table = document.getElementById("table_manual_detail");
+
   // Extract the data from the table
   const rows = table.rows;
   const data = [];
@@ -566,12 +575,15 @@ function downloadTableManualDetail() {
   }
 
   // Convert the data to CSV format
-  const csv = data.map(row => row.join(',')).join('\n');
+  const csv = data.map((row) => row.join(",")).join("\n");
 
   // Create a download link and click it
-  const link = document.createElement('a');
-  link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
-  link.setAttribute('download', 'manual_details.csv');
+  const link = document.createElement("a");
+  link.setAttribute(
+    "href",
+    "data:text/csv;charset=utf-8," + encodeURIComponent(csv)
+  );
+  link.setAttribute("download", "manual_details.csv");
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -1866,7 +1878,7 @@ async function drawChartColumn1_1(from, to, darkMode) {
         //   position: "top",
         // },
       },
-      
+
       {
         name: "Total",
         type: "line",

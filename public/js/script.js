@@ -318,7 +318,7 @@ function drawCharts(id) {
         element[4],
         element[5],
       ]);
-      indexIMU += 1 / 208;
+      indexIMU += 1 / 416;
     }
 
     ////Gyroscope
@@ -331,7 +331,7 @@ function drawCharts(id) {
     var optionsIMUGyroscope = {
       chart: {
         title: "Gyroscope",
-        subtitle: "1/208s",
+        subtitle: "1/416",
       },
       width: width,
       height: height,
@@ -354,7 +354,7 @@ function drawCharts(id) {
     var optionsForce = {
       chart: {
         title: "Accelerometer",
-        subtitle: "1/208s",
+        subtitle: "1/416s",
       },
       width: width,
       height: height,
@@ -369,11 +369,11 @@ function drawCharts(id) {
 
     ////
     let arrForce = [];
-    let indexForce = 1 / 208;
+    let indexForce = 1 / 416;
     for (let index = 0; index < forceData.length; index++) {
       const element = forceData[index];
       arrForce.push([parseFloat(indexForce.toFixed(3)), element[1]]);
-      indexForce += 1 / 208;
+      indexForce += 1 / 416;
     }
 
     var arrDataForce = [];
@@ -402,7 +402,7 @@ function drawCharts(id) {
     //define range 1/500 on 4 second
     let arrRange = [];
     for (let index = 0; index < 1500; index++) {
-      arrRange.push(index / 208);
+      arrRange.push(index / 416);
     }
 
     var arrForceNormal = [];
@@ -432,7 +432,7 @@ function drawCharts(id) {
     var optionsForce = {
       chart: {
         title: "Force sensor",
-        subtitle: "1/208s",
+        subtitle: "1/416s",
       },
       width: width,
       height: height,
